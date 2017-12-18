@@ -1,0 +1,11 @@
+<resources>
+    <string name="app_name">Android Project Base</string>
+
+    <!--Fonts-->
+    <string name="regular">regular</string>
+    <string name="bold">bold</string>
+    <string name="semibold">semibold</string>
+    <string name="light">light</string>
+    <string name="awesome">awesome</string>
+    <string name="line_awesome">line_awesome</string>
+</resources>
