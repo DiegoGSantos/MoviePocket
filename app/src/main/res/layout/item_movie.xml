@@ -1,18 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <FrameLayout
+        android:id="@+id/container"
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="320dp"
+        android:layout_gravity="center"
+        android:clickable="true"
+        android:layout_margin="3dp"
+        android:layout_marginBottom="2dp"
+        android:layout_marginTop="2dp"
 
-    <data>
+        android:foreground="?attr/selectableItemBackground">
 
-        <variable
-            name="viewModel"
-            type="com.androidprojectbase.viewmodel.MoviesViewModel"/>
+        <ImageView
+            android:id="@+id/mMovieImage"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerCrop" />
+    </FrameLayout>
 
-    </data>
-
-    <ImageView
-        android:id="@+id/mMovieImage"
-        android:layout_width="50dp"
-        android:layout_height="50dp" />
-</layout>
 

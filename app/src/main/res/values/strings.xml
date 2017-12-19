@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Android Project Base</string>
+    <string name="app_name">Movie Pocket</string>
 
     <!--Fonts-->
     <string name="regular">regular</string>

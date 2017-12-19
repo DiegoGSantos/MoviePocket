@@ -2,70 +2,36 @@ package com.androidprojectbase.adapter
 
 import android.content.Context
 import android.support.v7.widget.RecyclerView
+import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.animation.AlphaAnimation
+import com.bumptech.glide.Glide
 import com.moviepocket.R
 import com.moviepocket.model.Movie
+import kotlinx.android.synthetic.main.item_movie.view.*
 
 /**
  * Created by diegosantos on 12/17/17.
  */
-class MoviesAdapter(val context: Context, var movies: ArrayList<Movie>) : RecyclerView.Adapter<MoviesAdapter.MovieViewHolder>(){
+class MoviesAdapter(val context: Context, val movies: ArrayList<Movie>) : RecyclerView.Adapter<MoviesAdapter.MovieViewHolder>(){
 
     private var itemClick: ((Movie) -> Unit)? = null
-    companion object {
-        var mMovies = ArrayList<Movie>()
-//        var mListener: MovieListViewModel.MoviesListener? = null
-    }
+    
+    override fun getItemCount(): Int = movies?.size ?: 0
 
-    init {
-        mMovies.addAll(movies)
-//        mListener = listener
-    }
-
-    override fun getItemCount(): Int = mMovies?.size ?: 0
-
-    override fun onBindViewHolder(holder: MovieViewHolder?, position: Int) {
-//        val binding = holder?.binding
-        val movie = mMovies?.get(position)
-
-//        var viewModel = movie?.let { MoviesViewModel(it) }
-//        binding?.viewModel = viewModel
-
-        holder?.setClickListener(itemClick)
-
-//        Glide.with(context).load(binding?.viewModel?.movie?.image_url).into(binding?.mMovieImage)
+    override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
+        val movie = movies.get(position)
+        Glide.with(context).load(movie.getPosterUrl()).into(holder.movieCover)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MoviesAdapter.MovieViewHolder {
-        val inflatedView = parent.inflate(R.layout.item_movie, false)
+        val layoutInflater = LayoutInflater.from(parent.context)
 
-        return MovieViewHolder(inflatedView)
+        return MovieViewHolder(layoutInflater.inflate(R.layout.item_movie, parent, false))
     }
 
     class MovieViewHolder(v: View) : RecyclerView.ViewHolder(v) {
-
-        var animation1 = AlphaAnimation(0.2f, 1.0f)
-        var animation2 = AlphaAnimation(0.2f, 1.0f)
-
-        fun setClickListener(callback: ((Movie) -> Unit)?){
-//            binding.viewModel.clicks().subscribe {
-//                callback?.invoke(binding.viewModel.movie)
-//            }
-        }
-
-        init {
-
-            animation1.setDuration(1500)
-            animation1.setFillAfter(true)
-
-            animation2.setDuration(1500)
-            animation2.setFillAfter(true)
-        }
-    }
-
-    fun setClickListener(itemClick: ((Movie) -> Unit)?) {
-        this.itemClick = itemClick
+        val movieCover = v.mMovieImage
     }
 }

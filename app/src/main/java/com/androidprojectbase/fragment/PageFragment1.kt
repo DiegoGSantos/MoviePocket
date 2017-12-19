@@ -1,14 +1,11 @@
 package com.androidprojectbase.fragment
 
-import android.widget.TextView
 import android.os.Bundle
-import android.view.ViewGroup
-import android.view.LayoutInflater
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
-import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
+import android.view.ViewGroup
 import com.androidprojectbase.adapter.MoviesAdapter
 import com.androidprojectbase.restclient.response.MovieListResponse
 import com.moviepocket.R
@@ -17,24 +14,29 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_page.*
+
 /**
  * Created by diegosantos on 12/17/17.
  */
-class PageFragment : Fragment() {
+class PageFragment1 : Fragment() {
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater?.inflate(R.layout.fragment_page, container, false)
-    }
+    private var mPage: Int = 0
 
-    override fun onResume() {
-        super.onResume()
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        mPage = getArguments().getInt(ARG_PAGE)
 
         listMovies()
     }
 
+    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        val view = inflater?.inflate(R.layout.fragment_page, container, false)
+        return view
+    }
+
     fun listMovies() {
         val compositeDisposable = CompositeDisposable()
-        val service = Service.Factory.create()
+        val service = Service.create()
 
         compositeDisposable.add(
                 service.listMovies()
@@ -55,20 +57,18 @@ class PageFragment : Fragment() {
     fun updateUi(movieListResponse: MovieListResponse) {
         moviesList.apply {
             setHasFixedSize(true)
-            layoutManager = GridLayoutManager(this.context, 2)
+            layoutManager = GridLayoutManager(this.context, 3)
             adapter = MoviesAdapter(this.context, movieListResponse.results)
-
-            progress.visibility = GONE 
         }
     }
 
     companion object {
         val ARG_PAGE = "ARG_PAGE"
 
-        fun newInstance(page: Int): PageFragment {
+        fun newInstance(page: Int): PageFragment1 {
             val args = Bundle()
             args.putInt(ARG_PAGE, page)
-            val fragment = PageFragment()
+            val fragment = PageFragment1()
             fragment.setArguments(args)
             return fragment
         }
