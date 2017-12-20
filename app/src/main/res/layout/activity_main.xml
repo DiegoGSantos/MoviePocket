@@ -5,6 +5,21 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <android.support.design.widget.AppBarLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize">
+
+        <com.moviepocket.customViews.CustomTextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:textColor="@color/colorAccent"
+            android:gravity="center"
+            android:textSize="@dimen/deci_text"
+            android:layout_gravity="center"
+            android:text="@string/app_name"/>
+
+    </android.support.design.widget.AppBarLayout>
+
     <android.support.design.widget.TabLayout
         android:id="@+id/slidingTabs"
         android:layout_width="wrap_content"

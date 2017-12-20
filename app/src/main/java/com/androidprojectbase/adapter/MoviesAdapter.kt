@@ -22,7 +22,12 @@ class MoviesAdapter(val context: Context, val movies: ArrayList<Movie>) : Recycl
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         val movie = movies.get(position)
-        Glide.with(context).load(movie.getPosterUrl()).into(holder.movieCover)
+        Glide.with(context)
+                .load(movie.getPosterUrl())
+                .placeholder(R.drawable.poster_placeholder)
+                .fallback(R.drawable.poster_placeholder)
+                .error(R.drawable.poster_placeholder)
+                .into(holder.movieCover)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MoviesAdapter.MovieViewHolder {

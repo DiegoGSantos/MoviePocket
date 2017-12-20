@@ -55,7 +55,7 @@ class PageFragment : Fragment() {
     fun updateUi(movieListResponse: MovieListResponse) {
         moviesList.apply {
             setHasFixedSize(true)
-            layoutManager = GridLayoutManager(this.context, 2)
+            layoutManager = GridLayoutManager(this.context, 3)
             adapter = MoviesAdapter(this.context, movieListResponse.results)
 
             progress.visibility = GONE 
