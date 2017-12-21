@@ -16,12 +16,13 @@ import android.databinding.adapters.ViewBindingAdapter.setOnLongClickListener
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.view.Window
+import com.androidprojectbase.interfaces.MoviesCLickListener
 
 
 /**
  * Created by diegosantos on 12/17/17.
  */
-class MoviesAdapter(val context: Context, val movies: ArrayList<Movie>) : RecyclerView.Adapter<MoviesAdapter.MovieViewHolder>(){
+class MoviesAdapter(val context: Context, val movies: ArrayList<Movie>, val listener: MoviesCLickListener) : RecyclerView.Adapter<MoviesAdapter.MovieViewHolder>(){
 
     private val mOnClickListener: View.OnClickListener
     private val mOnLongClickListener: OnLongClickListener
@@ -29,27 +30,12 @@ class MoviesAdapter(val context: Context, val movies: ArrayList<Movie>) : Recycl
     init {
         mOnClickListener = View.OnClickListener { v ->
             val movie = v.tag as Movie
-            Toast.makeText(context, "Movie click", Toast.LENGTH_LONG).show();
+            listener.onMovieClick(movie)
         }
 
         mOnLongClickListener = OnLongClickListener { it ->
             val movie = it.tag as Movie
-
-            val layoutInflater = LayoutInflater.from(context)
-            val view = layoutInflater.inflate(R.layout.item_movie, null)
-
-            Glide.with(context)
-                    .load(movie.getPosterUrl())
-                    .placeholder(R.drawable.poster_placeholder)
-                    .fallback(R.drawable.poster_placeholder)
-                    .error(R.drawable.poster_placeholder)
-                    .into(view.mMovieImage)
-
-            val builder = Dialog(context);
-            builder.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            builder.getWindow().setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
-            builder.setContentView(view);
-            builder.show();
+            listener.onMovieLongClick(movie)
 
             true
         }
