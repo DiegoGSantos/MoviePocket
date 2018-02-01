@@ -7,7 +7,7 @@ import io.reactivex.subjects.PublishSubject
 /**
  * Created by diegosantos on 12/17/17.
  */
-class MoviesViewModel(val movie: Movie){
+class MovieViewModel(val movie: Movie){
     private val clicks = PublishSubject.create<Unit>()
 
 //    fun getDescription() = movie.description

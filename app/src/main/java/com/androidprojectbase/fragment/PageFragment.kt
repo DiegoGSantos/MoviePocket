@@ -1,6 +1,8 @@
 package com.androidprojectbase.fragment
 
 import android.app.Dialog
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
@@ -21,12 +23,12 @@ import android.view.*
 import android.widget.Toast
 import com.androidprojectbase.customViews.OnReleaseScreenListener
 import com.androidprojectbase.interfaces.MoviesCLickListener
+import com.androidprojectbase.viewmodel.MoviesViewModel
 import com.bumptech.glide.Glide
 import com.moviepocket.model.Movie
 import kotlinx.android.synthetic.main.item_movie.view.*
 import kotlinx.android.synthetic.main.view_movie_preview.view.*
 import pl.allegro.fogger.ui.dialog.DialogWithBlurredBackgroundLauncher
-
 
 /**
  * Created by diegosantos on 12/17/17.
@@ -42,35 +44,31 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
         super.onResume()
 
         setListeners()
-        listMovies()
+        loadObservers()
+        viewModel()?.listMovies()
+    }
+
+    private fun viewModel(): MoviesViewModel? {
+        return ViewModelProviders.of(this).get(MoviesViewModel::class.java)
     }
 
     private fun setListeners() {
         mainLayout.setOnRealeseListener(this)
     }
 
-    private fun listMovies() {
-        val compositeDisposable = CompositeDisposable()
-        val service = Service.Factory.create()
-
-        compositeDisposable.add(
-                service.listMovies()
-                        .observeOn(AndroidSchedulers.mainThread())
-                        .subscribeOn(Schedulers.io())
-                        .subscribe ({
-                            result ->
-                            updateUi(result)
-                        }, { error ->
-                            error.printStackTrace()
-                        })
-        )
+    fun loadObservers() {
+        viewModel()?.moviesLiveData?.observe(this, Observer<List<Movie>> { posts ->
+            posts?.let {
+                updateUi(posts)
+            }
+        })
     }
 
-    private fun updateUi(movieListResponse: MovieListResponse) {
+    private fun updateUi(movies: List<Movie>) {
         moviesList.apply {
             setHasFixedSize(true)
             layoutManager = GridLayoutManager(this.context, 3)
-            adapter = MoviesAdapter(this.context, movieListResponse.results, this@PageFragment)
+            adapter = MoviesAdapter(this.context, movies, this@PageFragment)
 
             progress.visibility = GONE 
         }
@@ -110,14 +108,12 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
                 .into(view.mMovieCover)
 
         builder = Dialog(context);
-//        builder?.requestWindowFeature(Window.FEATURE_NO_TITLE);
         builder?.getWindow()?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
 
         builder?.setContentView(view);
 
         val dialogWithBlurredBackgroundLauncher = DialogWithBlurredBackgroundLauncher(this.activity)
         dialogWithBlurredBackgroundLauncher.showDialog(builder)
-//        builder?.show()
     }
 
     fun hidePreview() {

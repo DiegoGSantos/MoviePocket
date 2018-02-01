@@ -1,28 +1,19 @@
 package com.androidprojectbase.adapter
-
-import android.app.Dialog
 import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.OnLongClickListener
 import android.view.ViewGroup
-import android.widget.Toast
 import com.bumptech.glide.Glide
 import com.moviepocket.R
 import com.moviepocket.model.Movie
 import kotlinx.android.synthetic.main.item_movie.view.*
-import android.databinding.adapters.ViewBindingAdapter.setOnLongClickListener
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
-import android.view.Window
 import com.androidprojectbase.interfaces.MoviesCLickListener
-
-
 /**
  * Created by diegosantos on 12/17/17.
  */
-class MoviesAdapter(val context: Context, val movies: ArrayList<Movie>, val listener: MoviesCLickListener) : RecyclerView.Adapter<MoviesAdapter.MovieViewHolder>(){
+class MoviesAdapter(val context: Context, val movies: List<Movie>, val listener: MoviesCLickListener) : RecyclerView.Adapter<MoviesAdapter.MovieViewHolder>(){
 
     private val mOnClickListener: View.OnClickListener
     private val mOnLongClickListener: OnLongClickListener

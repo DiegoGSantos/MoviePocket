@@ -12,12 +12,13 @@
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:background="@drawable/rectangular_background"
-        android:layout_margin="@dimen/kilo_margin">
+        android:layout_margin="@dimen/deca_margin">
 
         <com.moviepocket.customViews.CustomTextView
             android:id="@+id/movieTitle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:paddingBottom="@dimen/centi_margin"
             android:paddingTop="@dimen/centi_margin"/>
 
@@ -30,6 +31,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center"
             android:padding="@dimen/centi_margin">
 
             <ImageView
