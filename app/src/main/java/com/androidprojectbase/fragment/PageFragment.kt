@@ -8,17 +8,10 @@ import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
-import android.util.Log
 import android.view.View.GONE
 import com.androidprojectbase.adapter.MoviesAdapter
-import com.androidprojectbase.restclient.response.MovieListResponse
 import com.moviepocket.R
-import com.moviepocket.restclient.Service
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_page.*
-import android.support.v7.widget.RecyclerView
 import android.view.*
 import android.widget.Toast
 import com.androidprojectbase.customViews.OnReleaseScreenListener
@@ -26,7 +19,6 @@ import com.androidprojectbase.interfaces.MoviesCLickListener
 import com.androidprojectbase.viewmodel.MoviesViewModel
 import com.bumptech.glide.Glide
 import com.moviepocket.model.Movie
-import kotlinx.android.synthetic.main.item_movie.view.*
 import kotlinx.android.synthetic.main.view_movie_preview.view.*
 import pl.allegro.fogger.ui.dialog.DialogWithBlurredBackgroundLauncher
 
@@ -46,6 +38,13 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
         setListeners()
         loadObservers()
         viewModel()?.listMovies()
+
+//        val restaurants = Category()
+//        restaurants.name = "Restaurants"
+//        restaurants.save()
+//
+//        val category = Category.getRandom();
+//        val i = ""
     }
 
     private fun viewModel(): MoviesViewModel? {
@@ -56,7 +55,7 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
         mainLayout.setOnRealeseListener(this)
     }
 
-    fun loadObservers() {
+    private fun loadObservers() {
         viewModel()?.moviesLiveData?.observe(this, Observer<List<Movie>> { posts ->
             posts?.let {
                 updateUi(posts)

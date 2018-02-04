@@ -6,6 +6,11 @@ import com.moviepocket.model.Movie
 import com.moviepocket.util.Constants
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import com.google.gson.GsonBuilder
+import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.Retrofit
+
+
 
 /**
  * Created by diegosantos on 12/16/17.
@@ -34,7 +39,7 @@ interface Service {
 
             val retrofit = retrofit2.Retrofit.Builder()
                     .addCallAdapterFactory(retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory.create())
-                    .addConverterFactory(retrofit2.converter.gson.GsonConverterFactory.create())
+                    .addConverterFactory(GsonConverterFactory.create(GsonBuilder().excludeFieldsWithoutExposeAnnotation().create()))
                     .client(httpClient.build())
                     .baseUrl(Constants.BASE_URL)
                     .build()
