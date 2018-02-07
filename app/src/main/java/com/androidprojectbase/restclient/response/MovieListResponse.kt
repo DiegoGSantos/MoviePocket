@@ -1,8 +1,9 @@
 package com.androidprojectbase.restclient.response
 
+import com.google.gson.annotations.Expose
 import com.moviepocket.model.Movie
 
 /**
  * Created by diegosantos on 12/17/17.
  */
-class MovieListResponse(val results: ArrayList<Movie>)
+class MovieListResponse(@Expose val results: ArrayList<Movie>)

@@ -28,6 +28,11 @@ android {
     }
 }
 
+repositories {
+    mavenCentral()
+    maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation"org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
@@ -49,4 +54,5 @@ dependencies {
     implementation 'android.arch.lifecycle:extensions:1.0.0'
     implementation 'android.arch.lifecycle:reactivestreams:1.0.0'
     annotationProcessor "android.arch.lifecycle:compiler:1.0.0"
+    compile 'com.michaelpardo:activeandroid:3.1.0-SNAPSHOT'
 }
