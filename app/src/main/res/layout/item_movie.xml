@@ -7,14 +7,18 @@
         android:layout_height="200dp"
         android:layout_gravity="center"
         android:clickable="true"
-        android:layout_margin="1dp"
-        android:foreground="?attr/selectableItemBackground">
+        android:layout_margin="1dp">
 
         <ImageView
             android:id="@+id/mMovieImage"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:scaleType="centerCrop" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/movie_item_bg"/>
 
     </FrameLayout>
 
