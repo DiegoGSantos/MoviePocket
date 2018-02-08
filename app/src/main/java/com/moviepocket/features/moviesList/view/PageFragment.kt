@@ -1,4 +1,4 @@
-package com.moviepocket.fragment
+package com.moviepocket.features.moviesList.view
 
 import android.app.Dialog
 import android.arch.lifecycle.Observer
@@ -9,16 +9,16 @@ import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
 import android.view.View.GONE
-import com.moviepocket.adapter.MoviesAdapter
+import com.moviepocket.features.moviesList.view.adapter.MoviesAdapter
 import com.moviepocket.R
 import kotlinx.android.synthetic.main.fragment_page.*
 import android.view.*
 import android.widget.Toast
 import com.moviepocket.customViews.OnReleaseScreenListener
 import com.moviepocket.interfaces.MoviesCLickListener
-import com.moviepocket.viewmodel.MoviesViewModel
+import com.moviepocket.features.moviesList.viewmodel.MoviesViewModel
 import com.bumptech.glide.Glide
-import com.moviepocket.model.Movie
+import com.moviepocket.features.moviesList.model.Movie
 import kotlinx.android.synthetic.main.view_movie_preview.view.*
 import pl.allegro.fogger.ui.dialog.DialogWithBlurredBackgroundLauncher
 

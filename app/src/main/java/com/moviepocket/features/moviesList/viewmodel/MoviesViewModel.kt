@@ -1,9 +1,9 @@
-package com.moviepocket.viewmodel
+package com.moviepocket.features.moviesList.viewmodel
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import com.moviepocket.data.MovieRepository
-import com.moviepocket.model.Movie
+import com.moviepocket.features.moviesList.data.MovieRepository
+import com.moviepocket.features.moviesList.model.Movie
 import com.moviepocket.restclient.Service
 
 /**

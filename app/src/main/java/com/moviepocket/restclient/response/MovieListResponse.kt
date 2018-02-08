@@ -1,7 +1,7 @@
 package com.moviepocket.restclient.response
 
 import com.google.gson.annotations.Expose
-import com.moviepocket.model.Movie
+import com.moviepocket.features.moviesList.model.Movie
 
 /**
  * Created by diegosantos on 12/17/17.

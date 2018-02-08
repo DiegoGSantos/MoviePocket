@@ -1,6 +1,6 @@
 package com.moviepocket.restclient.response
 
-import com.moviepocket.model.Genre
+import com.moviepocket.features.moviesList.model.Genre
 
 /**
  * Created by diegosantos on 12/17/17.

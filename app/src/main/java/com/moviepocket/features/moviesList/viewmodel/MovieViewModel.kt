@@ -1,6 +1,6 @@
-package com.moviepocket.viewmodel
+package com.moviepocket.features.moviesList.viewmodel
 
-import com.moviepocket.model.Movie
+import com.moviepocket.features.moviesList.model.Movie
 import io.reactivex.Observable
 import io.reactivex.subjects.PublishSubject
 

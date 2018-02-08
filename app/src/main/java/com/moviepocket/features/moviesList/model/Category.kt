@@ -1,4 +1,4 @@
-package com.moviepocket.model
+package com.moviepocket.features.moviesList.model
 
 import com.activeandroid.Model
 import com.activeandroid.annotation.Column

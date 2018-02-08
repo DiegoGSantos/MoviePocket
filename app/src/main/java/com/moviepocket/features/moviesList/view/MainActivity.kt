@@ -1,9 +1,10 @@
-package com.moviepocket
+package com.moviepocket.features.moviesList.view
 
 import android.os.Bundle
 import android.support.design.widget.TabLayout
 import android.support.v7.app.AppCompatActivity
-import com.moviepocket.adapter.TabsPagerAdapter
+import com.moviepocket.R
+import com.moviepocket.features.moviesList.view.adapter.TabsPagerAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 
 

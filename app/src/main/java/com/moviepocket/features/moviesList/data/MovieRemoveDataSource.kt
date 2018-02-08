@@ -1,6 +1,6 @@
-package com.moviepocket.data
+package com.moviepocket.features.moviesList.data
 
-import com.moviepocket.model.Movie
+import com.moviepocket.features.moviesList.model.Movie
 import com.moviepocket.restclient.Service
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable

@@ -1,4 +1,4 @@
-package com.moviepocket.model
+package com.moviepocket.features.moviesList.model
 
 /**
  * Created by diegosantos on 12/17/17.

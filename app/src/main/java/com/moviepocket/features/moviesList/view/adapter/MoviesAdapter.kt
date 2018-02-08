@@ -1,4 +1,4 @@
-package com.moviepocket.adapter
+package com.moviepocket.features.moviesList.view.adapter
 import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -7,7 +7,7 @@ import android.view.View.OnLongClickListener
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.moviepocket.R
-import com.moviepocket.model.Movie
+import com.moviepocket.features.moviesList.model.Movie
 import kotlinx.android.synthetic.main.item_movie.view.*
 import com.moviepocket.interfaces.MoviesCLickListener
 /**
