@@ -10,6 +10,8 @@ import com.moviepocket.R
 import com.moviepocket.features.moviesList.model.Movie
 import kotlinx.android.synthetic.main.item_movie.view.*
 import com.moviepocket.interfaces.MoviesCLickListener
+import com.moviepocket.util.extensions.loadUrl
+
 /**
  * Created by diegosantos on 12/17/17.
  */
@@ -36,12 +38,7 @@ class MoviesAdapter(val context: Context, val movies: List<Movie>, val listener:
 
     override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
         val movie = movies.get(position)
-        Glide.with(context)
-                .load(movie.getPosterUrl())
-                .placeholder(R.drawable.poster_placeholder)
-                .fallback(R.drawable.poster_placeholder)
-                .error(R.drawable.poster_placeholder)
-                .into(holder.movieCover)
+        holder.movieCover.loadUrl(movie.getPosterUrl())
 
         with (holder.container) {
             tag = movie

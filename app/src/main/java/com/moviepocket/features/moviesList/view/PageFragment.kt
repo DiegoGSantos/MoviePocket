@@ -13,12 +13,14 @@ import com.moviepocket.features.moviesList.view.adapter.MoviesAdapter
 import com.moviepocket.R
 import kotlinx.android.synthetic.main.fragment_page.*
 import android.view.*
-import android.widget.Toast
 import com.moviepocket.customViews.OnReleaseScreenListener
 import com.moviepocket.interfaces.MoviesCLickListener
 import com.moviepocket.features.moviesList.viewmodel.MoviesViewModel
 import com.bumptech.glide.Glide
+import com.moviepocket.features.movieDetail.MovieDetailActivity
 import com.moviepocket.features.moviesList.model.Movie
+import com.moviepocket.util.extensions.launchActivity
+import com.moviepocket.util.extensions.loadUrl
 import kotlinx.android.synthetic.main.view_movie_preview.view.*
 import pl.allegro.fogger.ui.dialog.DialogWithBlurredBackgroundLauncher
 
@@ -38,13 +40,6 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
         setListeners()
         loadObservers()
         viewModel()?.listMovies()
-
-//        val restaurants = Category()
-//        restaurants.name = "Restaurants"
-//        restaurants.save()
-//
-//        val category = Category.getRandom();
-//        val i = ""
     }
 
     private fun viewModel(): MoviesViewModel? {
@@ -86,7 +81,7 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
     }
 
     override fun onMovieClick(movie: Movie) {
-        Toast.makeText(context, "Movie click", Toast.LENGTH_LONG).show();
+        this.activity.launchActivity<MovieDetailActivity>()
     }
 
     override fun onMovieLongClick(movie: Movie) {
@@ -98,16 +93,10 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
 
         view.movieTitle.text = movie.originalTitle
         view.imdbRate.text = movie.voteAverage
-
-        Glide.with(context)
-                .load(movie.getPosterUrl())
-                .placeholder(R.drawable.poster_placeholder)
-                .fallback(R.drawable.poster_placeholder)
-                .error(R.drawable.poster_placeholder)
-                .into(view.mMovieCover)
+        view.mMovieCover.loadUrl(movie.getPosterUrl())
 
         builder = Dialog(context);
-        builder?.getWindow()?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
+        builder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
 
         builder?.setContentView(view);
 
