@@ -1,6 +1,5 @@
-package com.androidprojectbase.data
+package com.moviepocket.data
 
-import com.androidprojectbase.model.Category
 import com.moviepocket.model.Movie
 /**
  * Created by diegosantos on 2/3/18.

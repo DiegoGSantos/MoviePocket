@@ -1,14 +1,10 @@
-package com.androidprojectbase.viewmodel
+package com.moviepocket.viewmodel
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import com.androidprojectbase.data.MovieRepository
-import com.androidprojectbase.restclient.response.MovieListResponse
+import com.moviepocket.data.MovieRepository
 import com.moviepocket.model.Movie
 import com.moviepocket.restclient.Service
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.schedulers.Schedulers
 
 /**
  * Created by diego.santos on 01/02/18.

@@ -1,4 +1,4 @@
-package com.androidprojectbase.interfaces
+package com.moviepocket.interfaces
 
 import com.moviepocket.model.Movie
 

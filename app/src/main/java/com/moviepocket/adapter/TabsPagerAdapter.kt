@@ -1,9 +1,9 @@
-package com.androidprojectbase.adapter
+package com.moviepocket.adapter
 
 import android.content.Context
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
-import com.androidprojectbase.fragment.PageFragment
+import com.moviepocket.fragment.PageFragment
 import android.support.v4.app.FragmentPagerAdapter
 /**
  * Created by diegosantos on 12/17/17.

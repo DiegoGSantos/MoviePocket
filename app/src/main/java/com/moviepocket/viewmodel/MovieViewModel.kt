@@ -1,4 +1,4 @@
-package com.androidprojectbase.viewmodel
+package com.moviepocket.viewmodel
 
 import com.moviepocket.model.Movie
 import io.reactivex.Observable

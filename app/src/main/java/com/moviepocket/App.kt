@@ -1,6 +1,5 @@
-package com.androidprojectbase
+package com.moviepocket
 
-import android.app.Application
 import com.activeandroid.ActiveAndroid
 
 /**

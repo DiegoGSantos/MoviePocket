@@ -1,4 +1,4 @@
-package com.androidprojectbase.model
+package com.moviepocket.model
 
 import com.activeandroid.Model
 import com.activeandroid.annotation.Column
@@ -6,7 +6,6 @@ import com.activeandroid.annotation.Table
 import com.activeandroid.query.Select
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-import com.moviepocket.model.Movie
 
 /**
  * Created by diegosantos on 2/4/18.

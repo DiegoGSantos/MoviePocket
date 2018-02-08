@@ -1,6 +1,5 @@
-package com.androidprojectbase.data
+package com.moviepocket.data
 
-import android.arch.lifecycle.MutableLiveData
 import com.moviepocket.model.Movie
 import com.moviepocket.restclient.Service
 import io.reactivex.android.schedulers.AndroidSchedulers

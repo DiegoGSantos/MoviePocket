@@ -1,4 +1,4 @@
-package com.androidprojectbase.manager
+package com.moviepocket.manager
 
 import android.content.Context
 import android.net.ConnectivityManager

@@ -1,6 +1,6 @@
-package com.androidprojectbase.restclient.response
+package com.moviepocket.restclient.response
 
-import com.androidprojectbase.model.Genre
+import com.moviepocket.model.Genre
 
 /**
  * Created by diegosantos on 12/17/17.

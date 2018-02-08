@@ -1,4 +1,4 @@
-package com.androidprojectbase.adapter
+package com.moviepocket.adapter
 import android.content.Context
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -9,7 +9,7 @@ import com.bumptech.glide.Glide
 import com.moviepocket.R
 import com.moviepocket.model.Movie
 import kotlinx.android.synthetic.main.item_movie.view.*
-import com.androidprojectbase.interfaces.MoviesCLickListener
+import com.moviepocket.interfaces.MoviesCLickListener
 /**
  * Created by diegosantos on 12/17/17.
  */

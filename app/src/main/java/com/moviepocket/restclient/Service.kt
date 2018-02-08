@@ -1,15 +1,12 @@
 package com.moviepocket.restclient
 
-import com.androidprojectbase.restclient.response.GenreListResponse
-import com.androidprojectbase.restclient.response.MovieListResponse
-import com.moviepocket.model.Movie
+import com.moviepocket.restclient.response.GenreListResponse
+import com.moviepocket.restclient.response.MovieListResponse
 import com.moviepocket.util.Constants
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import com.google.gson.GsonBuilder
 import retrofit2.converter.gson.GsonConverterFactory
-import retrofit2.Retrofit
-
 
 
 /**

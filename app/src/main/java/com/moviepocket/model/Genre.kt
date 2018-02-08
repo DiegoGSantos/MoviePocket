@@ -1,4 +1,4 @@
-package com.androidprojectbase.model
+package com.moviepocket.model
 
 /**
  * Created by diegosantos on 12/17/17.

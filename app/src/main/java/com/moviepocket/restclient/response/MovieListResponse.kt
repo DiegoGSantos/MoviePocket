@@ -1,4 +1,4 @@
-package com.androidprojectbase.restclient.response
+package com.moviepocket.restclient.response
 
 import com.google.gson.annotations.Expose
 import com.moviepocket.model.Movie

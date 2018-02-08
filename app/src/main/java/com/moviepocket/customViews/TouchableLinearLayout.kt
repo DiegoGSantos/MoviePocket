@@ -1,4 +1,4 @@
-package com.androidprojectbase.customViews
+package com.moviepocket.customViews
 
 import android.content.Context
 import android.util.AttributeSet
