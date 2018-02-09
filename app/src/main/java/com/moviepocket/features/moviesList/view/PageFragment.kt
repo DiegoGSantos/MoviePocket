@@ -30,7 +30,7 @@ import pl.allegro.fogger.ui.dialog.DialogWithBlurredBackgroundLauncher
 class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
     var builder: Dialog? = null
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater?.inflate(R.layout.fragment_page, container, false)
     }
 
@@ -81,7 +81,7 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
     }
 
     override fun onMovieClick(movie: Movie) {
-        this.activity.launchActivity<MovieDetailActivity>()
+        this.activity?.launchActivity<MovieDetailActivity>()
     }
 
     override fun onMovieLongClick(movie: Movie) {

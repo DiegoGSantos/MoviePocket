@@ -4,5 +4,11 @@
     <color name="colorPrimaryDark">#DEDEDE</color>
     <color name="colorAccent">#2F2F2F</color>
 
+    <color name="white">#fff</color>
+
     <color name="transparentBlack">#66000000</color>
+    <color name="colorOverlay">#30000000</color>
+
+    <color name="yellow">#FFC34B</color>
+    <color name="yellow_dark">#AB956C</color>
 </resources>
