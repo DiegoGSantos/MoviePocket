@@ -119,7 +119,7 @@
                     android:paddingRight="@dimen/hecto_margin"
                     android:paddingLeft="@dimen/hecto_margin"
                     android:paddingBottom="@dimen/hecto_margin"
-                    android:paddingTop="@dimen/giga_margin">
+                    android:paddingTop="34dp">
 
                     <ImageView
                         android:id="@+id/backButton"
