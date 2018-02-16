@@ -7,6 +7,7 @@ import android.graphics.drawable.LayerDrawable
 import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.view.View.VISIBLE
 import com.eightbitlab.supportrenderscriptblur.SupportRenderScriptBlur
 import com.moviepocket.R
 import com.moviepocket.util.extensions.loadUrl
@@ -27,6 +28,8 @@ class MovieDetailActivity : AppCompatActivity() {
 
         loadObservers()
 
+        setListeners()
+
         intent.extras.getString(Movie.ID).let {
             viewModel()?.getMovieDetail(it)
         }
@@ -44,22 +47,45 @@ class MovieDetailActivity : AppCompatActivity() {
         })
     }
 
+    private fun setListeners() {
+        backButton.setOnClickListener {
+            onBackPressed()
+        }
+    }
+
     private fun updateUi(movieDetailResponse: MovieDetailResponse) {
         setMoviePosterBackground(movieDetailResponse)
 
-        setStarsStyle()
+        setStarsStyle(movieDetailResponse)
 
         movieTitle.text = movieDetailResponse.title
         moviePlot.text = movieDetailResponse.overview
+        rating.text = getString(R.string.movieRating, movieDetailResponse.voteAverage)
 
+        val realeaseDate = movieDetailResponse.releaseDate
+        val date = realeaseDate.substring(8, 10) + "/" +
+            realeaseDate.substring(5, 7) + "/" +
+                realeaseDate.substring(0,4)
+        releaseDate.text = getString(R.string.releaseDate, date)
+
+        setGenres(movieDetailResponse)
+
+        plot.visibility = VISIBLE
     }
 
-    private fun setStarsStyle() {
-//        val stars = ratingBar.progressDrawable as LayerDrawable
-//        stars.getDrawable(2).setColorFilter(resources.getColor(R.color.yellow), PorterDuff.Mode.SRC_ATOP)
-//        stars.getDrawable(0).setColorFilter(resources.getColor(R.color.yellow_dark), PorterDuff.Mode.SRC_ATOP)
+    private fun setGenres(movieDetailResponse: MovieDetailResponse) {
+        var genres = ""
+        movieDetailResponse.genres.forEach{
+            genres += it.name + ", "
+        }
 
-        val stars1 = ratingBar1.progressDrawable as LayerDrawable
+        movieGenres.text = genres.substring(0, genres.length - 2)
+        movieGenres.isSelected = true
+    }
+
+    private fun setStarsStyle(movieDetail: MovieDetailResponse) {
+        ratingBar.rating = movieDetail.voteAverage.toFloat() / 2
+        val stars1 = ratingBar.progressDrawable as LayerDrawable
         stars1.getDrawable(2).setColorFilter(resources.getColor(R.color.yellow), PorterDuff.Mode.SRC_ATOP)
         stars1.getDrawable(0).setColorFilter(resources.getColor(R.color.yellow_dark), PorterDuff.Mode.SRC_ATOP)
     }

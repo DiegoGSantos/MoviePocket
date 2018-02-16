@@ -8,4 +8,8 @@
     <string name="light">light</string>
     <string name="awesome">awesome</string>
     <string name="line_awesome">line_awesome</string>
+
+    <string name="movieRating">%1$s/10</string>
+    <string name="releaseDate">Estréia: %1$s</string>
+    <string name="plot">Sinopse</string>
 </resources>
