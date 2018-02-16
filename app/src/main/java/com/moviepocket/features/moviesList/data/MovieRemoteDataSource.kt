@@ -9,7 +9,7 @@ import io.reactivex.schedulers.Schedulers
 /**
  * Created by diegosantos on 2/4/18.
  */
-class MovieRemoveDataSource
+class MovieRemoteDataSource
     constructor(
         val service: Service = Service.Factory.create()
     ){

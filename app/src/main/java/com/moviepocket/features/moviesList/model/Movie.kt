@@ -14,14 +14,19 @@ import com.activeandroid.query.Select
 class Movie(@Expose @Column(name = "posterPath")
             @SerializedName("poster_path")
             val posterPath: String = "",
-            @Expose @Column(name = "originalTitle")
-            @SerializedName("original_title")
-            val originalTitle: String = "",
+            @Expose @Column(name = "title")
+            @SerializedName("title")
+            val title: String = "",
             @Expose @Column(name = "voteAverage")
             @SerializedName("vote_average")
-            val voteAverage: String = "") : Model(){
+            val voteAverage: String = "",
+            @Expose @Column(name = "movieId")
+            @SerializedName("id")
+            val movieId: String = "") : Model(){
 
     companion object {
+        val ID = "movie_id_extra"
+
         fun getAll(): List<Movie> {
             return Select()
                     .from(Movie::class.java)

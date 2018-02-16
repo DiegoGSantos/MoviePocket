@@ -11,7 +11,6 @@ import com.moviepocket.restclient.Service
  */
 class MoviesViewModel
     constructor(
-        val service: Service = Service.Factory.create(),
         var moviesLiveData: MutableLiveData<List<Movie>> = MutableLiveData(),
         val movieRepository: MovieRepository = MovieRepository()
     ): ViewModel() {

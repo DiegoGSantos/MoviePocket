@@ -16,8 +16,7 @@ import android.view.*
 import com.moviepocket.customViews.OnReleaseScreenListener
 import com.moviepocket.interfaces.MoviesCLickListener
 import com.moviepocket.features.moviesList.viewmodel.MoviesViewModel
-import com.bumptech.glide.Glide
-import com.moviepocket.features.movieDetail.MovieDetailActivity
+import com.moviepocket.features.movieDetail.view.MovieDetailActivity
 import com.moviepocket.features.moviesList.model.Movie
 import com.moviepocket.util.extensions.launchActivity
 import com.moviepocket.util.extensions.loadUrl
@@ -81,7 +80,9 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
     }
 
     override fun onMovieClick(movie: Movie) {
-        this.activity?.launchActivity<MovieDetailActivity>()
+        this.activity?.launchActivity<MovieDetailActivity>{
+            putExtra(Movie.ID, movie.movieId)
+        }
     }
 
     override fun onMovieLongClick(movie: Movie) {
@@ -91,7 +92,7 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
         val layoutInflater = LayoutInflater.from(context)
         val view = layoutInflater.inflate(R.layout.view_movie_preview, null)
 
-        view.movieTitle.text = movie.originalTitle
+        view.movieTitle.text = movie.title
         view.imdbRate.text = movie.voteAverage
         view.mMovieCover.loadUrl(movie.getPosterUrl())
 

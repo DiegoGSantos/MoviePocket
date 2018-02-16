@@ -5,15 +5,23 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/root"
-    tools:context="com.moviepocket.features.movieDetail.MovieDetailActivity">
+    tools:context="com.moviepocket.features.movieDetail.view.MovieDetailActivity">
 
     <FrameLayout
+        android:id="@+id/mainLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
+
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
 
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
+
             <ImageView
                 android:id="@+id/movieBg"
                 android:layout_width="match_parent"
@@ -28,110 +36,165 @@
                 android:outlineProvider="bounds"
                 app:blurOverlayColor="@color/colorOverlay"
                 tools:targetApi="lollipop"/>
+
         </FrameLayout>
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <android.support.constraint.ConstraintLayout
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingRight="@dimen/hecto_margin"
-                android:paddingLeft="@dimen/hecto_margin"
-                android:paddingBottom="@dimen/hecto_margin"
-                android:paddingTop="@dimen/tera_margin">
+                android:layout_height="wrap_content">
 
-                <ImageView
-                    android:id="@+id/movieCover"
-                    android:layout_width="120dp"
-                    android:layout_height="178dp"
-                    android:layout_gravity="top"/>
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
 
-                <com.moviepocket.customViews.CustomTextView
-                    android:id="@+id/movieTitle"
-                    android:layout_width="0dp"
-                    app:layout_constraintWidth_default="wrap"
+                    <FrameLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <ImageView
+                            android:id="@+id/moviePoster"
+                            android:layout_width="match_parent"
+                            android:layout_height="192dp"
+                            android:adjustViewBounds="true"
+                            android:scaleType="fitXY" />
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@color/transparentBlack" />
+
+                    </FrameLayout>
+
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:gravity="right"
+                            android:background="@color/transparentWhite">
+
+                            <com.moviepocket.customViews.CustomTextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="match_parent"
+                                android:textSize="@dimen/deci_text"
+                                android:textColor="@color/white"
+                                android:gravity="center"
+                                android:text="7,8/10"/>
+
+                            <RatingBar
+                                android:id="@+id/ratingBar1"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center"
+                                style="@style/RatingBar"
+                                android:isIndicator="true"
+                                android:numStars="5"
+                                android:stepSize="0.5"
+                                android:rating="3.5"
+                                android:layout_margin="@dimen/deci_margin" />
+
+                        </LinearLayout>
+
+                        <View
+                            android:layout_width="match_parent"
+                            android:layout_height="5dp"
+                            android:background="@drawable/rectangular_border_background" />
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <android.support.constraint.ConstraintLayout
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textSize="@dimen/hecto_text"
-                    android:textColor="@color/white"
-                    app:layout_constraintStart_toEndOf="@id/movieCover"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:customTypeface="@string/bold"
-                    android:layout_marginLeft="@dimen/hecto_margin"
-                    android:text="Transformers: A Era da Extinção"/>
+                    android:paddingRight="@dimen/hecto_margin"
+                    android:paddingLeft="@dimen/hecto_margin"
+                    android:paddingBottom="@dimen/hecto_margin"
+                    android:paddingTop="@dimen/giga_margin">
 
-                <com.moviepocket.customViews.CustomTextView
-                    android:id="@+id/rating"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/deca_text"
-                    android:textColor="@color/white"
-                    app:layout_constraintTop_toBottomOf="@id/movieTitle"
-                    app:layout_constraintStart_toEndOf="@id/movieCover"
-                    android:layout_marginLeft="@dimen/hecto_margin"
-                    android:text="7,8/10"/>
+                    <ImageView
+                        android:id="@+id/backButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/ic_arrow_back_white_24dp"/>
 
-                <RatingBar
-                    android:id="@+id/ratingBar"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    style="@style/RatingBar"
-                    android:isIndicator="true"
-                    android:numStars="5"
-                    android:stepSize="0.5"
-                    android:rating="3.5"
-                    app:layout_constraintStart_toStartOf="@id/rating"
-                    app:layout_constraintTop_toBottomOf="@id/rating"/>
+                    <ImageView
+                        android:id="@+id/movieCover"
+                        android:layout_width="105dp"
+                        android:layout_height="159dp"
+                        android:layout_gravity="top"
+                        android:layout_marginTop="@dimen/centi_margin"
+                        app:layout_constraintTop_toBottomOf="@id/backButton"/>
 
-                <com.moviepocket.customViews.CustomTextView
-                    android:id="@+id/releaseDate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/deca_text"
-                    android:textColor="@color/white"
-                    app:layout_constraintStart_toEndOf="@id/movieCover"
-                    android:layout_marginLeft="@dimen/hecto_margin"
-                    android:text="Estréia: 08/01/2018"
-                    app:layout_constraintTop_toBottomOf="@id/ratingBar"/>
+                    <com.moviepocket.customViews.CustomTextView
+                        android:id="@+id/movieTitle"
+                        android:layout_width="0dp"
+                        app:layout_constraintWidth_default="spread"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/hecto_text"
+                        android:textColor="@color/white"
+                        app:layout_constraintStart_toEndOf="@id/movieCover"
+                        app:layout_constraintRight_toRightOf="parent"
+                        app:layout_constraintTop_toTopOf="@id/movieCover"
+                        app:customTypeface="@string/bold"
+                        android:layout_marginLeft="@dimen/hecto_margin" />
 
-                <com.moviepocket.customViews.CustomTextView
-                    android:id="@+id/movieGenres"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/deca_text"
-                    android:textColor="@color/white"
-                    app:layout_constraintStart_toEndOf="@id/movieCover"
-                    android:layout_marginLeft="@dimen/hecto_margin"
-                    android:text="Ação"
-                    app:layout_constraintTop_toBottomOf="@id/releaseDate"/>
+                    <com.moviepocket.customViews.CustomTextView
+                        android:id="@+id/releaseDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/deca_text"
+                        android:textColor="@color/white"
+                        app:layout_constraintStart_toEndOf="@id/movieCover"
+                        android:layout_marginLeft="@dimen/hecto_margin"
+                        android:text="Estréia: 08/01/2018"
+                        app:layout_constraintTop_toBottomOf="@id/movieTitle"/>
 
-                <com.moviepocket.customViews.CustomTextView
-                    android:id="@+id/plot"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/deca_text"
-                    android:textColor="@color/white"
-                    app:layout_constraintStart_toStartOf="parent"
-                    android:layout_marginTop="@dimen/hecto_margin"
-                    app:customTypeface="@string/bold"
-                    android:text="Sinopse"
-                    app:layout_constraintTop_toBottomOf="@id/movieCover"/>
+                    <com.moviepocket.customViews.CustomTextView
+                        android:id="@+id/movieGenres"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/deca_text"
+                        android:textColor="@color/white"
+                        app:layout_constraintStart_toEndOf="@id/movieCover"
+                        android:layout_marginLeft="@dimen/hecto_margin"
+                        android:text="Ação"
+                        app:layout_constraintTop_toBottomOf="@id/releaseDate"/>
 
-                <com.moviepocket.customViews.CustomTextView
-                    android:id="@+id/moviePlot"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="@dimen/deci_text"
-                    android:textColor="@color/white"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    android:text="Alguns anos após o grande confronto entre Autobots e Decepticons em Chicago, os gigantescos robôs alien Alguns anos após o grande confronto entre Autobots e Decepticons em Chicago, os gigantescos robôs alienígenas desapareceram. Eles são atualmente caçados pelos humanos, que não desejam passar por apuros novamente. Quando Cade (Mark Wahlberg) encontra um caminhão abandonado, ele jamais poderia imaginar que o veículo é na verdade Optimus Prime, o líder dos Autobots. Muito menos que, ao ajudar a trazê-lo de volta à vida, Cade e sua filha Tessa (Nicola Peltz) entrariam na mira das autoridades americanas."
-                    app:layout_constraintTop_toBottomOf="@id/plot"/>
+                    <com.moviepocket.customViews.CustomTextView
+                        android:id="@+id/plot"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/deca_text"
+                        android:textColor="@color/white"
+                        app:layout_constraintStart_toStartOf="parent"
+                        android:layout_marginTop="@dimen/hecto_margin"
+                        app:customTypeface="@string/bold"
+                        android:text="Sinopse"
+                        app:layout_constraintTop_toBottomOf="@id/movieCover"/>
 
-            </android.support.constraint.ConstraintLayout>
+                    <com.moviepocket.customViews.CustomTextView
+                        android:id="@+id/moviePlot"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/centi_text"
+                        android:textColor="@color/white"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/plot"/>
+
+                </android.support.constraint.ConstraintLayout>
+
+            </FrameLayout>
 
         </ScrollView>
 

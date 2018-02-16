@@ -5,10 +5,11 @@
     <color name="colorAccent">#2F2F2F</color>
 
     <color name="white">#fff</color>
+    <color name="transparentWhite">#66ffffff</color>
 
     <color name="transparentBlack">#66000000</color>
     <color name="colorOverlay">#30000000</color>
 
     <color name="yellow">#FFC34B</color>
-    <color name="yellow_dark">#AB956C</color>
+    <color name="yellow_dark">#2F2F2F</color>
 </resources>

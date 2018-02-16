@@ -36,7 +36,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".features.movieDetail.MovieDetailActivity"></activity>
+        <activity android:name=".features.movieDetail.view.MovieDetailActivity"></activity>
     </application>
 
 </manifest>

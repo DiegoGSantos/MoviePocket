@@ -14,7 +14,7 @@ import com.google.gson.annotations.SerializedName
 class Category(@Expose @Column(name = "posterPath")
                @SerializedName("poster_path")
                val posterPath: String = "",
-               @Expose @Column(name = "originalTitle")
+               @Expose @Column(name = "title")
                @SerializedName("original_title")
                val originalTitle: String = "",
                @Expose @Column(name = "voteAverage")
