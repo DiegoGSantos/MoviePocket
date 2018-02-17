@@ -13,6 +13,7 @@ import com.moviepocket.R
 import com.moviepocket.util.extensions.loadUrl
 import kotlinx.android.synthetic.main.activity_movie_detail.*
 import android.view.WindowManager
+import com.bumptech.glide.Glide
 import com.moviepocket.features.movieDetail.viewmodel.MovieDetailViewModel
 import com.moviepocket.features.moviesList.model.Movie
 import com.moviepocket.features.moviesList.viewmodel.MoviesViewModel
@@ -100,7 +101,12 @@ class MovieDetailActivity : AppCompatActivity() {
     private fun setMoviePosterBackground(movie: MovieDetailResponse) {
         movieBg.loadUrl(movie.getPosterUrl())
         movieCover.loadUrl(movie.getPosterUrl())
-        moviePoster.loadUrl(movie.getBackdropPathUrl())
+//        moviePoster.loadUrl(movie.getBackdropPathUrl())
+
+        Glide.with(this)
+                .load(movie.getBackdropPathUrl())
+                .centerCrop()
+                .into(moviePoster)
 
         val windowBackground = window.decorView.background
 

@@ -60,8 +60,7 @@
                             android:id="@+id/moviePoster"
                             android:layout_width="match_parent"
                             android:layout_height="192dp"
-                            android:adjustViewBounds="true"
-                            android:scaleType="fitXY" />
+                            android:adjustViewBounds="true" />
 
                         <View
                             android:layout_width="match_parent"
