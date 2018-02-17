@@ -12,4 +12,5 @@
     <string name="movieRating">%1$s/10</string>
     <string name="releaseDate">Estréia: %1$s</string>
     <string name="plot">Sinopse</string>
+    <string name="videos">Videos</string>
 </resources>

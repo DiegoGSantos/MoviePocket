@@ -195,9 +195,29 @@
                         android:layout_height="wrap_content"
                         android:textSize="@dimen/centi_text"
                         android:textColor="@color/white"
+                        android:paddingBottom="@dimen/hecto_margin"
                         app:layout_constraintStart_toStartOf="parent"
                         app:layout_constraintEnd_toEndOf="parent"
                         app:layout_constraintTop_toBottomOf="@id/plot"/>
+
+                    <com.moviepocket.customViews.CustomTextView
+                        android:id="@+id/videos"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="@dimen/deca_text"
+                        android:textColor="@color/white"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:customTypeface="@string/bold"
+                        android:text="@string/videos"
+                        android:visibility="invisible"
+                        android:paddingBottom="@dimen/centi_margin"
+                        app:layout_constraintTop_toBottomOf="@id/moviePlot"/>
+
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/videosList"
+                        android:layout_width="match_parent"
+                        android:layout_height="126dp"
+                        app:layout_constraintTop_toBottomOf="@id/videos"/>
 
                 </android.support.constraint.ConstraintLayout>
 

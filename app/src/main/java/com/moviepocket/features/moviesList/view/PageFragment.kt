@@ -33,8 +33,8 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
         return inflater?.inflate(R.layout.fragment_page, container, false)
     }
 
-    override fun onResume() {
-        super.onResume()
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         setListeners()
         loadObservers()

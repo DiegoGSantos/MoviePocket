@@ -7,20 +7,28 @@ import android.graphics.drawable.LayerDrawable
 import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
 import android.view.View.VISIBLE
+import android.view.WindowManager
+import com.Videopocket.features.VideoDetail.view.adapter.VideosAdapter
+import com.bumptech.glide.Glide
 import com.eightbitlab.supportrenderscriptblur.SupportRenderScriptBlur
 import com.moviepocket.R
-import com.moviepocket.util.extensions.loadUrl
-import kotlinx.android.synthetic.main.activity_movie_detail.*
-import android.view.WindowManager
-import com.bumptech.glide.Glide
+import com.moviepocket.features.movieDetail.model.Video
 import com.moviepocket.features.movieDetail.viewmodel.MovieDetailViewModel
 import com.moviepocket.features.moviesList.model.Movie
-import com.moviepocket.features.moviesList.viewmodel.MoviesViewModel
+import com.moviepocket.interfaces.VideoCLickListener
 import com.moviepocket.restclient.response.MovieDetailResponse
+import com.moviepocket.util.extensions.loadUrl
+import kotlinx.android.synthetic.main.activity_movie_detail.*
+import android.content.Intent
+import android.net.Uri
 
 
-class MovieDetailActivity : AppCompatActivity() {
+class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
+    override fun onVideoClick(video: Video) {
+        startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(video.getVideoUrl())))
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,8 +68,13 @@ class MovieDetailActivity : AppCompatActivity() {
         setStarsStyle(movieDetailResponse)
 
         movieTitle.text = movieDetailResponse.title
-        moviePlot.text = movieDetailResponse.overview
-        rating.text = getString(R.string.movieRating, movieDetailResponse.voteAverage)
+
+        if (!movieDetailResponse.overview.isEmpty()) {
+            moviePlot.text = movieDetailResponse.overview
+            plot.visibility = VISIBLE
+        }
+
+        rating.text = getString(R.string.movieRating, "%.1f".format(movieDetailResponse.voteAverage.toFloat()))
 
         val realeaseDate = movieDetailResponse.releaseDate
         val date = realeaseDate.substring(8, 10) + "/" +
@@ -71,7 +84,19 @@ class MovieDetailActivity : AppCompatActivity() {
 
         setGenres(movieDetailResponse)
 
-        plot.visibility = VISIBLE
+        setVideoList(movieDetailResponse)
+    }
+
+    private fun setVideoList(movieDetailResponse: MovieDetailResponse) {
+        if(movieDetailResponse.videos.results.size > 0) {
+            videosList.apply {
+                setHasFixedSize(true)
+                layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
+                adapter = VideosAdapter(this.context, movieDetailResponse.videos.results, this@MovieDetailActivity)
+            }
+
+            videos.visibility = VISIBLE
+        }
     }
 
     private fun setGenres(movieDetailResponse: MovieDetailResponse) {
@@ -101,7 +126,6 @@ class MovieDetailActivity : AppCompatActivity() {
     private fun setMoviePosterBackground(movie: MovieDetailResponse) {
         movieBg.loadUrl(movie.getPosterUrl())
         movieCover.loadUrl(movie.getPosterUrl())
-//        moviePoster.loadUrl(movie.getBackdropPathUrl())
 
         Glide.with(this)
                 .load(movie.getBackdropPathUrl())
