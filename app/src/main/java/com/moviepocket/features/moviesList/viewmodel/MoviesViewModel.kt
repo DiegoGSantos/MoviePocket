@@ -76,4 +76,12 @@ class MoviesViewModel
         else if (listType.equals(MovieListTypes.TOP_RATED.listType)) return isThereMoreTopRatedToLoad
         else return false
     }
+
+    fun getCurrentPage(listType: String): Int {
+        if (listType.equals(MovieListTypes.NOW_PLAYING.listType)) return currentInTheaterPage
+        else if (listType.equals(MovieListTypes.UPCOMING.listType)) return currentUpcomingPage
+        else if (listType.equals(MovieListTypes.POPULAR.listType)) return currentPopularPage
+        else if (listType.equals(MovieListTypes.TOP_RATED.listType)) return currentTopRatedPage
+        else return 1
+    }
 }

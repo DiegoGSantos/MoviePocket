@@ -145,6 +145,7 @@
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toTopOf="@id/movieCover"
                         app:customTypeface="@string/bold"
+                        android:paddingTop="@dimen/mili_margin"
                         android:layout_marginLeft="@dimen/hecto_margin" />
 
                     <com.moviepocket.customViews.CustomTextView

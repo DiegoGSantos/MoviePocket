@@ -1,6 +1,9 @@
 package com.moviepocket.util.extensions
 
 import android.app.Activity
+import android.arch.lifecycle.LifecycleOwner
+import android.arch.lifecycle.LiveData
+import android.arch.lifecycle.Observer
 import android.content.Context
 import android.content.Intent
 import android.support.design.widget.Snackbar
@@ -14,6 +17,11 @@ import android.widget.Toast
  */
 fun ViewGroup.inflate(layoutId: Int, attachToRoot: Boolean = false): View {
     return LayoutInflater.from(context).inflate(layoutId, this, attachToRoot)
+}
+
+fun <T> LiveData<T>.reObserve(owner: LifecycleOwner, observer: Observer<T>) {
+    removeObservers(owner)
+    observe(owner, observer)
 }
 
 fun Context.showSnackBar(view: View, text: String) {
