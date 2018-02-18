@@ -20,9 +20,11 @@ import com.moviepocket.features.moviesList.model.Movie
 import com.moviepocket.interfaces.VideoCLickListener
 import com.moviepocket.restclient.response.MovieDetailResponse
 import com.moviepocket.util.extensions.loadUrl
-import kotlinx.android.synthetic.main.activity_movie_detail.*
 import android.content.Intent
 import android.net.Uri
+import android.view.View.INVISIBLE
+import android.widget.TextView
+import kotlinx.android.synthetic.main.activity_movie_detail.*
 
 
 class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
@@ -65,26 +67,50 @@ class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
     private fun updateUi(movieDetailResponse: MovieDetailResponse) {
         setMoviePosterBackground(movieDetailResponse)
 
-        setStarsStyle(movieDetailResponse)
+        setRating(movieDetailResponse)
 
         movieTitle.text = movieDetailResponse.title
 
-        if (!movieDetailResponse.overview.isEmpty()) {
-            moviePlot.text = movieDetailResponse.overview
-            plot.visibility = VISIBLE
-        }
+        setPlot(movieDetailResponse)
 
-        rating.text = getString(R.string.movieRating, "%.1f".format(movieDetailResponse.voteAverage.toFloat()))
-
-        val realeaseDate = movieDetailResponse.releaseDate
-        val date = realeaseDate.substring(8, 10) + "/" +
-            realeaseDate.substring(5, 7) + "/" +
-                realeaseDate.substring(0,4)
-        releaseDate.text = getString(R.string.releaseDate, date)
+        setReleaseDate(movieDetailResponse)
 
         setGenres(movieDetailResponse)
 
         setVideoList(movieDetailResponse)
+    }
+
+    private fun setRating(movieDetailResponse: MovieDetailResponse) {
+        if (movieDetailResponse.voteAverage.toFloat() != 0f) {
+            setStarsStyle(movieDetailResponse)
+            rating.text = getString(R.string.movieRating, "%.1f".format(movieDetailResponse.voteAverage.toFloat()))
+        } else {
+            rating.visibility = INVISIBLE
+        }
+    }
+
+    private fun setPlot(movieDetailResponse: MovieDetailResponse) {
+        if (!movieDetailResponse.overview.isEmpty()) {
+            (moviePlot as TextView).text = movieDetailResponse.overview
+//            moviePlot.text = movieDetailResponse.overview
+            plot.visibility = VISIBLE
+            moviePlot.visibility = VISIBLE
+        }
+    }
+
+    private fun setReleaseDate(movieDetailResponse: MovieDetailResponse) {
+        var releaseDateText = movieDetailResponse.releaseDate
+
+        movieDetailResponse.releaseDates.results.forEach {
+            if (it.country.equals("BR")) {
+                releaseDateText = it.releaseDates.get(0).releaseDate
+            }
+        }
+
+        val date = releaseDateText.substring(8, 10) + "/" +
+                releaseDateText.substring(5, 7) + "/" +
+                releaseDateText.substring(0, 4)
+        releaseDate.text = getString(R.string.releaseDate, date)
     }
 
     private fun setVideoList(movieDetailResponse: MovieDetailResponse) {
@@ -96,6 +122,7 @@ class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
             }
 
             videos.visibility = VISIBLE
+            videosList.visibility = VISIBLE
         }
     }
 

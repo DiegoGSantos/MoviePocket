@@ -130,9 +130,8 @@
                     <ImageView
                         android:id="@+id/movieCover"
                         android:layout_width="105dp"
-                        android:layout_height="159dp"
+                        android:layout_height="175dp"
                         android:layout_gravity="top"
-                        android:layout_marginTop="@dimen/centi_margin"
                         app:layout_constraintTop_toBottomOf="@id/backButton"/>
 
                     <com.moviepocket.customViews.CustomTextView
@@ -140,7 +139,7 @@
                         android:layout_width="0dp"
                         app:layout_constraintWidth_default="spread"
                         android:layout_height="wrap_content"
-                        android:textSize="@dimen/hecto_text"
+                        android:textSize="@dimen/deca_text"
                         android:textColor="@color/white"
                         app:layout_constraintStart_toEndOf="@id/movieCover"
                         app:layout_constraintRight_toRightOf="parent"
@@ -210,7 +209,7 @@
                         app:layout_constraintStart_toStartOf="parent"
                         app:customTypeface="@string/bold"
                         android:text="@string/videos"
-                        android:visibility="invisible"
+                        android:visibility="gone"
                         android:paddingBottom="@dimen/centi_margin"
                         app:layout_constraintTop_toBottomOf="@id/moviePlot"/>
 
@@ -218,6 +217,7 @@
                         android:id="@+id/videosList"
                         android:layout_width="match_parent"
                         android:layout_height="126dp"
+                        android:visibility="gone"
                         app:layout_constraintTop_toBottomOf="@id/videos"/>
 
                 </android.support.constraint.ConstraintLayout>

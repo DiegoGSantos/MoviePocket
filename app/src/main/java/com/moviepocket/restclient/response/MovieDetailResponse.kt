@@ -2,6 +2,7 @@ package com.moviepocket.restclient.response
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
+import com.moviepocket.features.movieDetail.model.ReleaseDatesList
 import com.moviepocket.features.movieDetail.model.VideoList
 import com.moviepocket.features.moviesList.model.Genre
 
@@ -20,7 +21,8 @@ class MovieDetailResponse (@Expose val title: String = "",
                            @Expose @SerializedName("backdrop_path")
                            val backdropPath: String = "",
                            @Expose
-                           val videos: VideoList) {
+                           val videos: VideoList,
+                           @Expose @SerializedName("release_dates") val releaseDates: ReleaseDatesList) {
 
     fun getPosterUrl(): String = "http://image.tmdb.org/t/p/w342$posterPath"
 
