@@ -101,7 +101,6 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
 
     private fun updateUi(movies: List<Movie>, isThereMoreItemsToLoad: Boolean) {
         if (viewModel()?.getCurrentPage(listType) != 1) {
-            Log.d("MOVIES", listType + " add: " + movies.size)
             moviesAdapter.addMovies(movies, isThereMoreItemsToLoad)
         }
     }
