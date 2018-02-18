@@ -13,6 +13,7 @@ import com.moviepocket.features.moviesList.view.adapter.MoviesAdapter
 import com.moviepocket.R
 import kotlinx.android.synthetic.main.fragment_page.*
 import android.view.*
+import com.moviepocket.customViews.InfiniteScrollListener
 import com.moviepocket.customViews.OnReleaseScreenListener
 import com.moviepocket.interfaces.MoviesCLickListener
 import com.moviepocket.features.moviesList.viewmodel.MoviesViewModel
@@ -22,12 +23,20 @@ import com.moviepocket.util.extensions.launchActivity
 import com.moviepocket.util.extensions.loadUrl
 import kotlinx.android.synthetic.main.view_movie_preview.view.*
 import pl.allegro.fogger.ui.dialog.DialogWithBlurredBackgroundLauncher
+import android.support.v4.app.ActivityOptionsCompat
+import kotlinx.android.synthetic.main.item_movie.*
+import android.content.Intent
+
+
+
 
 /**
  * Created by diegosantos on 12/17/17.
  */
 class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
     var builder: Dialog? = null
+    lateinit var moviesAdapter: MoviesAdapter
+    lateinit var listType: String
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater?.inflate(R.layout.fragment_page, container, false)
@@ -36,9 +45,11 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        listType = arguments?.getString(ARG_PAGE) as String
+        moviesAdapter = MoviesAdapter(this@PageFragment)
         setListeners()
         loadObservers()
-        viewModel()?.listMovies()
+        viewModel()?.listMovies(listType)
     }
 
     private fun viewModel(): MoviesViewModel? {
@@ -47,32 +58,37 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
 
     private fun setListeners() {
         mainLayout.setOnRealeseListener(this)
+
+        moviesList.apply {
+            setHasFixedSize(true)
+
+            adapter = moviesAdapter
+            val gridLayoutManager = GridLayoutManager(this.context, 3)
+            layoutManager = gridLayoutManager
+            addOnScrollListener(InfiniteScrollListener({ viewModel()?.listMovies(listType) }, gridLayoutManager))
+
+            progress.visibility = GONE
+        }
     }
 
     private fun loadObservers() {
         viewModel()?.moviesLiveData?.observe(this, Observer<List<Movie>> { posts ->
             posts?.let {
-                updateUi(posts)
+                updateUi(posts, viewModel()?.isThereMoreItemsToLoad(listType) ?: true)
             }
         })
     }
 
-    private fun updateUi(movies: List<Movie>) {
-        moviesList.apply {
-            setHasFixedSize(true)
-            layoutManager = GridLayoutManager(this.context, 3)
-            adapter = MoviesAdapter(this.context, movies, this@PageFragment)
-
-            progress.visibility = GONE 
-        }
+    private fun updateUi(movies: List<Movie>, isThereMoreItemsToLoad: Boolean) {
+        moviesAdapter.addMovies(movies, isThereMoreItemsToLoad)
     }
 
     companion object {
         val ARG_PAGE = "ARG_PAGE"
 
-        fun newInstance(page: Int): PageFragment {
+        fun newInstance(listType: String): PageFragment {
             val args = Bundle()
-            args.putInt(ARG_PAGE, page)
+            args.putString(ARG_PAGE, listType)
             val fragment = PageFragment()
             fragment.setArguments(args)
             return fragment

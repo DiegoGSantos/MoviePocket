@@ -15,8 +15,8 @@ import retrofit2.converter.gson.GsonConverterFactory
  */
 interface Service {
 
-    @retrofit2.http.GET("movie/now_playing?api_key=08be2ddccd76e47b36c5eaa4797bd6a4&language=pt-BR&page=1/")
-    fun listMovies(): io.reactivex.Observable<MovieListResponse>
+    @retrofit2.http.GET("movie/{listType}?api_key=08be2ddccd76e47b36c5eaa4797bd6a4&language=pt-BR&&region=br")
+    fun listMovies(@retrofit2.http.Path("listType") listType: String, @retrofit2.http.Query("page") page: Int) : io.reactivex.Observable<MovieListResponse>
 
     @retrofit2.http.GET("movie/{movieId}?api_key=08be2ddccd76e47b36c5eaa4797bd6a4&language=pt-BR&append_to_response=release_dates,videos")
     fun getMovieDetail(@retrofit2.http.Path("movieId") movieId: String): io.reactivex.Observable<MovieDetailResponse>

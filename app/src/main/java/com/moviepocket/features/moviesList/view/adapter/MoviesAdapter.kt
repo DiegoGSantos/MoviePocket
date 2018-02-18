@@ -1,60 +1,55 @@
 package com.moviepocket.features.moviesList.view.adapter
-import android.content.Context
+import android.support.v4.util.SparseArrayCompat
 import android.support.v7.widget.RecyclerView
-import android.view.LayoutInflater
-import android.view.View
-import android.view.View.OnLongClickListener
 import android.view.ViewGroup
-import com.bumptech.glide.Glide
-import com.moviepocket.R
 import com.moviepocket.features.moviesList.model.Movie
-import kotlinx.android.synthetic.main.item_movie.view.*
 import com.moviepocket.interfaces.MoviesCLickListener
-import com.moviepocket.util.extensions.loadUrl
+import com.moviepocket.util.adapter.AdapterConstants
+import com.moviepocket.util.adapter.ViewType
+import com.moviepocket.util.adapter.ViewTypeDelegateAdapter
 
 /**
  * Created by diegosantos on 12/17/17.
  */
-class MoviesAdapter(val context: Context, val movies: List<Movie>, val listener: MoviesCLickListener) : RecyclerView.Adapter<MoviesAdapter.MovieViewHolder>(){
+class MoviesAdapter(listener: MoviesCLickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
-    private val mOnClickListener: View.OnClickListener
-    private val mOnLongClickListener: OnLongClickListener
+    private var movies: ArrayList<ViewType>
+    private var delegateAdapters = SparseArrayCompat<ViewTypeDelegateAdapter>()
+    private val loadingItem = object : ViewType {
+        override fun getViewType() = AdapterConstants.LOADING
+    }
 
     init {
-        mOnClickListener = View.OnClickListener { v ->
-            val movie = v.tag as Movie
-            listener.onMovieClick(movie)
+        delegateAdapters.put(AdapterConstants.LOADING, LoadingDelegateAdapter())
+        delegateAdapters.put(AdapterConstants.MOVIE, MoviesDelegateAdapter(listener))
+        movies = ArrayList()
+        movies.add(loadingItem)
+    }
+
+    fun addMovies(newMovies: List<Movie>, isThereMoreItemsToLoad: Boolean) {
+        // first remove loading and notify
+        val initPosition = movies.size - 1
+        movies.removeAt(initPosition)
+        notifyItemRemoved(initPosition)
+
+        // insert movies and the loading at the end of the list
+        movies.addAll(newMovies)
+
+        if (isThereMoreItemsToLoad) {
+            movies.add(loadingItem)
         }
 
-        mOnLongClickListener = OnLongClickListener { it ->
-            val movie = it.tag as Movie
-            listener.onMovieLongClick(movie)
-
-            true
-        }
+        notifyItemRangeChanged(initPosition, movies.size + 1 /* plus loading item */)
     }
     
     override fun getItemCount(): Int = movies?.size ?: 0
 
-    override fun onBindViewHolder(holder: MovieViewHolder, position: Int) {
-        val movie = movies.get(position)
-        holder.movieCover.loadUrl(movie.getPosterUrl())
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)=
+            delegateAdapters.get(viewType).onCreateViewHolder(parent)
 
-        with (holder.container) {
-            tag = movie
-            setOnClickListener(mOnClickListener)
-            setOnLongClickListener(mOnLongClickListener)
-        }
+    override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
+        delegateAdapters.get(getItemViewType(position)).onBindViewHolder(holder, movies[position])
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MoviesAdapter.MovieViewHolder {
-        val layoutInflater = LayoutInflater.from(parent.context)
-
-        return MovieViewHolder(layoutInflater.inflate(R.layout.item_movie, parent, false))
-    }
-
-    class MovieViewHolder(v: View) : RecyclerView.ViewHolder(v) {
-        val movieCover = v.mMovieImage
-        val container = v.container
-    }
+    override fun getItemViewType(position: Int) = movies[position].getViewType()
 }

@@ -5,6 +5,8 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import com.moviepocket.features.moviesList.view.PageFragment
 import android.support.v4.app.FragmentPagerAdapter
+import com.moviepocket.features.moviesList.data.MovieListTypes
+
 /**
  * Created by diegosantos on 12/17/17.
  */
@@ -19,13 +21,15 @@ class TabsPagerAdapter(fm: FragmentManager, private val context: Context) : Frag
     override fun getItem(position: Int): Fragment {
 
         if (position == 0){
-            return PageFragment.newInstance(position)
+            return PageFragment.newInstance(MovieListTypes.NOW_PLAYING.listType)
         }else if (position == 1){
-            return PageFragment.newInstance(position)
+            return PageFragment.newInstance(MovieListTypes.UPCOMING.listType)
         }else if (position == 2){
-            return PageFragment.newInstance(position)
+            return PageFragment.newInstance(MovieListTypes.POPULAR.listType)
+        }else if (position == 3){
+            return PageFragment.newInstance(MovieListTypes.TOP_RATED.listType)
         }
-        return PageFragment.newInstance(position + 1)
+        return PageFragment.newInstance("")
     }
 
     override fun getPageTitle(position: Int): CharSequence {

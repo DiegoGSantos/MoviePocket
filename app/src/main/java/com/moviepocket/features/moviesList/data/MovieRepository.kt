@@ -12,9 +12,9 @@ class MovieRepository
         private val movieDetailRemoveDataSource: MovieDetailRemoteDataSource = MovieDetailRemoteDataSource()
     ){
 
-    fun getMovies(callback:(error: Any?, movies: List<Movie>) -> Unit) {
-        movieRemoteDataSource.getMovies { error, movies ->
-            callback(error, movies)
+    fun getMovies(page: Int, listType: String, callback:(error: Any?, movies: List<Movie>, totalPages: Int) -> Unit) {
+        movieRemoteDataSource.getMovies(page, listType) { error, movies, totalPages ->
+            callback(error, movies, totalPages)
             saveMovies(movies)
         }
     }

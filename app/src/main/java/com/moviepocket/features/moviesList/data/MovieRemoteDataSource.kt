@@ -14,16 +14,16 @@ class MovieRemoteDataSource
         val service: Service = Service.Factory.create()
     ){
 
-    fun getMovies(callback:(error: Any?, result: List<Movie>) -> Unit) {
+    fun getMovies(page: Int, listType: String, callback:(error: Any?, result: List<Movie>, page: Int) -> Unit) {
         val compositeDisposable = CompositeDisposable()
 
         compositeDisposable.add(
-            service.listMovies()
+            service.listMovies(listType, page)
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribeOn(Schedulers.io())
                 .subscribe ({
                     result ->
-                    callback(null, result.results)
+                    callback(null, result.results, result.totalPages)
                 }, { error ->
                     error.printStackTrace()
                 })

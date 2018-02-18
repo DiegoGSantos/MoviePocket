@@ -7,6 +7,9 @@ import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
 import com.activeandroid.query.Delete
 import com.activeandroid.query.Select
+import com.moviepocket.util.adapter.AdapterConstants
+import com.moviepocket.util.adapter.ViewType
+
 /**
  * Created by diegosantos on 12/16/17.
  */
@@ -22,7 +25,9 @@ class Movie(@Expose @Column(name = "posterPath")
             val voteAverage: String = "",
             @Expose @Column(name = "movieId")
             @SerializedName("id")
-            val movieId: String = "") : Model(){
+            val movieId: String = "") : Model(), ViewType {
+
+    override fun getViewType() = AdapterConstants.MOVIE
 
     companion object {
         val ID = "movie_id_extra"
