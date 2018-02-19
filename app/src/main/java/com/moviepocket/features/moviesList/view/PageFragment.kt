@@ -135,8 +135,6 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
         view.mMovieCover.loadUrl(movie.getPosterUrl())
 
         builder = Dialog(context);
-        builder?.window?.setBackgroundDrawable(ColorDrawable(Color.TRANSPARENT));
-
         builder?.setContentView(view);
 
         val dialogWithBlurredBackgroundLauncher = DialogWithBlurredBackgroundLauncher(this.activity)

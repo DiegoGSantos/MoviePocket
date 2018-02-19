@@ -6,8 +6,7 @@
     android:layout_height="wrap_content"
     android:layout_gravity="center"
     android:clickable="true"
-    android:layout_marginRight="@dimen/centi_margin"
-    android:background="@color/transparentWhite">
+    android:layout_marginRight="@dimen/centi_margin">
 
     <ImageView
         android:id="@+id/mVideoImage"

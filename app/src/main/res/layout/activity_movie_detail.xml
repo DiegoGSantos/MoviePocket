@@ -106,7 +106,7 @@
                         <View
                             android:layout_width="match_parent"
                             android:layout_height="5dp"
-                            android:background="@drawable/rectangular_border_background" />
+                            android:background="@drawable/shadow_gradient_background" />
 
                     </LinearLayout>
 

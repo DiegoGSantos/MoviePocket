@@ -8,7 +8,6 @@ import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
-import android.view.View.VISIBLE
 import android.view.WindowManager
 import com.Videopocket.features.VideoDetail.view.adapter.VideosAdapter
 import com.bumptech.glide.Glide
@@ -22,7 +21,7 @@ import com.moviepocket.restclient.response.MovieDetailResponse
 import com.moviepocket.util.extensions.loadUrl
 import android.content.Intent
 import android.net.Uri
-import android.view.View.INVISIBLE
+import android.view.View.*
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_movie_detail.*
 
@@ -78,6 +77,8 @@ class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
         setGenres(movieDetailResponse)
 
         setVideoList(movieDetailResponse)
+
+        progress.visibility = GONE
     }
 
     private fun setRating(movieDetailResponse: MovieDetailResponse) {
