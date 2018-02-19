@@ -13,4 +13,5 @@
     <string name="releaseDate">Estréia: %1$s</string>
     <string name="plot">Sinopse</string>
     <string name="videos">Videos</string>
+    <string name="movie_transition">movie_transition</string>
 </resources>

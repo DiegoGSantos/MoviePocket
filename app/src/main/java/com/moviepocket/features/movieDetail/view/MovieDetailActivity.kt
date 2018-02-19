@@ -24,6 +24,11 @@ import android.net.Uri
 import android.view.View.*
 import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_movie_detail.*
+import com.bumptech.glide.load.resource.drawable.GlideDrawable
+import com.bumptech.glide.request.RequestListener
+import com.bumptech.glide.load.resource.bitmap.TransformationUtils.centerCrop
+
+
 
 
 class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
@@ -33,6 +38,9 @@ class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        supportPostponeEnterTransition()
+
         setContentView(R.layout.activity_movie_detail)
         setStatusBar()
 
@@ -153,7 +161,8 @@ class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
 
     private fun setMoviePosterBackground(movie: MovieDetailResponse) {
         movieBg.loadUrl(movie.getPosterUrl())
-        movieCover.loadUrl(movie.getPosterUrl())
+
+        setMovieCover(movie.getPosterUrl())
 
         Glide.with(this)
                 .load(movie.getBackdropPathUrl())
@@ -166,5 +175,24 @@ class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
                 .windowBackground(windowBackground)
                 .blurAlgorithm(SupportRenderScriptBlur(this))
                 .blurRadius(5f)
+    }
+
+    private fun setMovieCover(posterUrl: String) {
+        Glide.with(this)
+                .load(posterUrl)
+                .centerCrop()
+                .dontAnimate()
+                .listener(object : RequestListener<String, GlideDrawable> {
+                    override fun onException(e: Exception, model: String, target: com.bumptech.glide.request.target.Target<GlideDrawable>, isFirstResource: Boolean): Boolean {
+                        supportStartPostponedEnterTransition()
+                        return false
+                    }
+
+                    override fun onResourceReady(resource: GlideDrawable, model: String, target: com.bumptech.glide.request.target.Target<GlideDrawable>, isFromMemoryCache: Boolean, isFirstResource: Boolean): Boolean {
+                        supportStartPostponedEnterTransition()
+                        return false
+                    }
+                })
+                .into(movieCover)
     }
 }

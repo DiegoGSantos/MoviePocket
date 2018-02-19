@@ -10,6 +10,12 @@ import com.moviepocket.util.adapter.ViewTypeDelegateAdapter
 import com.moviepocket.util.extensions.inflate
 import com.moviepocket.util.extensions.loadUrl
 import kotlinx.android.synthetic.main.item_movie.view.*
+import android.support.v4.content.ContextCompat.startActivity
+import android.support.v4.view.ViewCompat
+import android.support.v4.app.ActivityOptionsCompat
+import android.content.Intent
+import com.moviepocket.features.movieDetail.view.MovieDetailActivity
+
 
 /**
  * Created by diegosantos on 2/18/18.
@@ -35,7 +41,7 @@ class MoviesDelegateAdapter(val listener: MoviesCLickListener) : ViewTypeDelegat
             movieCover.loadUrl(movie.getPosterUrl())
 
             super.itemView.setOnLongClickListener{ listener.onMovieLongClick(movie); true}
-            super.itemView.setOnClickListener { listener.onMovieClick(movie)}
+            super.itemView.setOnClickListener { listener.onMovieClick(movie, itemView.mMovieImage)}
         }
     }
 }

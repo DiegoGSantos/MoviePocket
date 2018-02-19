@@ -133,6 +133,7 @@
                         android:layout_width="105dp"
                         android:layout_height="175dp"
                         android:layout_gravity="top"
+                        android:transitionName="@string/movie_transition"
                         app:layout_constraintTop_toBottomOf="@id/backButton"/>
 
                     <com.moviepocket.customViews.CustomTextView

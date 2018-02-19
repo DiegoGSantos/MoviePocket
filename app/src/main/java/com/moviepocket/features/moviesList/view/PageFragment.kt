@@ -5,12 +5,14 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.AppCompatImageView
 import android.support.v7.widget.GridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.ViewGroup
 import android.view.Window
+import android.widget.ImageView
 import com.moviepocket.R
 import com.moviepocket.customViews.InfiniteScrollListener
 import com.moviepocket.customViews.OnReleaseScreenListener
@@ -25,6 +27,13 @@ import com.moviepocket.util.extensions.loadUrl
 import com.moviepocket.util.extensions.reObserve
 import kotlinx.android.synthetic.main.fragment_page.*
 import kotlinx.android.synthetic.main.view_movie_preview.view.*
+import android.support.v4.app.ActivityCompat.startActivityForResult
+import android.support.v4.view.ViewCompat.getTransitionName
+import android.app.ActivityOptions
+import android.os.Build
+import android.content.Intent
+import android.support.v4.view.ViewCompat
+
 
 /**
  * Created by diegosantos on 12/17/17.
@@ -113,9 +122,15 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
         }
     }
 
-    override fun onMovieClick(movie: Movie) {
-        this.activity?.launchActivity<MovieDetailActivity>{
-            putExtra(Movie.ID, movie.movieId)
+    override fun onMovieClick(movie: Movie, imageView: ImageView) {
+        val intent = Intent(this.activity, MovieDetailActivity::class.java)
+        intent.putExtra(Movie.ID, movie.movieId)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            startActivityForResult(intent, 101, ActivityOptions.makeSceneTransitionAnimation(
+                    this.activity, imageView, ViewCompat.getTransitionName(imageView)).toBundle())
+        } else {
+            startActivityForResult(intent, 101)
         }
     }
 
