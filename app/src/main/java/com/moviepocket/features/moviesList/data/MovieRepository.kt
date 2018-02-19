@@ -3,6 +3,8 @@ package com.moviepocket.features.moviesList.data
 import com.moviepocket.features.movieDetail.data.MovieDetailRemoteDataSource
 import com.moviepocket.restclient.response.MovieDetailResponse
 import com.moviepocket.features.moviesList.model.Movie
+import org.jetbrains.anko.doAsync
+
 /**
  * Created by diegosantos on 2/3/18.
  */
@@ -27,10 +29,12 @@ class MovieRepository
 
     private fun saveMovies(movies: List<Movie>) {
 
-        Movie.deleteAll()
+        doAsync {
+            Movie.deleteAll()
 
-        for (movie in movies) {
-            movie.save()
+            for (movie in movies) {
+                movie.save()
+            }
         }
     }
 }
