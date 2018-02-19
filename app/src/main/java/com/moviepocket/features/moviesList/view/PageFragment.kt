@@ -1,19 +1,16 @@
 package com.moviepocket.features.moviesList.view
 
 import android.app.Dialog
-import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
 import android.view.ViewGroup
+import android.view.Window
 import com.moviepocket.R
 import com.moviepocket.customViews.InfiniteScrollListener
 import com.moviepocket.customViews.OnReleaseScreenListener
@@ -28,7 +25,6 @@ import com.moviepocket.util.extensions.loadUrl
 import com.moviepocket.util.extensions.reObserve
 import kotlinx.android.synthetic.main.fragment_page.*
 import kotlinx.android.synthetic.main.view_movie_preview.view.*
-import pl.allegro.fogger.ui.dialog.DialogWithBlurredBackgroundLauncher
 
 /**
  * Created by diegosantos on 12/17/17.
@@ -135,10 +131,11 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
         view.mMovieCover.loadUrl(movie.getPosterUrl())
 
         builder = Dialog(context);
+        builder?.requestWindowFeature(Window.FEATURE_NO_TITLE);
         builder?.setContentView(view);
+        builder?.show()
 
-        val dialogWithBlurredBackgroundLauncher = DialogWithBlurredBackgroundLauncher(this.activity)
-        dialogWithBlurredBackgroundLauncher.showDialog(builder)
+        (this.activity as MainActivity).showBlurView()
     }
 
     fun hidePreview() {
@@ -148,5 +145,6 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
 
     override fun onReleaseScreenListener() {
         hidePreview()
+        (this.activity as MainActivity).hideBlurView()
     }
 }
