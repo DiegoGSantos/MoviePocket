@@ -27,8 +27,7 @@ import kotlinx.android.synthetic.main.activity_movie_detail.*
 import com.bumptech.glide.load.resource.drawable.GlideDrawable
 import com.bumptech.glide.request.RequestListener
 import com.bumptech.glide.load.resource.bitmap.TransformationUtils.centerCrop
-
-
+import com.moviepocket.customViews.RoundedCornersTransformation
 
 
 class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
@@ -48,8 +47,11 @@ class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
 
         setListeners()
 
-        intent.extras.getString(Movie.ID).let {
-            viewModel()?.getMovieDetail(it)
+        intent.extras.getParcelable<Movie>(Movie.MOVIE).let {
+            setMoviePosterBackground(it)
+            movieTitle.text = it.title
+            setRating(it)
+            viewModel()?.getMovieDetail(it.movieId)
         }
     }
 
@@ -72,11 +74,7 @@ class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
     }
 
     private fun updateUi(movieDetailResponse: MovieDetailResponse) {
-        setMoviePosterBackground(movieDetailResponse)
-
-        setRating(movieDetailResponse)
-
-        movieTitle.text = movieDetailResponse.title
+        setTopCover(movieDetailResponse)
 
         setPlot(movieDetailResponse)
 
@@ -89,10 +87,10 @@ class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
         progress.visibility = GONE
     }
 
-    private fun setRating(movieDetailResponse: MovieDetailResponse) {
-        if (movieDetailResponse.voteAverage.toFloat() != 0f) {
-            setStarsStyle(movieDetailResponse)
-            rating.text = getString(R.string.movieRating, "%.1f".format(movieDetailResponse.voteAverage.toFloat()))
+    private fun setRating(movie: Movie) {
+        if (movie.voteAverage.toFloat() != 0f) {
+            setStarsStyle(movie)
+            rating.text = getString(R.string.movieRating, "%.1f".format(movie.voteAverage.toFloat()))
         } else {
             rating.visibility = INVISIBLE
         }
@@ -145,8 +143,8 @@ class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
         movieGenres.isSelected = true
     }
 
-    private fun setStarsStyle(movieDetail: MovieDetailResponse) {
-        ratingBar.rating = movieDetail.voteAverage.toFloat() / 2
+    private fun setStarsStyle(movie: Movie) {
+        ratingBar.rating = movie.voteAverage.toFloat() / 2
         val stars1 = ratingBar.progressDrawable as LayerDrawable
         stars1.getDrawable(2).setColorFilter(resources.getColor(R.color.yellow), PorterDuff.Mode.SRC_ATOP)
         stars1.getDrawable(0).setColorFilter(resources.getColor(R.color.yellow_dark), PorterDuff.Mode.SRC_ATOP)
@@ -159,15 +157,10 @@ class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
         }
     }
 
-    private fun setMoviePosterBackground(movie: MovieDetailResponse) {
+    private fun setMoviePosterBackground(movie: Movie) {
         movieBg.loadUrl(movie.getPosterUrl())
 
         setMovieCover(movie.getPosterUrl())
-
-        Glide.with(this)
-                .load(movie.getBackdropPathUrl())
-                .centerCrop()
-                .into(moviePoster)
 
         val windowBackground = window.decorView.background
 
@@ -177,10 +170,16 @@ class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
                 .blurRadius(5f)
     }
 
+    private fun setTopCover(movie: MovieDetailResponse) {
+        Glide.with(this)
+                .load(movie.getBackdropPathUrl())
+                .centerCrop()
+                .into(moviePoster)
+    }
+
     private fun setMovieCover(posterUrl: String) {
         Glide.with(this)
                 .load(posterUrl)
-                .centerCrop()
                 .dontAnimate()
                 .listener(object : RequestListener<String, GlideDrawable> {
                     override fun onException(e: Exception, model: String, target: com.bumptech.glide.request.target.Target<GlideDrawable>, isFirstResource: Boolean): Boolean {
@@ -193,6 +192,7 @@ class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
                         return false
                     }
                 })
+                .bitmapTransform(RoundedCornersTransformation( this,10, 2))
                 .into(movieCover)
     }
 }

@@ -124,7 +124,7 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
 
     override fun onMovieClick(movie: Movie, imageView: ImageView) {
         val intent = Intent(this.activity, MovieDetailActivity::class.java)
-        intent.putExtra(Movie.ID, movie.movieId)
+        intent.putExtra(Movie.MOVIE, movie)
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             startActivityForResult(intent, 101, ActivityOptions.makeSceneTransitionAnimation(

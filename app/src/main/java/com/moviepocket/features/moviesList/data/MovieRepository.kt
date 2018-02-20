@@ -10,8 +10,9 @@ import org.jetbrains.anko.doAsync
  */
 class MovieRepository
     constructor(
-        private val movieRemoteDataSource: MovieRemoteDataSource = MovieRemoteDataSource(),
-        private val movieDetailRemoveDataSource: MovieDetailRemoteDataSource = MovieDetailRemoteDataSource()
+            private val movieRemoteDataSource: MovieRemoteDataSource = MovieRemoteDataSource(),
+            private val movieLocalDataSource: MovieLocalDataSource = MovieLocalDataSource(),
+            private val movieDetailRemoveDataSource: MovieDetailRemoteDataSource = MovieDetailRemoteDataSource()
     ){
 
     fun getMovies(page: Int, listType: String, callback:(error: Any?, movies: List<Movie>, totalPages: Int) -> Unit) {
@@ -19,6 +20,11 @@ class MovieRepository
             callback(error, movies, totalPages)
             saveMovies(movies)
         }
+
+//        movieLocalDataSource.getMovies(page, listType) { error, movies, totalPages ->
+//            callback(error, movies, totalPages)
+//            saveMovies(movies)
+//        }
     }
 
     fun getMovieDetail(movieId: String, callback: (error: Any?, movieDetail: MovieDetailResponse) -> Unit) {

@@ -14,6 +14,8 @@ import android.support.v4.content.ContextCompat.startActivity
 import android.support.v4.view.ViewCompat
 import android.support.v4.app.ActivityOptionsCompat
 import android.content.Intent
+import com.bumptech.glide.Glide
+import com.moviepocket.customViews.RoundedCornersTransformation
 import com.moviepocket.features.movieDetail.view.MovieDetailActivity
 
 
@@ -38,7 +40,13 @@ class MoviesDelegateAdapter(val listener: MoviesCLickListener) : ViewTypeDelegat
 
         fun bind(movie: Movie) {
 
-            movieCover.loadUrl(movie.getPosterUrl())
+            Glide.with(itemView.context)
+                    .load(movie.getPosterUrl())
+                    .placeholder(R.drawable.poster_placeholder)
+                    .fallback(R.drawable.poster_placeholder)
+                    .error(R.drawable.poster_placeholder)
+                    .bitmapTransform(RoundedCornersTransformation(itemView.context,10, 2))
+                    .into(movieCover)
 
             super.itemView.setOnLongClickListener{ listener.onMovieLongClick(movie); true}
             super.itemView.setOnClickListener { listener.onMovieClick(movie, itemView.mMovieImage)}

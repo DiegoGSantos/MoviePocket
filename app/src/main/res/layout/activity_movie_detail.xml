@@ -12,12 +12,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ProgressBar
-            android:id="@+id/progress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
-
         <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent">
@@ -126,13 +120,14 @@
                         android:layout_height="wrap_content"
                         android:background="?android:attr/selectableItemBackground"
                         android:tint="@color/white"
+                        android:paddingBottom="@dimen/centi_margin"
                         android:src="@drawable/back"/>
 
                     <ImageView
                         android:id="@+id/movieCover"
-                        android:layout_width="105dp"
-                        android:layout_height="175dp"
-                        android:layout_gravity="top"
+                        android:layout_width="100dp"
+                        android:layout_height="wrap_content"
+                        android:adjustViewBounds="true"
                         android:transitionName="@string/movie_transition"
                         app:layout_constraintTop_toBottomOf="@id/backButton"/>
 
@@ -147,7 +142,6 @@
                         app:layout_constraintRight_toRightOf="parent"
                         app:layout_constraintTop_toTopOf="@id/movieCover"
                         app:customTypeface="@string/bold"
-                        android:paddingTop="@dimen/mili_margin"
                         android:layout_marginLeft="@dimen/hecto_margin" />
 
                     <com.moviepocket.customViews.CustomTextView
@@ -228,6 +222,12 @@
             </FrameLayout>
 
         </ScrollView>
+
+        <ProgressBar
+            android:id="@+id/progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
 
     </FrameLayout>
 
