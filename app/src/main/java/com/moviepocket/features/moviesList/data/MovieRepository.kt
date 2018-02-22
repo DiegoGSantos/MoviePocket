@@ -1,8 +1,15 @@
 package com.moviepocket.features.moviesList.data
 
+import android.content.Context
+import com.moviepocket.App
 import com.moviepocket.features.movieDetail.data.MovieDetailRemoteDataSource
 import com.moviepocket.restclient.response.MovieDetailResponse
 import com.moviepocket.features.moviesList.model.Movie
+import com.moviepocket.manager.NetManager
+import io.reactivex.Observable
+import io.reactivex.ObservableOnSubscribe
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import org.jetbrains.anko.doAsync
 
 /**
@@ -15,16 +22,21 @@ class MovieRepository
             private val movieDetailRemoveDataSource: MovieDetailRemoteDataSource = MovieDetailRemoteDataSource()
     ){
 
-    fun getMovies(page: Int, listType: String, callback:(error: Any?, movies: List<Movie>, totalPages: Int) -> Unit) {
-        movieRemoteDataSource.getMovies(page, listType) { error, movies, totalPages ->
+    fun getMovies(context: Context, page: Int, listType: String, callback:(error: Any?, movies: List<Movie>, totalPages: Int) -> Unit) {
+        if (NetManager(context).isConnectedToInternet ?: false) {
+            movieRemoteDataSource.getMovies(page, listType) { error, movies, totalPages ->
             callback(error, movies, totalPages)
-            saveMovies(movies)
+            saveMovies(movies, listType)
         }
+        } else {
+            movieLocalDataSource.getMovies(page, listType) { error, movies, totalPages ->
+                callback(error, movies, totalPages)
+            }
+        }
+    }
 
-//        movieLocalDataSource.getMovies(page, listType) { error, movies, totalPages ->
-//            callback(error, movies, totalPages)
-//            saveMovies(movies)
-//        }
+    fun getLocalMovies(listType: String): List<Movie> {
+        return Movie.getAllFromType(listType)
     }
 
     fun getMovieDetail(movieId: String, callback: (error: Any?, movieDetail: MovieDetailResponse) -> Unit) {
@@ -33,12 +45,13 @@ class MovieRepository
        }
     }
 
-    private fun saveMovies(movies: List<Movie>) {
+    fun saveMovies(movies: List<Movie>, listType: String) {
 
         doAsync {
-            Movie.deleteAll()
+            Movie.deleteAllFromType(listType)
 
             for (movie in movies) {
+                movie.listType = listType
                 movie.save()
             }
         }

@@ -29,9 +29,12 @@ class Movie(@Expose @Column(name = "posterPath")
             val voteAverage: String = "",
             @Expose @Column(name = "movieId")
             @SerializedName("id")
-            val movieId: String = "") : Model(), ViewType, Parcelable {
+            val movieId: String = "",
+            @Column(name = "listType")
+            var listType: String = "") : Model(), ViewType, Parcelable {
 
     constructor(parcel: Parcel) : this(
+            parcel.readString(),
             parcel.readString(),
             parcel.readString(),
             parcel.readString(),
@@ -47,6 +50,7 @@ class Movie(@Expose @Column(name = "posterPath")
         parcel.writeString(title)
         parcel.writeString(voteAverage)
         parcel.writeString(movieId)
+        parcel.writeString(listType)
     }
 
     override fun describeContents(): Int {
@@ -64,6 +68,13 @@ class Movie(@Expose @Column(name = "posterPath")
 
         val MOVIE = "movie_extra"
 
+        fun getAllFromType(listType: String): List<Movie> {
+            return Select()
+                    .from(Movie::class.java)
+                    .where("listType='"+listType+"'")
+                    .execute()
+        }
+
         fun getAll(): List<Movie> {
             return Select()
                     .from(Movie::class.java)
@@ -72,6 +83,10 @@ class Movie(@Expose @Column(name = "posterPath")
 
         fun deleteAll(): List<Movie>? {
             return Delete().from(Movie::class.java).execute()
+        }
+
+        fun deleteAllFromType(listType: String): List<Movie>? {
+            return Delete().from(Movie::class.java).where("listType='"+listType+"'").execute()
         }
     }
 }

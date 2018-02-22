@@ -2,6 +2,7 @@ package com.moviepocket.features.moviesList.viewmodel
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
+import android.content.Context
 import com.moviepocket.features.moviesList.data.MovieListTypes
 import com.moviepocket.features.moviesList.data.MovieRepository
 import com.moviepocket.features.moviesList.model.Movie
@@ -30,7 +31,7 @@ class MoviesViewModel
         var isThereMoreTopRatedToLoad: Boolean = true
     ): ViewModel() {
 
-    fun listMovies(listType: String) {
+    fun listMovies(context: Context, listType: String) {
 
         if (listType.equals(MovieListTypes.NOW_PLAYING.listType)) {
             currentPage = currentInTheaterPage
@@ -47,7 +48,7 @@ class MoviesViewModel
         }
 
         if (isThereMoreItemsToLoad) {
-            movieRepository.getMovies(currentPage, listType) { error, movies, totalPages ->
+            movieRepository.getMovies(context, currentPage, listType) { error, movies, totalPages ->
                 totalOfPages = totalPages
 
                 if (listType.equals(MovieListTypes.NOW_PLAYING.listType)) {

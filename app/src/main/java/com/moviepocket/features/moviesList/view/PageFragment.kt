@@ -62,7 +62,9 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
         resetInfiniteScroll()
         setListeners()
 
-        viewModel()?.listMovies(listType)
+        this.context?.let {
+            viewModel()?.listMovies(it, listType)
+        }
     }
 
     private fun resetInfiniteScroll() {
@@ -94,7 +96,9 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
             adapter = moviesAdapter
             val gridLayoutManager = GridLayoutManager(this.context, 3)
             layoutManager = gridLayoutManager
-            addOnScrollListener(InfiniteScrollListener({ viewModel()?.listMovies(listType) }, gridLayoutManager))
+            addOnScrollListener(InfiniteScrollListener({ this.context?.let {
+                viewModel()?.listMovies(it, listType)
+            } }, gridLayoutManager))
 
             progress.visibility = GONE
         }
