@@ -9,11 +9,8 @@ import com.moviepocket.restclient.response.MovieDetailResponse
 /**
  * Created by diego.santos on 01/02/18.
  */
-class MovieDetailViewModel
-    constructor(
-            var movieDetailLiveData: MutableLiveData<MovieDetailResponse> = MutableLiveData(),
-            val movieRepository: MovieRepository = MovieRepository()
-    ): ViewModel() {
+class MovieDetailViewModel(val movieRepository: MovieRepository): ViewModel() {
+    var movieDetailLiveData: MutableLiveData<MovieDetailResponse> = MutableLiveData()
 
     fun getMovieDetail(movieId: String) {
 

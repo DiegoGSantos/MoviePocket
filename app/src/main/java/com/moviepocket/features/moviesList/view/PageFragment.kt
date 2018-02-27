@@ -1,11 +1,14 @@
 package com.moviepocket.features.moviesList.view
 
+import android.app.ActivityOptions
 import android.app.Dialog
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import android.support.v7.widget.AppCompatImageView
+import android.support.v4.view.ViewCompat
 import android.support.v7.widget.GridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -16,23 +19,17 @@ import android.widget.ImageView
 import com.moviepocket.R
 import com.moviepocket.customViews.InfiniteScrollListener
 import com.moviepocket.customViews.OnReleaseScreenListener
+import com.moviepocket.di.Injector
 import com.moviepocket.features.movieDetail.view.MovieDetailActivity
 import com.moviepocket.features.moviesList.data.MovieListTypes
 import com.moviepocket.features.moviesList.model.Movie
 import com.moviepocket.features.moviesList.view.adapter.MoviesAdapter
 import com.moviepocket.features.moviesList.viewmodel.MoviesViewModel
 import com.moviepocket.interfaces.MoviesCLickListener
-import com.moviepocket.util.extensions.launchActivity
 import com.moviepocket.util.extensions.loadUrl
 import com.moviepocket.util.extensions.reObserve
 import kotlinx.android.synthetic.main.fragment_page.*
 import kotlinx.android.synthetic.main.view_movie_preview.view.*
-import android.support.v4.app.ActivityCompat.startActivityForResult
-import android.support.v4.view.ViewCompat.getTransitionName
-import android.app.ActivityOptions
-import android.os.Build
-import android.content.Intent
-import android.support.v4.view.ViewCompat
 
 
 /**
@@ -62,9 +59,7 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
         resetInfiniteScroll()
         setListeners()
 
-        this.context?.let {
-            viewModel()?.listMovies(it, listType)
-        }
+        viewModel()?.listMovies(listType)
     }
 
     private fun resetInfiniteScroll() {
@@ -84,7 +79,11 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
     }
 
     private fun viewModel(): MoviesViewModel? {
-        return ViewModelProviders.of(this).get(MoviesViewModel::class.java)
+        this.context?.let {
+            return ViewModelProviders.of(this, Injector.provideMoviesViewModelFactory(it)).get(MoviesViewModel::class.java)
+        }
+
+        return null
     }
 
     private fun setListeners() {
@@ -96,9 +95,9 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
             adapter = moviesAdapter
             val gridLayoutManager = GridLayoutManager(this.context, 3)
             layoutManager = gridLayoutManager
-            addOnScrollListener(InfiniteScrollListener({ this.context?.let {
-                viewModel()?.listMovies(it, listType)
-            } }, gridLayoutManager))
+            addOnScrollListener(InfiniteScrollListener({
+                viewModel()?.listMovies(listType)
+            }, gridLayoutManager))
 
             progress.visibility = GONE
         }

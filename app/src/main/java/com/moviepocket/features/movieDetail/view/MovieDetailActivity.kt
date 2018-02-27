@@ -2,32 +2,32 @@ package com.moviepocket.features.movieDetail.view
 
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Intent
 import android.graphics.PorterDuff
 import android.graphics.drawable.LayerDrawable
+import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.view.View.*
 import android.view.WindowManager
+import android.widget.TextView
 import com.Videopocket.features.VideoDetail.view.adapter.VideosAdapter
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.resource.drawable.GlideDrawable
+import com.bumptech.glide.request.RequestListener
 import com.eightbitlab.supportrenderscriptblur.SupportRenderScriptBlur
 import com.moviepocket.R
+import com.moviepocket.customViews.RoundedCornersTransformation
+import com.moviepocket.di.Injector
 import com.moviepocket.features.movieDetail.model.Video
 import com.moviepocket.features.movieDetail.viewmodel.MovieDetailViewModel
 import com.moviepocket.features.moviesList.model.Movie
 import com.moviepocket.interfaces.VideoCLickListener
 import com.moviepocket.restclient.response.MovieDetailResponse
 import com.moviepocket.util.extensions.loadUrl
-import android.content.Intent
-import android.net.Uri
-import android.view.View.*
-import android.widget.TextView
 import kotlinx.android.synthetic.main.activity_movie_detail.*
-import com.bumptech.glide.load.resource.drawable.GlideDrawable
-import com.bumptech.glide.request.RequestListener
-import com.bumptech.glide.load.resource.bitmap.TransformationUtils.centerCrop
-import com.moviepocket.customViews.RoundedCornersTransformation
 
 
 class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
@@ -56,7 +56,7 @@ class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
     }
 
     private fun viewModel(): MovieDetailViewModel? {
-        return ViewModelProviders.of(this).get(MovieDetailViewModel::class.java)
+        return ViewModelProviders.of(this, Injector.provideMovieDetailViewModelFactory(this)).get(MovieDetailViewModel::class.java)
     }
 
     private fun loadObservers() {
@@ -99,7 +99,7 @@ class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
     private fun setPlot(movieDetailResponse: MovieDetailResponse) {
         if (!movieDetailResponse.overview.isEmpty()) {
             (moviePlot as TextView).text = movieDetailResponse.overview
-//            moviePlot.text = movieDetailResponse.overview
+
             plot.visibility = VISIBLE
             moviePlot.visibility = VISIBLE
         }

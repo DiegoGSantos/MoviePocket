@@ -11,27 +11,25 @@ import com.moviepocket.restclient.Service
 /**
  * Created by diego.santos on 01/02/18.
  */
-class MoviesViewModel
-    constructor(
-        var moviesLiveData: MutableLiveData<List<Movie>> = MutableLiveData(),
-        val movieRepository: MovieRepository = MovieRepository(),
-        var totalOfPages: Int = 0,
+class MoviesViewModel(val movieRepository: MovieRepository): ViewModel() {
 
-        var isThereMoreItemsToLoad: Boolean = true,
-        var currentPage: Int = 1,
+    var moviesLiveData: MutableLiveData<List<Movie>> = MutableLiveData()
+    var totalOfPages: Int = 0
 
-        var currentInTheaterPage: Int = 1,
-        var currentUpcomingPage: Int = 1,
-        var currentPopularPage: Int = 1,
-        var currentTopRatedPage: Int = 1,
+    var isThereMoreItemsToLoad: Boolean = true
+    var currentPage: Int = 1
 
-        var isThereMoreInTheaterToLoad: Boolean = true,
-        var isThereMoreUpcomingToLoad: Boolean = true,
-        var isThereMorePopularToLoad: Boolean = true,
-        var isThereMoreTopRatedToLoad: Boolean = true
-    ): ViewModel() {
+    var currentInTheaterPage: Int = 1
+    var currentUpcomingPage: Int = 1
+    var currentPopularPage: Int = 1
+    var currentTopRatedPage: Int = 1
 
-    fun listMovies(context: Context, listType: String) {
+    var isThereMoreInTheaterToLoad: Boolean = true
+    var isThereMoreUpcomingToLoad: Boolean = true
+    var isThereMorePopularToLoad: Boolean = true
+    var isThereMoreTopRatedToLoad: Boolean = true
+
+    fun listMovies(listType: String) {
 
         if (listType.equals(MovieListTypes.NOW_PLAYING.listType)) {
             currentPage = currentInTheaterPage
@@ -48,7 +46,7 @@ class MoviesViewModel
         }
 
         if (isThereMoreItemsToLoad) {
-            movieRepository.getMovies(context, currentPage, listType) { error, movies, totalPages ->
+            movieRepository.getMovies(currentPage, listType) { error, movies, totalPages ->
                 totalOfPages = totalPages
 
                 if (listType.equals(MovieListTypes.NOW_PLAYING.listType)) {
