@@ -15,6 +15,7 @@ import android.support.v4.view.ViewCompat
 import android.support.v4.app.ActivityOptionsCompat
 import android.content.Intent
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.moviepocket.customViews.RoundedCornersTransformation
 import com.moviepocket.features.movieDetail.view.MovieDetailActivity
 
@@ -45,6 +46,7 @@ class MoviesDelegateAdapter(val listener: MoviesCLickListener) : ViewTypeDelegat
                     .placeholder(R.drawable.poster_placeholder)
                     .fallback(R.drawable.poster_placeholder)
                     .error(R.drawable.poster_placeholder)
+                    .diskCacheStrategy(DiskCacheStrategy.ALL)
                     .bitmapTransform(RoundedCornersTransformation(itemView.context,10, 2))
                     .into(movieCover)
 
