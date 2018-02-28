@@ -3,6 +3,8 @@ package com.moviepocket.features.movieDetail.view
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
+import android.database.DatabaseUtils
+import android.databinding.DataBindingUtil
 import android.graphics.PorterDuff
 import android.graphics.drawable.LayerDrawable
 import android.net.Uri
@@ -20,6 +22,7 @@ import com.bumptech.glide.request.RequestListener
 import com.eightbitlab.supportrenderscriptblur.SupportRenderScriptBlur
 import com.moviepocket.R
 import com.moviepocket.customViews.RoundedCornersTransformation
+import com.moviepocket.databinding.ActivityMovieDetailBinding
 import com.moviepocket.di.Injector
 import com.moviepocket.features.movieDetail.model.Video
 import com.moviepocket.features.movieDetail.viewmodel.MovieDetailViewModel
@@ -31,6 +34,9 @@ import kotlinx.android.synthetic.main.activity_movie_detail.*
 
 
 class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
+
+    private lateinit var binding: ActivityMovieDetailBinding
+
     override fun onVideoClick(video: Video) {
         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(video.getVideoUrl())))
     }
@@ -40,17 +46,20 @@ class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
 
         supportPostponeEnterTransition()
 
-        setContentView(R.layout.activity_movie_detail)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_movie_detail)
+        binding.viewModel = viewModel()
+
         setStatusBar()
 
         loadObservers()
 
         setListeners()
 
+        setStarsStyle()
+
         intent.extras.getParcelable<Movie>(Movie.MOVIE).let {
             setMoviePosterBackground(it)
             movieTitle.text = it.title
-            setRating(it)
             viewModel()?.getMovieDetail(it.movieId)
         }
     }
@@ -76,48 +85,9 @@ class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
     private fun updateUi(movieDetailResponse: MovieDetailResponse) {
         setTopCover(movieDetailResponse)
 
-        setPlot(movieDetailResponse)
-
-        setReleaseDate(movieDetailResponse)
-
-        setGenres(movieDetailResponse)
+        movieGenres.isSelected = true
 
         setVideoList(movieDetailResponse)
-
-        progress.visibility = GONE
-    }
-
-    private fun setRating(movie: Movie) {
-        if (movie.voteAverage.toFloat() != 0f) {
-            setStarsStyle(movie)
-            rating.text = getString(R.string.movieRating, "%.1f".format(movie.voteAverage.toFloat()))
-        } else {
-            rating.visibility = INVISIBLE
-        }
-    }
-
-    private fun setPlot(movieDetailResponse: MovieDetailResponse) {
-        if (!movieDetailResponse.overview.isEmpty()) {
-            (moviePlot as TextView).text = movieDetailResponse.overview
-
-            plot.visibility = VISIBLE
-            moviePlot.visibility = VISIBLE
-        }
-    }
-
-    private fun setReleaseDate(movieDetailResponse: MovieDetailResponse) {
-        var releaseDateText = movieDetailResponse.releaseDate
-
-        movieDetailResponse.releaseDates.results.forEach {
-            if (it.country.equals("BR")) {
-                releaseDateText = it.releaseDates.get(0).releaseDate
-            }
-        }
-
-        val date = releaseDateText.substring(8, 10) + "/" +
-                releaseDateText.substring(5, 7) + "/" +
-                releaseDateText.substring(0, 4)
-        releaseDate.text = getString(R.string.releaseDate, date)
     }
 
     private fun setVideoList(movieDetailResponse: MovieDetailResponse) {
@@ -133,18 +103,7 @@ class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
         }
     }
 
-    private fun setGenres(movieDetailResponse: MovieDetailResponse) {
-        var genres = ""
-        movieDetailResponse.genres.forEach{
-            genres += it.name + ", "
-        }
-
-        movieGenres.text = genres.substring(0, genres.length - 2)
-        movieGenres.isSelected = true
-    }
-
-    private fun setStarsStyle(movie: Movie) {
-        ratingBar.rating = movie.voteAverage.toFloat() / 2
+    private fun setStarsStyle() {
         val stars1 = ratingBar.progressDrawable as LayerDrawable
         stars1.getDrawable(2).setColorFilter(resources.getColor(R.color.yellow), PorterDuff.Mode.SRC_ATOP)
         stars1.getDrawable(0).setColorFilter(resources.getColor(R.color.yellow_dark), PorterDuff.Mode.SRC_ATOP)

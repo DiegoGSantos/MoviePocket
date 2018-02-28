@@ -3,6 +3,7 @@ package com.moviepocket.features.moviesList.viewmodel
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.content.Context
+import android.databinding.ObservableField
 import com.moviepocket.features.moviesList.data.MovieListTypes
 import com.moviepocket.features.moviesList.data.MovieRepository
 import com.moviepocket.features.moviesList.model.Movie
@@ -14,6 +15,8 @@ import com.moviepocket.restclient.Service
 class MoviesViewModel(val movieRepository: MovieRepository): ViewModel() {
 
     var moviesLiveData: MutableLiveData<List<Movie>> = MutableLiveData()
+    val isLoading = ObservableField(false)
+
     var totalOfPages: Int = 0
 
     var isThereMoreItemsToLoad: Boolean = true
@@ -30,6 +33,8 @@ class MoviesViewModel(val movieRepository: MovieRepository): ViewModel() {
     var isThereMoreTopRatedToLoad: Boolean = true
 
     fun listMovies(listType: String) {
+
+        isLoading.set(true)
 
         if (listType.equals(MovieListTypes.NOW_PLAYING.listType)) {
             currentPage = currentInTheaterPage
@@ -64,6 +69,7 @@ class MoviesViewModel(val movieRepository: MovieRepository): ViewModel() {
                 }
 
                 moviesLiveData.value = movies
+                isLoading.set(false)
             }
         }
     }

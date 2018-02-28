@@ -2,6 +2,8 @@ package com.moviepocket.features.movieDetail.viewmodel
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
+import android.content.Context
+import com.moviepocket.App
 import com.moviepocket.features.moviesList.data.MovieRepository
 import com.moviepocket.features.moviesList.viewmodel.MoviesViewModel
 

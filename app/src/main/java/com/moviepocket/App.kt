@@ -9,10 +9,12 @@ class App : com.activeandroid.app.Application() {
 
     companion object {
 //        val TAG: String = App::class.simpleName.toString()
+        lateinit var appContext: Context
     }
 
     override fun onCreate() {
         super.onCreate()
+        appContext = this.applicationContext
         ActiveAndroid.initialize(this)
     }
 }

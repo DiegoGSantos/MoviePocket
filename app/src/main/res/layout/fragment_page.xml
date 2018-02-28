@@ -1,32 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.moviepocket.customViews.TouchableLinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/mainLayout"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center">
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <FrameLayout
-        xmlns:android="http://schemas.android.com/apk/res/android"
+    <data>
+        <import type="android.view.View"/>
+
+        <variable
+            name="viewModel"
+            type="com.moviepocket.features.moviesList.viewmodel.MoviesViewModel" />
+    </data>
+
+    <com.moviepocket.customViews.TouchableLinearLayout
+        android:id="@+id/mainLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center">
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/moviesList"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:padding="@dimen/nano_margin"
-            android:clipToPadding="false"
-            android:gravity="center" />
+            android:gravity="center">
 
-        <ProgressBar
-            android:id="@+id/progress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:indeterminate="true"/>
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/moviesList"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="@dimen/nano_margin"
+                android:clipToPadding="false"
+                android:visibility="@{viewModel.isLoading ? View.GONE : View.VISIBLE}"
+                android:gravity="center" />
 
-    </FrameLayout>
+            <ProgressBar
+                android:id="@+id/progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"
+                android:indeterminate="true"/>
 
-</com.moviepocket.customViews.TouchableLinearLayout>
+        </FrameLayout>
+
+    </com.moviepocket.customViews.TouchableLinearLayout>
+</layout>

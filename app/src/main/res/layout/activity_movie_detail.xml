@@ -1,234 +1,253 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/root"
-    tools:context="com.moviepocket.features.movieDetail.view.MovieDetailActivity">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <FrameLayout
-        android:id="@+id/mainLayout"
+    <data>
+
+        <import type="android.view.View"/>
+
+        <variable
+            name="viewModel"
+            type="com.moviepocket.features.movieDetail.viewmodel.MovieDetailViewModel" />
+    </data>
+
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:id="@+id/root"
+        tools:context="com.moviepocket.features.movieDetail.view.MovieDetailActivity">
 
         <FrameLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <ImageView
-                android:id="@+id/movieBg"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:scaleType="centerCrop"/>
-
-            <eightbitlab.com.blurview.BlurView
-                android:id="@+id/blurView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:elevation="4dp"
-                android:outlineProvider="bounds"
-                app:blurOverlayColor="@color/colorOverlay"
-                tools:targetApi="lollipop"/>
-
-        </FrameLayout>
-
-        <ScrollView
+            android:id="@+id/mainLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
             <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
 
-                <LinearLayout
-                    android:orientation="vertical"
+                <ImageView
+                    android:id="@+id/movieBg"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:scaleType="centerCrop"/>
+
+                <eightbitlab.com.blurview.BlurView
+                    android:id="@+id/blurView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:elevation="4dp"
+                    android:outlineProvider="bounds"
+                    app:blurOverlayColor="@color/colorOverlay"
+                    tools:targetApi="lollipop"/>
+
+            </FrameLayout>
+
+            <ScrollView
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
-
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content">
-
-                        <ImageView
-                            android:id="@+id/moviePoster"
-                            android:layout_width="match_parent"
-                            android:layout_height="192dp"
-                            android:adjustViewBounds="true" />
-
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@color/transparentBlack" />
-
-                    </FrameLayout>
-
 
                     <LinearLayout
                         android:orientation="vertical"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
-                        <LinearLayout
+                        <FrameLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:gravity="right"
-                            android:background="@color/transparentWhite">
+                            android:layout_height="wrap_content">
 
-                            <com.moviepocket.customViews.CustomTextView
-                                android:id="@+id/rating"
-                                android:layout_width="wrap_content"
+                            <ImageView
+                                android:id="@+id/moviePoster"
+                                android:layout_width="match_parent"
+                                android:layout_height="192dp"
+                                android:adjustViewBounds="true" />
+
+                            <View
+                                android:layout_width="match_parent"
                                 android:layout_height="match_parent"
-                                android:textSize="@dimen/centi_text"
-                                android:textColor="@color/white"
-                                app:customTypeface="@string/semibold"
-                                android:gravity="center" />
+                                android:background="@color/transparentBlack" />
 
-                            <RatingBar
-                                android:id="@+id/ratingBar"
-                                android:layout_width="wrap_content"
+                        </FrameLayout>
+
+
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content">
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:layout_gravity="center"
-                                style="@style/RatingBar"
-                                android:isIndicator="true"
-                                android:numStars="5"
-                                android:stepSize="0.5"
-                                android:layout_margin="@dimen/deci_margin" />
+                                android:gravity="right"
+                                android:background="@color/transparentWhite">
+
+                                <com.moviepocket.customViews.CustomTextView
+                                    android:id="@+id/rating"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="match_parent"
+                                    android:textSize="@dimen/centi_text"
+                                    android:textColor="@color/white"
+                                    android:text="@{viewModel.ratingText}"
+                                    app:customTypeface="@string/semibold"
+                                    android:gravity="center" />
+
+                                <RatingBar
+                                    android:id="@+id/ratingBar"
+                                    android:layout_width="wrap_content"
+                                    android:layout_height="wrap_content"
+                                    android:layout_gravity="center"
+                                    style="@style/RatingBar"
+                                    android:rating="@{viewModel.rating}"
+                                    android:visibility="@{viewModel.ratingVisible ? View.VISIBLE : View.INVISIBLE}"
+                                    android:isIndicator="true"
+                                    android:numStars="5"
+                                    android:stepSize="0.5"
+                                    android:layout_margin="@dimen/deci_margin" />
+
+                            </LinearLayout>
+
+                            <View
+                                android:layout_width="match_parent"
+                                android:layout_height="5dp"
+                                android:background="@drawable/shadow_gradient_background" />
 
                         </LinearLayout>
 
-                        <View
-                            android:layout_width="match_parent"
-                            android:layout_height="5dp"
-                            android:background="@drawable/shadow_gradient_background" />
-
                     </LinearLayout>
 
-                </LinearLayout>
-
-                <android.support.constraint.ConstraintLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingRight="@dimen/hecto_margin"
-                    android:paddingLeft="@dimen/hecto_margin"
-                    android:paddingBottom="@dimen/hecto_margin"
-                    android:paddingTop="34dp">
-
-                    <ImageButton
-                        android:id="@+id/backButton"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="?android:attr/selectableItemBackground"
-                        android:tint="@color/white"
-                        android:paddingBottom="@dimen/centi_margin"
-                        android:src="@drawable/back"/>
-
-                    <ImageView
-                        android:id="@+id/movieCover"
-                        android:layout_width="100dp"
-                        android:layout_height="wrap_content"
-                        android:adjustViewBounds="true"
-                        android:transitionName="@string/movie_transition"
-                        app:layout_constraintTop_toBottomOf="@id/backButton"/>
-
-                    <com.moviepocket.customViews.CustomTextView
-                        android:id="@+id/movieTitle"
-                        android:layout_width="0dp"
-                        app:layout_constraintWidth_default="spread"
-                        android:layout_height="wrap_content"
-                        android:textSize="@dimen/deca_text"
-                        android:textColor="@color/white"
-                        app:layout_constraintStart_toEndOf="@id/movieCover"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintTop_toTopOf="@id/movieCover"
-                        app:customTypeface="@string/bold"
-                        android:layout_marginLeft="@dimen/hecto_margin" />
-
-                    <com.moviepocket.customViews.CustomTextView
-                        android:id="@+id/releaseDate"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="@dimen/centi_text"
-                        android:textColor="@color/white"
-                        app:layout_constraintStart_toEndOf="@id/movieCover"
-                        android:layout_marginLeft="@dimen/hecto_margin"
-                        app:layout_constraintTop_toBottomOf="@id/movieTitle"/>
-
-                    <com.moviepocket.customViews.CustomTextView
-                        android:id="@+id/movieGenres"
-                        android:layout_width="0dp"
-                        app:layout_constraintWidth_default="spread"
-                        android:layout_height="wrap_content"
-                        android:textSize="@dimen/centi_text"
-                        android:textColor="@color/white"
-                        android:singleLine="true"
-                        android:ellipsize="marquee"
-                        android:marqueeRepeatLimit ="marquee_forever"
-                        android:focusable="true"
-                        android:focusableInTouchMode="true"
-                        android:scrollHorizontally="true"
-                        app:layout_constraintRight_toRightOf="parent"
-                        app:layout_constraintStart_toEndOf="@id/movieCover"
-                        android:layout_marginLeft="@dimen/hecto_margin"
-                        app:layout_constraintTop_toBottomOf="@id/releaseDate"/>
-
-                    <com.moviepocket.customViews.CustomTextView
-                        android:id="@+id/plot"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="@dimen/deca_text"
-                        android:textColor="@color/white"
-                        app:layout_constraintStart_toStartOf="parent"
-                        android:layout_marginTop="@dimen/hecto_margin"
-                        app:customTypeface="@string/bold"
-                        android:text="@string/plot"
-                        android:visibility="gone"
-                        app:layout_constraintTop_toBottomOf="@id/movieCover"/>
-
-                    <com.moviepocket.customViews.ExpandableTextView
-                        android:id="@+id/moviePlot"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="@dimen/centi_text"
-                        android:textColor="@color/white"
-                        android:paddingBottom="@dimen/hecto_margin"
-                        android:visibility="gone"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:layout_constraintEnd_toEndOf="parent"
-                        app:layout_constraintTop_toBottomOf="@id/plot"/>
-
-                    <com.moviepocket.customViews.CustomTextView
-                        android:id="@+id/videos"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="@dimen/deca_text"
-                        android:textColor="@color/white"
-                        app:layout_constraintStart_toStartOf="parent"
-                        app:customTypeface="@string/bold"
-                        android:text="@string/videos"
-                        android:visibility="gone"
-                        android:paddingBottom="@dimen/centi_margin"
-                        app:layout_constraintTop_toBottomOf="@id/moviePlot"/>
-
-                    <android.support.v7.widget.RecyclerView
-                        android:id="@+id/videosList"
+                    <android.support.constraint.ConstraintLayout
                         android:layout_width="match_parent"
-                        android:layout_height="126dp"
-                        android:visibility="gone"
-                        app:layout_constraintTop_toBottomOf="@id/videos"/>
+                        android:layout_height="wrap_content"
+                        android:paddingRight="@dimen/hecto_margin"
+                        android:paddingLeft="@dimen/hecto_margin"
+                        android:paddingBottom="@dimen/hecto_margin"
+                        android:paddingTop="34dp">
 
-                </android.support.constraint.ConstraintLayout>
+                        <ImageButton
+                            android:id="@+id/backButton"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="?android:attr/selectableItemBackground"
+                            android:tint="@color/white"
+                            android:paddingBottom="@dimen/centi_margin"
+                            android:src="@drawable/back"/>
 
-            </FrameLayout>
+                        <ImageView
+                            android:id="@+id/movieCover"
+                            android:layout_width="100dp"
+                            android:layout_height="wrap_content"
+                            android:adjustViewBounds="true"
+                            android:transitionName="@string/movie_transition"
+                            app:layout_constraintTop_toBottomOf="@id/backButton"/>
 
-        </ScrollView>
+                        <com.moviepocket.customViews.CustomTextView
+                            android:id="@+id/movieTitle"
+                            android:layout_width="0dp"
+                            app:layout_constraintWidth_default="spread"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/deca_text"
+                            android:textColor="@color/white"
+                            app:layout_constraintStart_toEndOf="@id/movieCover"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintTop_toTopOf="@id/movieCover"
+                            app:customTypeface="@string/bold"
+                            android:layout_marginLeft="@dimen/hecto_margin" />
 
-        <ProgressBar
-            android:id="@+id/progress"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center" />
+                        <com.moviepocket.customViews.CustomTextView
+                            android:id="@+id/releaseDate"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/centi_text"
+                            android:text="@{viewModel.releaseDate}"
+                            android:textColor="@color/white"
+                            app:layout_constraintStart_toEndOf="@id/movieCover"
+                            android:layout_marginLeft="@dimen/hecto_margin"
+                            app:layout_constraintTop_toBottomOf="@id/movieTitle"/>
 
-    </FrameLayout>
+                        <com.moviepocket.customViews.CustomTextView
+                            android:id="@+id/movieGenres"
+                            android:layout_width="0dp"
+                            app:layout_constraintWidth_default="spread"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/centi_text"
+                            android:text="@{viewModel.movieGenres}"
+                            android:textColor="@color/white"
+                            android:singleLine="true"
+                            android:ellipsize="marquee"
+                            android:marqueeRepeatLimit ="marquee_forever"
+                            android:focusable="true"
+                            android:focusableInTouchMode="true"
+                            android:scrollHorizontally="true"
+                            app:layout_constraintRight_toRightOf="parent"
+                            app:layout_constraintStart_toEndOf="@id/movieCover"
+                            android:layout_marginLeft="@dimen/hecto_margin"
+                            app:layout_constraintTop_toBottomOf="@id/releaseDate"/>
 
-</android.support.constraint.ConstraintLayout>
+                        <com.moviepocket.customViews.CustomTextView
+                            android:id="@+id/plot"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/deca_text"
+                            android:textColor="@color/white"
+                            app:layout_constraintStart_toStartOf="parent"
+                            android:layout_marginTop="@dimen/hecto_margin"
+                            app:customTypeface="@string/bold"
+                            android:text="@string/plot"
+                            android:visibility="@{viewModel.isLoading ? View.GONE : View.VISIBLE}"
+                            app:layout_constraintTop_toBottomOf="@id/movieCover"/>
+
+                        <com.moviepocket.customViews.ExpandableTextView
+                            android:id="@+id/moviePlot"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/centi_text"
+                            android:textColor="@color/white"
+                            android:paddingBottom="@dimen/hecto_margin"
+                            android:text="@{viewModel.moviePlot}"
+                            android:visibility="@{viewModel.isLoading ? View.GONE : View.VISIBLE}"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintTop_toBottomOf="@id/plot"/>
+
+                        <com.moviepocket.customViews.CustomTextView
+                            android:id="@+id/videos"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="@dimen/deca_text"
+                            android:textColor="@color/white"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:customTypeface="@string/bold"
+                            android:text="@string/videos"
+                            android:visibility="gone"
+                            android:paddingBottom="@dimen/centi_margin"
+                            app:layout_constraintTop_toBottomOf="@id/moviePlot"/>
+
+                        <android.support.v7.widget.RecyclerView
+                            android:id="@+id/videosList"
+                            android:layout_width="match_parent"
+                            android:layout_height="126dp"
+                            android:visibility="gone"
+                            app:layout_constraintTop_toBottomOf="@id/videos"/>
+
+                    </android.support.constraint.ConstraintLayout>
+
+                </FrameLayout>
+
+            </ScrollView>
+
+            <ProgressBar
+                android:id="@+id/progress"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="@{viewModel.isLoading ? View.VISIBLE : View.GONE}"
+                android:layout_gravity="center" />
+
+        </FrameLayout>
+
+    </android.support.constraint.ConstraintLayout>
+</layout>

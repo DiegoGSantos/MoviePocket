@@ -5,6 +5,7 @@ import android.app.Dialog
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
+import android.databinding.DataBindingUtil
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -12,13 +13,13 @@ import android.support.v4.view.ViewCompat
 import android.support.v7.widget.GridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
-import android.view.View.GONE
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.ImageView
 import com.moviepocket.R
 import com.moviepocket.customViews.InfiniteScrollListener
 import com.moviepocket.customViews.OnReleaseScreenListener
+import com.moviepocket.databinding.FragmentPageBinding
 import com.moviepocket.di.Injector
 import com.moviepocket.features.movieDetail.view.MovieDetailActivity
 import com.moviepocket.features.moviesList.data.MovieListTypes
@@ -44,10 +45,15 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
             updateUi(posts, viewModel()?.isThereMoreItemsToLoad(listType) ?: true)
         }
     }
+    private lateinit var binding: FragmentPageBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         loadObservers()
-        return inflater?.inflate(R.layout.fragment_page, container, false)
+        binding = DataBindingUtil.inflate(
+                inflater, R.layout.fragment_page, container, false)
+        binding.viewModel = viewModel()
+
+        return binding.mainLayout
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -99,7 +105,7 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
                 viewModel()?.listMovies(listType)
             }, gridLayoutManager))
 
-            progress.visibility = GONE
+//            progress.visibility = GONE
         }
     }
 
