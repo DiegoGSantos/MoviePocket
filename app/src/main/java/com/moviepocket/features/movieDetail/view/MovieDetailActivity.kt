@@ -17,6 +17,7 @@ import android.view.WindowManager
 import android.widget.TextView
 import com.Videopocket.features.VideoDetail.view.adapter.VideosAdapter
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.GlideDrawable
 import com.bumptech.glide.request.RequestListener
 import com.eightbitlab.supportrenderscriptblur.SupportRenderScriptBlur
@@ -139,6 +140,7 @@ class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
     private fun setMovieCover(posterUrl: String) {
         Glide.with(this)
                 .load(posterUrl)
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .dontAnimate()
                 .listener(object : RequestListener<String, GlideDrawable> {
                     override fun onException(e: Exception, model: String, target: com.bumptech.glide.request.target.Target<GlideDrawable>, isFirstResource: Boolean): Boolean {

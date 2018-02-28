@@ -20,7 +20,7 @@ import com.moviepocket.util.adapter.ViewType
 @Table(name = "Movies")
 class Movie(@Expose @Column(name = "posterPath")
             @SerializedName("poster_path")
-            val posterPath: String = "",
+            val posterPath: String? = "",
             @Expose @Column(name = "title")
             @SerializedName("title")
             val title: String = "",
@@ -30,6 +30,8 @@ class Movie(@Expose @Column(name = "posterPath")
             @Expose @Column(name = "movieId")
             @SerializedName("id")
             val movieId: String = "",
+            @Column(name = "page")
+            var page: Int = 0,
             @Column(name = "listType")
             var listType: String = "") : Model(), ViewType, Parcelable {
 
@@ -38,7 +40,8 @@ class Movie(@Expose @Column(name = "posterPath")
             parcel.readString(),
             parcel.readString(),
             parcel.readString(),
-            parcel.readString()) {
+            parcel.readInt(),
+            parcel.readString()){
     }
 
     override fun getViewType() = AdapterConstants.MOVIE
@@ -46,10 +49,14 @@ class Movie(@Expose @Column(name = "posterPath")
     fun getPosterUrl(): String = "http://image.tmdb.org/t/p/w342$posterPath"
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(posterPath)
+        if (!posterPath.isNullOrEmpty()) {
+            parcel.writeString(posterPath)
+        }
+
         parcel.writeString(title)
         parcel.writeString(voteAverage)
         parcel.writeString(movieId)
+        parcel.writeInt(page)
         parcel.writeString(listType)
     }
 
@@ -85,8 +92,8 @@ class Movie(@Expose @Column(name = "posterPath")
             return Delete().from(Movie::class.java).execute()
         }
 
-        fun deleteAllFromType(listType: String): List<Movie>? {
-            return Delete().from(Movie::class.java).where("listType='"+listType+"'").execute()
+        fun deleteAllFromType(listType: String, page: Int): List<Movie>? {
+            return Delete().from(Movie::class.java).where("listType='"+listType+"'  AND page="+page).execute()
         }
     }
 }

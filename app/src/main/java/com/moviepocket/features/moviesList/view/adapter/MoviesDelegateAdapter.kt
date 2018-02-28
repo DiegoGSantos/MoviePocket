@@ -46,7 +46,7 @@ class MoviesDelegateAdapter(val listener: MoviesCLickListener) : ViewTypeDelegat
                     .placeholder(R.drawable.poster_placeholder)
                     .fallback(R.drawable.poster_placeholder)
                     .error(R.drawable.poster_placeholder)
-                    .diskCacheStrategy(DiskCacheStrategy.ALL)
+                    .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                     .bitmapTransform(RoundedCornersTransformation(itemView.context,10, 2))
                     .into(movieCover)
 

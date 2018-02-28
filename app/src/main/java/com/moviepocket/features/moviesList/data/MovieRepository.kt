@@ -27,7 +27,7 @@ class MovieRepository(private val netManager: NetManager) {
             if (it) {
                 movieRemoteDataSource.getMovies(page, listType) { error, movies, totalPages ->
                     callback(error, movies, totalPages)
-                    saveMovies(movies, listType)
+                    saveMovies(movies, listType, page)
                 }
             } else {
                 movieLocalDataSource.getMovies(page, listType) { error, movies, totalPages ->
@@ -43,12 +43,13 @@ class MovieRepository(private val netManager: NetManager) {
        }
     }
 
-    private fun saveMovies(movies: List<Movie>, listType: String) {
+    private fun saveMovies(movies: List<Movie>, listType: String, page: Int) {
 
         doAsync {
-            Movie.deleteAllFromType(listType)
+            Movie.deleteAllFromType(listType, page)
 
             for (movie in movies) {
+                movie.page = page
                 movie.listType = listType
                 movie.save()
             }

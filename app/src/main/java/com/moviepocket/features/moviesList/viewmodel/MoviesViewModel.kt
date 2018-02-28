@@ -34,8 +34,6 @@ class MoviesViewModel(val movieRepository: MovieRepository): ViewModel() {
 
     fun listMovies(listType: String) {
 
-        isLoading.set(true)
-
         if (listType.equals(MovieListTypes.NOW_PLAYING.listType)) {
             currentPage = currentInTheaterPage
             isThereMoreItemsToLoad = isThereMoreInTheaterToLoad
@@ -51,6 +49,11 @@ class MoviesViewModel(val movieRepository: MovieRepository): ViewModel() {
         }
 
         if (isThereMoreItemsToLoad) {
+
+            if (currentPage == 1) {
+                isLoading.set(true)
+            }
+
             movieRepository.getMovies(currentPage, listType) { error, movies, totalPages ->
                 totalOfPages = totalPages
 
