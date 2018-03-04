@@ -40,17 +40,15 @@ class Movie(@Id var id: Long = 0,
             parcel.readString(),
             parcel.readString(),
             parcel.readString(),
-            parcel.readString()){
-    }
+            parcel.readString())
 
     override fun getViewType() = AdapterConstants.MOVIE
 
     fun getPosterUrl(): String = "http://image.tmdb.org/t/p/w342$posterPath"
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(posterPath)
         parcel.writeLong(id)
-        parcel.writeString(posterPath)
+        parcel.writeString(posterPath ?: "")
         parcel.writeString(title)
         parcel.writeString(voteAverage)
         parcel.writeString(movieId)

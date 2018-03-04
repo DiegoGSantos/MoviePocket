@@ -14,4 +14,5 @@
     <string name="plot">Sinopse</string>
     <string name="videos">Videos</string>
     <string name="movie_transition">movie_transition</string>
+    <string name="default_plot">Sinopse indisponível no momento</string>
 </resources>

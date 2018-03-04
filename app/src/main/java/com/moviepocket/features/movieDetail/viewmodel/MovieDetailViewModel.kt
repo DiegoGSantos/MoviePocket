@@ -57,6 +57,8 @@ class MovieDetailViewModel(val movieRepository: MovieRepository): ViewModel() {
     private fun setPlot(movieDetail: MovieDetailResponse) {
         if (!movieDetail.overview.isEmpty()) {
             moviePlot.set(movieDetail.overview)
+        } else {
+            moviePlot.set(App.appContext.getString(R.string.default_plot))
         }
     }
 
@@ -81,6 +83,6 @@ class MovieDetailViewModel(val movieRepository: MovieRepository): ViewModel() {
             genres += it.name + ", "
         }
 
-        movieGenres.set(genres.substring(0, genres.length - 2))
+        if (genres.isNotEmpty())  movieGenres.set(genres)
     }
 }

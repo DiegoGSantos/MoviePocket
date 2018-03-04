@@ -16,6 +16,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.ImageView
+import android.widget.Toast
 import com.moviepocket.R
 import com.moviepocket.customViews.InfiniteScrollListener
 import com.moviepocket.customViews.OnReleaseScreenListener
@@ -27,6 +28,7 @@ import com.moviepocket.features.moviesList.model.Movie
 import com.moviepocket.features.moviesList.view.adapter.MoviesAdapter
 import com.moviepocket.features.moviesList.viewmodel.MoviesViewModel
 import com.moviepocket.interfaces.MoviesCLickListener
+import com.moviepocket.manager.NetManager
 import com.moviepocket.util.extensions.loadUrl
 import com.moviepocket.util.extensions.reObserve
 import kotlinx.android.synthetic.main.fragment_page.*
@@ -85,11 +87,7 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
     }
 
     private fun viewModel(): MoviesViewModel? {
-        this.context?.let {
-            return ViewModelProviders.of(this, Injector.provideMoviesViewModelFactory(it)).get(MoviesViewModel::class.java)
-        }
-
-        return null
+        return ViewModelProviders.of(this, Injector.provideMoviesViewModelFactory()).get(MoviesViewModel::class.java)
     }
 
     private fun setListeners() {
@@ -132,14 +130,19 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
     }
 
     override fun onMovieClick(movie: Movie, imageView: ImageView) {
-        val intent = Intent(this.activity, MovieDetailActivity::class.java)
-        intent.putExtra(Movie.MOVIE, movie)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            startActivityForResult(intent, 101, ActivityOptions.makeSceneTransitionAnimation(
-                    this.activity, imageView, ViewCompat.getTransitionName(imageView)).toBundle())
-        } else {
-            startActivityForResult(intent, 101)
+        if (Injector.provideNetManager().isConnectedToInternet){
+            val intent = Intent(this.activity, MovieDetailActivity::class.java)
+            intent.putExtra(Movie.MOVIE, movie)
+
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                startActivityForResult(intent, 101, ActivityOptions.makeSceneTransitionAnimation(
+                        this.activity, imageView, ViewCompat.getTransitionName(imageView)).toBundle())
+            } else {
+                startActivityForResult(intent, 101)
+            }
+        } else{
+            Toast.makeText(this.context, "Verifique sua conexão com a internet", Toast.LENGTH_SHORT).show()
         }
     }
 

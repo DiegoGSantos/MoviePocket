@@ -1,6 +1,7 @@
 package com.moviepocket.di
 
 import android.content.Context
+import com.moviepocket.App
 import com.moviepocket.features.movieDetail.viewmodel.MovieDetailViewModelFactory
 import com.moviepocket.features.moviesList.data.MovieRepository
 import com.moviepocket.features.moviesList.viewmodel.MoviesViewModelFactory
@@ -13,9 +14,9 @@ object Injector {
 
     private var NET_MANAGER: NetManager? = null
 
-    private fun provideNetManager(context: Context): NetManager {
+    fun provideNetManager(): NetManager {
         if (NET_MANAGER == null) {
-            NET_MANAGER = NetManager(context)
+            NET_MANAGER = NetManager(App.appContext)
         }
         return NET_MANAGER!!
     }
@@ -24,14 +25,14 @@ object Injector {
         return MovieRepository(netManager)
     }
 
-    fun provideMoviesViewModelFactory(context: Context): MoviesViewModelFactory {
-        val netManager = provideNetManager(context)
+    fun provideMoviesViewModelFactory(): MoviesViewModelFactory {
+        val netManager = provideNetManager()
         val repository = provideMovieRepository(netManager)
         return MoviesViewModelFactory(repository)
     }
 
-    fun provideMovieDetailViewModelFactory(context: Context): MovieDetailViewModelFactory {
-        val netManager = provideNetManager(context)
+    fun provideMovieDetailViewModelFactory(): MovieDetailViewModelFactory {
+        val netManager = provideNetManager()
         val repository = provideMovieRepository(netManager)
         return MovieDetailViewModelFactory(repository)
     }

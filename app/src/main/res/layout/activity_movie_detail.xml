@@ -198,7 +198,7 @@
                             android:layout_marginTop="@dimen/hecto_margin"
                             app:customTypeface="@string/bold"
                             android:text="@string/plot"
-                            android:visibility="@{viewModel.isLoading ? View.GONE : View.VISIBLE}"
+                            android:visibility="@{viewModel.isLoading ? View.INVISIBLE : View.VISIBLE}"
                             app:layout_constraintTop_toBottomOf="@id/movieCover"/>
 
                         <com.moviepocket.customViews.ExpandableTextView
@@ -209,7 +209,7 @@
                             android:textColor="@color/white"
                             android:paddingBottom="@dimen/hecto_margin"
                             android:text="@{viewModel.moviePlot}"
-                            android:visibility="@{viewModel.isLoading ? View.GONE : View.VISIBLE}"
+                            android:visibility="@{viewModel.isLoading ? View.INVISIBLE : View.VISIBLE}"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
                             app:layout_constraintTop_toBottomOf="@id/plot"/>

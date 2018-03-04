@@ -61,12 +61,12 @@ class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
         intent.extras.getParcelable<Movie>(Movie.MOVIE).let {
             setMoviePosterBackground(it)
             movieTitle.text = it.title
-            viewModel()?.getMovieDetail(it.movieId)
+            viewModel()?.getMovieDetail(it.movieId ?: "")
         }
     }
 
     private fun viewModel(): MovieDetailViewModel? {
-        return ViewModelProviders.of(this, Injector.provideMovieDetailViewModelFactory(this)).get(MovieDetailViewModel::class.java)
+        return ViewModelProviders.of(this, Injector.provideMovieDetailViewModelFactory()).get(MovieDetailViewModel::class.java)
     }
 
     private fun loadObservers() {
@@ -119,7 +119,6 @@ class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
 
     private fun setMoviePosterBackground(movie: Movie) {
         movieBg.loadUrl(movie.getPosterUrl())
-
         setMovieCover(movie.getPosterUrl())
 
         val windowBackground = window.decorView.background
@@ -140,9 +139,12 @@ class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
     private fun setMovieCover(posterUrl: String) {
         Glide.with(this)
                 .load(posterUrl)
-                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .dontAnimate()
+                .placeholder(R.drawable.poster_placeholder)
+                .fallback(R.drawable.poster_placeholder)
+                .error(R.drawable.poster_placeholder)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
+                .bitmapTransform(RoundedCornersTransformation(this,10, 2))
                 .listener(object : RequestListener<String, GlideDrawable> {
                     override fun onException(e: Exception, model: String, target: com.bumptech.glide.request.target.Target<GlideDrawable>, isFirstResource: Boolean): Boolean {
                         supportStartPostponedEnterTransition()
@@ -154,7 +156,6 @@ class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
                         return false
                     }
                 })
-                .bitmapTransform(RoundedCornersTransformation( this,10, 2))
                 .into(movieCover)
     }
 }
