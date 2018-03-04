@@ -142,6 +142,7 @@ class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
                 .load(posterUrl)
                 .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .dontAnimate()
+                .diskCacheStrategy(DiskCacheStrategy.SOURCE)
                 .listener(object : RequestListener<String, GlideDrawable> {
                     override fun onException(e: Exception, model: String, target: com.bumptech.glide.request.target.Target<GlideDrawable>, isFirstResource: Boolean): Boolean {
                         supportStartPostponedEnterTransition()

@@ -14,7 +14,7 @@ class MovieRemoteDataSource
         val service: Service = Service.Factory.create()
     ){
 
-    fun getMovies(page: Int, listType: String, callback:(error: Any?, result: List<Movie>, page: Int) -> Unit) {
+    fun getMovies(page: String, listType: String, callback:(error: Any?, result: List<Movie>, page: Int) -> Unit) {
         val compositeDisposable = CompositeDisposable()
 
         compositeDisposable.add(

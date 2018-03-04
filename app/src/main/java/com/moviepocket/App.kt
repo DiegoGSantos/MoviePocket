@@ -1,20 +1,34 @@
 package com.moviepocket
 
-import com.activeandroid.ActiveAndroid
+import android.app.Application
+import android.content.Context
+import com.moviepocket.features.moviesList.model.Movie
+import com.moviepocket.features.moviesList.model.MyObjectBox
+import io.objectbox.Box
+import io.objectbox.BoxStore
 
 /**
  * Created by diegosantos on 2/4/18.
  */
-class App : com.activeandroid.app.Application() {
+class App : Application() {
 
     companion object {
 //        val TAG: String = App::class.simpleName.toString()
         lateinit var appContext: Context
+        lateinit var myboxStore: BoxStore
+
+        fun getBoxStore(): BoxStore{
+            return myboxStore
+        }
+
+        fun getMovieBox(): Box<Movie> {
+            return getBoxStore().boxFor(Movie::class.java)
+        }
     }
 
     override fun onCreate() {
         super.onCreate()
         appContext = this.applicationContext
-        ActiveAndroid.initialize(this)
+        myboxStore = MyObjectBox.builder().androidContext(appContext).build()
     }
 }

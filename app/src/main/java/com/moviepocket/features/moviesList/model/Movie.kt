@@ -3,44 +3,43 @@ package com.moviepocket.features.moviesList.model
 import android.annotation.SuppressLint
 import android.os.Parcel
 import android.os.Parcelable
-import com.activeandroid.Model
-import com.activeandroid.annotation.Column
-import com.activeandroid.annotation.Table
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-import com.activeandroid.query.Delete
-import com.activeandroid.query.Select
+import com.moviepocket.App
+import com.moviepocket.restclient.response.MovieListResponse
 import com.moviepocket.util.adapter.AdapterConstants
 import com.moviepocket.util.adapter.ViewType
+import io.objectbox.annotation.Entity
+import io.objectbox.annotation.Id
 
 /**
  * Created by diegosantos on 12/16/17.
  */
 @SuppressLint("ParcelCreator")
-@Table(name = "Movies")
-class Movie(@Expose @Column(name = "posterPath")
+@Entity
+class Movie(@Id var id: Long = 0,
+            @Expose
             @SerializedName("poster_path")
             val posterPath: String? = "",
-            @Expose @Column(name = "title")
+            @Expose
             @SerializedName("title")
             val title: String = "",
-            @Expose @Column(name = "voteAverage")
+            @Expose
             @SerializedName("vote_average")
             val voteAverage: String = "",
-            @Expose @Column(name = "movieId")
+            @Expose
             @SerializedName("id")
             val movieId: String = "",
-            @Column(name = "page")
-            var page: Int = 0,
-            @Column(name = "listType")
-            var listType: String = "") : Model(), ViewType, Parcelable {
+            var page: String = "",
+            var listType: String = "") : ViewType, Parcelable {
 
     constructor(parcel: Parcel) : this(
+            parcel.readLong(),
             parcel.readString(),
             parcel.readString(),
             parcel.readString(),
             parcel.readString(),
-            parcel.readInt(),
+            parcel.readString(),
             parcel.readString()){
     }
 
@@ -49,14 +48,13 @@ class Movie(@Expose @Column(name = "posterPath")
     fun getPosterUrl(): String = "http://image.tmdb.org/t/p/w342$posterPath"
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        if (!posterPath.isNullOrEmpty()) {
-            parcel.writeString(posterPath)
-        }
-
+        parcel.writeString(posterPath)
+        parcel.writeLong(id)
+        parcel.writeString(posterPath)
         parcel.writeString(title)
         parcel.writeString(voteAverage)
         parcel.writeString(movieId)
-        parcel.writeInt(page)
+        parcel.writeString(page)
         parcel.writeString(listType)
     }
 
@@ -75,25 +73,33 @@ class Movie(@Expose @Column(name = "posterPath")
 
         val MOVIE = "movie_extra"
 
-        fun getAllFromType(listType: String): List<Movie> {
-            return Select()
-                    .from(Movie::class.java)
-                    .where("listType='"+listType+"'")
-                    .execute()
+        fun getAllFromType(listType: String, page: String): MovieListResponse {
+
+            val totalOfPages = getNumberOfPages(listType)
+            val result: ArrayList<Movie> = ArrayList(App.getMovieBox().query()
+                    .equal(Movie_.listType, listType)
+                    .equal(Movie_.page, page)
+                    .build().find())
+
+            MovieListResponse(totalOfPages, result)
+
+            return MovieListResponse(totalOfPages, result)
+
+
         }
 
-        fun getAll(): List<Movie> {
-            return Select()
-                    .from(Movie::class.java)
-                    .execute()
+        fun getNumberOfPages(listType: String): Int {
+            return App.getMovieBox().query()
+                    .equal(Movie_.listType, listType)
+                    .build()
+                    .property(Movie_.page).distinct().findStrings().size
         }
 
-        fun deleteAll(): List<Movie>? {
-            return Delete().from(Movie::class.java).execute()
-        }
-
-        fun deleteAllFromType(listType: String, page: Int): List<Movie>? {
-            return Delete().from(Movie::class.java).where("listType='"+listType+"'  AND page="+page).execute()
+        fun deleteAllFromType(listType: String, page: String) {
+            App.getMovieBox().query()
+                    .equal(Movie_.listType, listType)
+                    .equal(Movie_.page, page)
+                    .build().remove()
         }
     }
 }

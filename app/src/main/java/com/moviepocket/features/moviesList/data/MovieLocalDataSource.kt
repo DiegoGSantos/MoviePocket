@@ -1,6 +1,9 @@
 package com.moviepocket.features.moviesList.data
 
+import android.util.Log
+import com.moviepocket.App
 import com.moviepocket.features.moviesList.model.Movie
+import com.moviepocket.restclient.response.MovieListResponse
 import io.reactivex.Observable
 import io.reactivex.ObservableOnSubscribe
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -12,11 +15,27 @@ import org.jetbrains.anko.doAsync
  */
 class MovieLocalDataSource {
 
-    fun getMovies(page: Int, listType: String, callback:(error: Any?, result: List<Movie>, page: Int) -> Unit) {
-        Observable.create(ObservableOnSubscribe<List<Movie>> {
-            emitter -> emitter.onNext(Movie.getAllFromType(listType))
+    fun getMovies(page: String, listType: String, callback:(error: Any?, result: List<Movie>, page: String) -> Unit) {
+        Observable.create(ObservableOnSubscribe<MovieListResponse> {
+            emitter -> emitter.onNext(Movie.getAllFromType(listType, page))
         }).subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe{ result -> callback(null, result, 1) }
+                .subscribe{ result -> callback(null, result.results, result.totalPages.toString()) }
+    }
+
+    fun saveMovies(movies: List<Movie>, listType: String, page: String) {
+
+        Movie.deleteAllFromType(listType, page)
+
+        App.getBoxStore().runInTxAsync({
+            for (movie in movies) {
+                movie.page = page
+                movie.listType = listType
+            }
+
+            App.getMovieBox().put(movies)
+        }, {result, error ->  Log.d("DB", "Error: " + error?.message + " Result: " + result.toString())})
     }
 }
+
+class LocalMovieListResponse (val totalOfPages: Int, val results: List<Movie>)
