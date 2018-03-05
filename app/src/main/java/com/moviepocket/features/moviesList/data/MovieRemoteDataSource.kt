@@ -19,8 +19,8 @@ class MovieRemoteDataSource
 
         compositeDisposable.add(
             service.listMovies(listType, page)
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.trampoline())
+                .subscribeOn(Schedulers.trampoline())
                 .subscribe ({
                     result ->
                     callback(null, result.results, result.totalPages)

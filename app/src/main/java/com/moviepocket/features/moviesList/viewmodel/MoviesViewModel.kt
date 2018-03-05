@@ -54,26 +54,33 @@ class MoviesViewModel(val movieRepository: MovieRepository): ViewModel() {
                 isLoading.set(true)
             }
 
-            movieRepository.getMovies(currentPage.toString(), listType) { error, movies, totalPages ->
-                totalOfPages = totalPages.toIntOrNull() ?: 1
+            movieRepository.getMovies(currentPage.toString(), listType, object : MovieRepository.LoadMoviesCallback {
 
-                if (listType.equals(MovieListTypes.NOW_PLAYING.listType)) {
-                    currentInTheaterPage += 1
-                    isThereMoreInTheaterToLoad = currentInTheaterPage <= totalOfPages
-                } else if (listType.equals(MovieListTypes.UPCOMING.listType)) {
-                    currentUpcomingPage += 1
-                    isThereMoreUpcomingToLoad = currentUpcomingPage <= totalOfPages
-                }else if (listType.equals(MovieListTypes.POPULAR.listType)) {
-                    currentPopularPage += 1
-                    isThereMorePopularToLoad = currentPopularPage <= totalOfPages
-                }else if (listType.equals(MovieListTypes.TOP_RATED.listType)) {
-                    currentTopRatedPage += 1
-                    isThereMoreTopRatedToLoad = currentTopRatedPage <= totalOfPages
+                override fun onMoviesLoaded(error: Any?, movies: List<Movie>, totalPages: String) {
+                    totalOfPages = totalPages.toIntOrNull() ?: 1
+
+                    if (listType.equals(MovieListTypes.NOW_PLAYING.listType)) {
+                        currentInTheaterPage += 1
+                        isThereMoreInTheaterToLoad = currentInTheaterPage <= totalOfPages
+                    } else if (listType.equals(MovieListTypes.UPCOMING.listType)) {
+                        currentUpcomingPage += 1
+                        isThereMoreUpcomingToLoad = currentUpcomingPage <= totalOfPages
+                    }else if (listType.equals(MovieListTypes.POPULAR.listType)) {
+                        currentPopularPage += 1
+                        isThereMorePopularToLoad = currentPopularPage <= totalOfPages
+                    }else if (listType.equals(MovieListTypes.TOP_RATED.listType)) {
+                        currentTopRatedPage += 1
+                        isThereMoreTopRatedToLoad = currentTopRatedPage <= totalOfPages
+                    }
+
+                    moviesLiveData.value = movies
+                    isLoading.set(false)
                 }
 
-                moviesLiveData.value = movies
-                isLoading.set(false)
-            }
+                override fun onDataNotAvailable() {
+
+                }
+            })
         }
     }
 

@@ -66,7 +66,9 @@ class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
     }
 
     private fun viewModel(): MovieDetailViewModel? {
-        return ViewModelProviders.of(this, Injector.provideMovieDetailViewModelFactory()).get(MovieDetailViewModel::class.java)
+        return ViewModelProviders.of(this,
+            Injector.provideMovieDetailViewModelFactory(this.applicationContext))
+                .get(MovieDetailViewModel::class.java)
     }
 
     private fun loadObservers() {

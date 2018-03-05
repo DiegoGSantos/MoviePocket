@@ -87,7 +87,12 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
     }
 
     private fun viewModel(): MoviesViewModel? {
-        return ViewModelProviders.of(this, Injector.provideMoviesViewModelFactory()).get(MoviesViewModel::class.java)
+        this.context?.let {
+            return ViewModelProviders.of(this,
+                    Injector.provideMoviesViewModelFactory(it)).get(MoviesViewModel::class.java)
+        }
+
+        return null
     }
 
     private fun setListeners() {
@@ -131,18 +136,20 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
 
     override fun onMovieClick(movie: Movie, imageView: ImageView) {
 
-        if (Injector.provideNetManager().isConnectedToInternet){
-            val intent = Intent(this.activity, MovieDetailActivity::class.java)
-            intent.putExtra(Movie.MOVIE, movie)
+        this.context?.let {
+            if (Injector.provideNetManager(it).isConnectedToInternet){
+                val intent = Intent(this.activity, MovieDetailActivity::class.java)
+                intent.putExtra(Movie.MOVIE, movie)
 
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                startActivityForResult(intent, 101, ActivityOptions.makeSceneTransitionAnimation(
-                        this.activity, imageView, ViewCompat.getTransitionName(imageView)).toBundle())
-            } else {
-                startActivityForResult(intent, 101)
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                    startActivityForResult(intent, 101, ActivityOptions.makeSceneTransitionAnimation(
+                            this.activity, imageView, ViewCompat.getTransitionName(imageView)).toBundle())
+                } else {
+                    startActivityForResult(intent, 101)
+                }
+            } else{
+                Toast.makeText(this.context, "Verifique sua conexão com a internet", Toast.LENGTH_SHORT).show()
             }
-        } else{
-            Toast.makeText(this.context, "Verifique sua conexão com a internet", Toast.LENGTH_SHORT).show()
         }
     }
 

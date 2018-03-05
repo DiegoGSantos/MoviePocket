@@ -67,6 +67,10 @@ dependencies {
     compile "com.android.support:cardview-v7:27.0.2"
     kapt 'com.android.databinding:compiler:3.0.1'
 
+    testCompile "org.mockito:mockito-core:2.1.0"
+    testCompile group: 'org.mockito', name: 'mockito-inline', version: '2.7.21'
+    compile group: 'com.google.collections', name: 'google-collections', version: '1.0-rc2'
+
     compile "io.objectbox:objectbox-android:$objectboxVersion"
     compile "io.objectbox:objectbox-kotlin:$objectboxVersion"
     kapt "io.objectbox:objectbox-processor:$objectboxVersion"
