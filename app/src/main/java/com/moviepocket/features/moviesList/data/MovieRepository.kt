@@ -9,11 +9,9 @@ import com.moviepocket.restclient.response.MovieDetailResponse
 /**
  * Created by diegosantos on 2/3/18.
  */
-class MovieRepository(private val netManager: NetManager) {
-
-    private val movieRemoteDataSource: MovieRemoteDataSource = MovieRemoteDataSource()
-    private val movieLocalDataSource: MovieLocalDataSource = MovieLocalDataSource()
-    private val movieDetailRemoveDataSource: MovieDetailRemoteDataSource = MovieDetailRemoteDataSource()
+class MovieRepository(private val netManager: NetManager,
+                      private val movieRemoteDataSource: MovieRemoteDataSource,
+                      private val movieLocalDataSource: MovieLocalDataSource) {
 
     fun getMovies(page: String, listType: String, callback: LoadMoviesCallback) {
 
@@ -29,12 +27,6 @@ class MovieRepository(private val netManager: NetManager) {
                 }
             }
         }
-    }
-
-    fun getMovieDetail(movieId: String, callback: (error: Any?, movieDetail: MovieDetailResponse) -> Unit) {
-       movieDetailRemoveDataSource.getMovieDetail(movieId) { error, movieDetail ->
-           callback(error, movieDetail)
-       }
     }
 
     interface LoadMoviesCallback {

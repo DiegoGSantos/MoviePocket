@@ -6,6 +6,7 @@ import com.moviepocket.features.moviesList.model.Movie
 import com.moviepocket.restclient.response.MovieListResponse
 import io.reactivex.Observable
 import io.reactivex.ObservableOnSubscribe
+import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import org.jetbrains.anko.doAsync
@@ -13,13 +14,13 @@ import org.jetbrains.anko.doAsync
 /**
  * Created by diegosantos on 2/4/18.
  */
-class MovieLocalDataSource {
+class MovieLocalDataSource(val processScheduler: Scheduler, val androidScheduler: Scheduler) {
 
     fun getMovies(page: String, listType: String, callback:(error: Any?, result: List<Movie>, page: String) -> Unit) {
         Observable.create(ObservableOnSubscribe<MovieListResponse> {
             emitter -> emitter.onNext(Movie.getAllFromType(listType, page))
-        }).subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+        }).subscribeOn(processScheduler)
+                .observeOn(androidScheduler)
                 .subscribe{ result -> callback(null, result.results, result.totalPages.toString()) }
     }
 

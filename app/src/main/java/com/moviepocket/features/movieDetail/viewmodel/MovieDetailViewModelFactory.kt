@@ -4,13 +4,14 @@ import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
 import android.content.Context
 import com.moviepocket.App
+import com.moviepocket.features.movieDetail.data.MovieDetailRepository
 import com.moviepocket.features.moviesList.data.MovieRepository
 import com.moviepocket.features.moviesList.viewmodel.MoviesViewModel
 
 /**
  * Created by diego.santos on 27/02/18.
  */
-class MovieDetailViewModelFactory(private val repository: MovieRepository)
+class MovieDetailViewModelFactory(private val repository: MovieDetailRepository)
     : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(MovieDetailViewModel::class.java)) {

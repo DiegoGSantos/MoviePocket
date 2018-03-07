@@ -25,6 +25,7 @@ import com.moviepocket.R
 import com.moviepocket.customViews.RoundedCornersTransformation
 import com.moviepocket.databinding.ActivityMovieDetailBinding
 import com.moviepocket.di.Injector
+import com.moviepocket.features.movieDetail.data.MovieDetailRemoteDataSource
 import com.moviepocket.features.movieDetail.model.Video
 import com.moviepocket.features.movieDetail.viewmodel.MovieDetailViewModel
 import com.moviepocket.features.moviesList.model.Movie
@@ -67,7 +68,7 @@ class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
 
     private fun viewModel(): MovieDetailViewModel? {
         return ViewModelProviders.of(this,
-            Injector.provideMovieDetailViewModelFactory(this.applicationContext))
+            Injector.provideMovieDetailViewModelFactory(Injector.provideMovieDetailRemoteDataSource()))
                 .get(MovieDetailViewModel::class.java)
     }
 

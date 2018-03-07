@@ -7,6 +7,7 @@ import android.databinding.ObservableField
 import android.view.View
 import com.moviepocket.App
 import com.moviepocket.R
+import com.moviepocket.features.movieDetail.data.MovieDetailRepository
 import com.moviepocket.features.moviesList.data.MovieRepository
 import com.moviepocket.features.moviesList.model.Movie
 import com.moviepocket.restclient.response.MovieDetailResponse
@@ -15,7 +16,7 @@ import kotlinx.android.synthetic.main.activity_movie_detail.*
 /**
  * Created by diego.santos on 01/02/18.
  */
-class MovieDetailViewModel(val movieRepository: MovieRepository): ViewModel() {
+class MovieDetailViewModel(val movieRepository: MovieDetailRepository): ViewModel() {
     var movieDetailLiveData: MutableLiveData<MovieDetailResponse> = MutableLiveData()
     val isLoading = ObservableField(false)
     val moviePlot = ObservableField("")
