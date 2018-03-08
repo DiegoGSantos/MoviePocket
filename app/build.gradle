@@ -69,6 +69,7 @@ dependencies {
 
     testCompile "org.mockito:mockito-core:2.1.0"
     testCompile group: 'org.mockito', name: 'mockito-inline', version: '2.7.21'
+    testImplementation 'android.arch.core:core-testing:1.1.0'
     compile group: 'com.google.collections', name: 'google-collections', version: '1.0-rc2'
 
     compile "io.objectbox:objectbox-android:$objectboxVersion"
