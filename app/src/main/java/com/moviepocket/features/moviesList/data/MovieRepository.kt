@@ -4,6 +4,9 @@ import com.moviepocket.features.movieDetail.data.MovieDetailRemoteDataSource
 import com.moviepocket.features.moviesList.model.Movie
 import com.moviepocket.manager.NetManager
 import com.moviepocket.restclient.response.MovieDetailResponse
+import com.moviepocket.restclient.response.MovieListResponse
+import io.reactivex.Observable
+import io.reactivex.Scheduler
 
 
 /**
@@ -13,25 +16,24 @@ class MovieRepository(private val netManager: NetManager,
                       private val movieRemoteDataSource: MovieRemoteDataSource,
                       private val movieLocalDataSource: MovieLocalDataSource) {
 
-    fun getMovies(page: String, listType: String, callback: LoadMoviesCallback) {
+    fun getMovies(page: String, listType: String): Observable<MovieListResponse>? {
 
         netManager.isConnectedToInternet?.let {
             if (it) {
-                movieRemoteDataSource.getMovies(page, listType) { error, movies, totalPages ->
-                    callback.onMoviesLoaded(error, movies, totalPages.toString())
-                    movieLocalDataSource.saveMovies(movies, listType, page)
-                }
+                return movieRemoteDataSource.getMovies(page, listType)
             } else {
-                movieLocalDataSource.getMovies(page, listType) { error, movies, totalPages ->
-                    callback.onMoviesLoaded(error, movies, totalPages)
-                }
+                return movieLocalDataSource.getMovies(page, listType)
             }
         }
     }
 
+    fun saveMovies(movies: List<Movie>, listType: String, page: String) {
+        movieLocalDataSource.saveMovies(movies, listType, page);
+    }
+
     interface LoadMoviesCallback {
 
-        fun onMoviesLoaded(error: Any?, movies: List<Movie>, totalPages: String)
+        fun onMoviesLoaded(listType: String, movies: List<Movie>, totalPages: String)
 
         fun onDataNotAvailable()
     }

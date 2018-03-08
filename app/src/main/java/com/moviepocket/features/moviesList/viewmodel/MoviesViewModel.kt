@@ -8,11 +8,14 @@ import com.moviepocket.features.moviesList.data.MovieListTypes
 import com.moviepocket.features.moviesList.data.MovieRepository
 import com.moviepocket.features.moviesList.model.Movie
 import com.moviepocket.restclient.Service
+import io.reactivex.Scheduler
 
 /**
  * Created by diego.santos on 01/02/18.
  */
-class MoviesViewModel(val movieRepository: MovieRepository): ViewModel() {
+class MoviesViewModel(val movieRepository: MovieRepository,
+                      val processScheduler: Scheduler,
+                      val androidScheduler: Scheduler): ViewModel(), MovieRepository.LoadMoviesCallback {
 
     var moviesLiveData: MutableLiveData<List<Movie>> = MutableLiveData()
     val isLoading = ObservableField(false)
@@ -54,33 +57,16 @@ class MoviesViewModel(val movieRepository: MovieRepository): ViewModel() {
                 isLoading.set(true)
             }
 
-            movieRepository.getMovies(currentPage.toString(), listType, object : MovieRepository.LoadMoviesCallback {
-
-                override fun onMoviesLoaded(error: Any?, movies: List<Movie>, totalPages: String) {
-                    totalOfPages = totalPages.toIntOrNull() ?: 1
-
-                    if (listType.equals(MovieListTypes.NOW_PLAYING.listType)) {
-                        currentInTheaterPage += 1
-                        isThereMoreInTheaterToLoad = currentInTheaterPage <= totalOfPages
-                    } else if (listType.equals(MovieListTypes.UPCOMING.listType)) {
-                        currentUpcomingPage += 1
-                        isThereMoreUpcomingToLoad = currentUpcomingPage <= totalOfPages
-                    }else if (listType.equals(MovieListTypes.POPULAR.listType)) {
-                        currentPopularPage += 1
-                        isThereMorePopularToLoad = currentPopularPage <= totalOfPages
-                    }else if (listType.equals(MovieListTypes.TOP_RATED.listType)) {
-                        currentTopRatedPage += 1
-                        isThereMoreTopRatedToLoad = currentTopRatedPage <= totalOfPages
-                    }
-
-                    moviesLiveData.value = movies
-                    isLoading.set(false)
-                }
-
-                override fun onDataNotAvailable() {
-
-                }
-            })
+            movieRepository.getMovies(currentPage.toString(), listType)
+                    ?.observeOn(androidScheduler)
+                    ?.subscribeOn(processScheduler)
+                    ?.subscribe ({
+                        result ->
+                        onMoviesLoaded(listType, result.results, result.totalPages.toString())
+                        movieRepository.saveMovies(result.results, listType, currentPage.toString())
+                    }, { error ->
+                        error.printStackTrace()
+                    })
         }
     }
 
@@ -98,5 +84,30 @@ class MoviesViewModel(val movieRepository: MovieRepository): ViewModel() {
         else if (listType.equals(MovieListTypes.POPULAR.listType)) return currentPopularPage
         else if (listType.equals(MovieListTypes.TOP_RATED.listType)) return currentTopRatedPage
         else return 1
+    }
+
+    override fun onMoviesLoaded(listType: String, movies: List<Movie>, totalPages: String) {
+        totalOfPages = totalPages.toIntOrNull() ?: 1
+
+        if (listType.equals(MovieListTypes.NOW_PLAYING.listType)) {
+            currentInTheaterPage += 1
+            isThereMoreInTheaterToLoad = currentInTheaterPage <= totalOfPages
+        } else if (listType.equals(MovieListTypes.UPCOMING.listType)) {
+            currentUpcomingPage += 1
+            isThereMoreUpcomingToLoad = currentUpcomingPage <= totalOfPages
+        }else if (listType.equals(MovieListTypes.POPULAR.listType)) {
+            currentPopularPage += 1
+            isThereMorePopularToLoad = currentPopularPage <= totalOfPages
+        }else if (listType.equals(MovieListTypes.TOP_RATED.listType)) {
+            currentTopRatedPage += 1
+            isThereMoreTopRatedToLoad = currentTopRatedPage <= totalOfPages
+        }
+
+        moviesLiveData.value = movies
+        isLoading.set(false)
+    }
+
+    override fun onDataNotAvailable() {
+
     }
 }

@@ -32,9 +32,10 @@ object Injector {
         return MovieDetailRepository(movieDetailRemoveDataSource)
     }
 
-    fun provideMoviesViewModelFactory(context: Context): MoviesViewModelFactory {
+    fun provideMoviesViewModelFactory(context: Context, processScheduler: Scheduler,
+                                      androidScheduler: Scheduler): MoviesViewModelFactory {
         val repository = provideMovieRepository(provideNetManager(context), provideMovieRemoteDataSource(), provideMovieLocalDataSource())
-        return MoviesViewModelFactory(repository)
+        return MoviesViewModelFactory(repository, processScheduler, androidScheduler)
     }
 
     fun provideMovieDetailViewModelFactory(movieDetailDataSource: MovieDetailRemoteDataSource): MovieDetailViewModelFactory {
@@ -47,11 +48,11 @@ object Injector {
     }
 
     fun provideMovieRemoteDataSource(): MovieRemoteDataSource {
-        return MovieRemoteDataSource(provideService(), Schedulers.io(), AndroidSchedulers.mainThread())
+        return MovieRemoteDataSource(provideService())
     }
 
     fun provideMovieLocalDataSource(): MovieLocalDataSource {
-        return MovieLocalDataSource(Schedulers.io(), AndroidSchedulers.mainThread())
+        return MovieLocalDataSource()
     }
 
     fun provideMovieDetailRemoteDataSource(): MovieDetailRemoteDataSource {

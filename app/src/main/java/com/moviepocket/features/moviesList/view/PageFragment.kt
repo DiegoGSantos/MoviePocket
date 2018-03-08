@@ -31,6 +31,8 @@ import com.moviepocket.interfaces.MoviesCLickListener
 import com.moviepocket.manager.NetManager
 import com.moviepocket.util.extensions.loadUrl
 import com.moviepocket.util.extensions.reObserve
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_page.*
 import kotlinx.android.synthetic.main.view_movie_preview.view.*
 
@@ -89,7 +91,7 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
     private fun viewModel(): MoviesViewModel? {
         this.context?.let {
             return ViewModelProviders.of(this,
-                    Injector.provideMoviesViewModelFactory(it)).get(MoviesViewModel::class.java)
+                    Injector.provideMoviesViewModelFactory(it, Schedulers.io(), AndroidSchedulers.mainThread())).get(MoviesViewModel::class.java)
         }
 
         return null
@@ -107,8 +109,6 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
             addOnScrollListener(InfiniteScrollListener({
                 viewModel()?.listMovies(listType)
             }, gridLayoutManager))
-
-//            progress.visibility = GONE
         }
     }
 
