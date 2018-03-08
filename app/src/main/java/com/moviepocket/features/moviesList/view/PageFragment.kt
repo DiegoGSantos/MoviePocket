@@ -148,28 +148,38 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
                     startActivityForResult(intent, 101)
                 }
             } else{
-                Toast.makeText(this.context, "Verifique sua conexão com a internet", Toast.LENGTH_SHORT).show()
+                onConnectivityError()
             }
         }
     }
 
     override fun onMovieLongClick(movie: Movie) {
 
-        moviesList.isLayoutFrozen = true;
+        this.context?.let {
+            if (Injector.provideNetManager(it).isConnectedToInternet){
+                moviesList.isLayoutFrozen = true;
 
-        val layoutInflater = LayoutInflater.from(context)
-        val view = layoutInflater.inflate(R.layout.view_movie_preview, null)
+                val layoutInflater = LayoutInflater.from(context)
+                val view = layoutInflater.inflate(R.layout.view_movie_preview, null)
 
-        view.movieTitle.text = movie.title
-        view.imdbRate.text = movie.voteAverage
-        view.mMovieCover.loadUrl(movie.getPosterUrl())
+                view.movieTitle.text = movie.title
+                view.imdbRate.text = movie.voteAverage
+                view.mMovieCover.loadUrl(movie.getPosterUrl())
 
-        builder = Dialog(context);
-        builder?.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        builder?.setContentView(view);
-        builder?.show()
+                builder = Dialog(context);
+                builder?.requestWindowFeature(Window.FEATURE_NO_TITLE);
+                builder?.setContentView(view);
+                builder?.show()
 
-        (this.activity as MainActivity).showBlurView()
+                (this.activity as MainActivity).showBlurView()
+            }else{
+                onConnectivityError()
+            }
+        }
+    }
+
+    private fun onConnectivityError() {
+        Toast.makeText(this.context, "Verifique sua conexão com a internet", Toast.LENGTH_SHORT).show()
     }
 
     fun hidePreview() {
