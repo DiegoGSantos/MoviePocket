@@ -11,12 +11,15 @@ import com.moviepocket.features.movieDetail.data.MovieDetailRepository
 import com.moviepocket.features.moviesList.data.MovieRepository
 import com.moviepocket.features.moviesList.model.Movie
 import com.moviepocket.restclient.response.MovieDetailResponse
+import io.reactivex.Scheduler
 import kotlinx.android.synthetic.main.activity_movie_detail.*
 
 /**
  * Created by diego.santos on 01/02/18.
  */
-class MovieDetailViewModel(val movieRepository: MovieDetailRepository): ViewModel() {
+class MovieDetailViewModel(val movieRepository: MovieDetailRepository,
+                           val processScheduler: Scheduler,
+                           val androidScheduler: Scheduler): ViewModel() {
     var movieDetailLiveData: MutableLiveData<MovieDetailResponse> = MutableLiveData()
     val isLoading = ObservableField(false)
     val moviePlot = ObservableField("")
@@ -30,19 +33,25 @@ class MovieDetailViewModel(val movieRepository: MovieDetailRepository): ViewMode
 
         isLoading.set(true)
 
-        movieRepository.getMovieDetail(movieId) { error, movieDetail ->
-            movieDetailLiveData.value = movieDetail
+        movieRepository.getMovieDetail(movieId)
+                .observeOn(androidScheduler)
+                .subscribeOn(processScheduler)
+                .subscribe({
+                    movieDetail ->
+                    movieDetailLiveData.value = movieDetail
 
-            setPlot(movieDetail)
+                    setPlot(movieDetail)
 
-            setReleaseDate(movieDetail)
+                    setReleaseDate(movieDetail)
 
-            setGenres(movieDetail)
+                    setGenres(movieDetail)
 
-            setRating(movieDetail)
+                    setRating(movieDetail)
 
-            isLoading.set(false)
-        }
+                    isLoading.set(false)
+                }, { error ->
+
+                })
     }
 
     private fun setRating(movieDetail: MovieDetailResponse) {

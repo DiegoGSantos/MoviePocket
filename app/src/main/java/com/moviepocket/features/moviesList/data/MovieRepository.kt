@@ -19,10 +19,10 @@ class MovieRepository(private val netManager: NetManager,
     fun getMovies(page: String, listType: String): Observable<MovieListResponse>? {
 
         netManager.isConnectedToInternet?.let {
-            if (it) {
-                return movieRemoteDataSource.getMovies(page, listType)
+            return if (it) {
+                movieRemoteDataSource.getMovies(page, listType)
             } else {
-                return movieLocalDataSource.getMovies(page, listType)
+                movieLocalDataSource.getMovies(page, listType)
             }
         }
     }

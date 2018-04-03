@@ -11,8 +11,6 @@ import com.moviepocket.features.moviesList.viewmodel.MoviesViewModelFactory
 import com.moviepocket.manager.NetManager
 import com.moviepocket.restclient.Service
 import io.reactivex.Scheduler
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 
 /**
  * Created by diego.santos on 27/02/18.
@@ -38,9 +36,11 @@ object Injector {
         return MoviesViewModelFactory(repository, processScheduler, androidScheduler)
     }
 
-    fun provideMovieDetailViewModelFactory(movieDetailDataSource: MovieDetailRemoteDataSource): MovieDetailViewModelFactory {
+    fun provideMovieDetailViewModelFactory(processScheduler: Scheduler,
+                                           androidScheduler: Scheduler): MovieDetailViewModelFactory {
+        val movieDetailDataSource = provideMovieDetailRemoteDataSource()
         val repository = provideMovieDetailRepository(movieDetailDataSource)
-        return MovieDetailViewModelFactory(repository)
+        return MovieDetailViewModelFactory(repository, processScheduler, androidScheduler)
     }
 
     fun provideService(): Service {
@@ -56,6 +56,6 @@ object Injector {
     }
 
     fun provideMovieDetailRemoteDataSource(): MovieDetailRemoteDataSource {
-        return MovieDetailRemoteDataSource(provideService(), Schedulers.io(), AndroidSchedulers.mainThread())
+        return MovieDetailRemoteDataSource(provideService())
     }
 }

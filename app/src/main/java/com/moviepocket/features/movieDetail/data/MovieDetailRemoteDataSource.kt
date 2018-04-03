@@ -2,6 +2,7 @@ package com.moviepocket.features.movieDetail.data
 
 import com.moviepocket.restclient.response.MovieDetailResponse
 import com.moviepocket.restclient.Service
+import io.reactivex.Observable
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -10,21 +11,9 @@ import io.reactivex.schedulers.Schedulers
 /**
  * Created by diegosantos on 2/4/18.
  */
-class MovieDetailRemoteDataSource(val service: Service, val processScheduler: Scheduler, val androidScheduler: Scheduler) {
+class MovieDetailRemoteDataSource(val service: Service) {
 
-    fun getMovieDetail(movieId: String, callback:(error: Any?, result: MovieDetailResponse) -> Unit) {
-        val compositeDisposable = CompositeDisposable()
-
-        compositeDisposable.add(
-            service.getMovieDetail(movieId)
-                .observeOn(androidScheduler)
-                .subscribeOn(processScheduler)
-                .subscribe ({
-                    result ->
-                    callback(null, result)
-                }, { error ->
-                    error.printStackTrace()
-                })
-        )
+    fun getMovieDetail(movieId: String): Observable<MovieDetailResponse> {
+        return service.getMovieDetail(movieId)
     }
 }

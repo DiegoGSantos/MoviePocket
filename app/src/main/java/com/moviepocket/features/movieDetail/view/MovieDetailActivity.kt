@@ -32,6 +32,8 @@ import com.moviepocket.features.moviesList.model.Movie
 import com.moviepocket.interfaces.VideoCLickListener
 import com.moviepocket.restclient.response.MovieDetailResponse
 import com.moviepocket.util.extensions.loadUrl
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_movie_detail.*
 
 
@@ -68,7 +70,7 @@ class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
 
     private fun viewModel(): MovieDetailViewModel? {
         return ViewModelProviders.of(this,
-            Injector.provideMovieDetailViewModelFactory(Injector.provideMovieDetailRemoteDataSource()))
+            Injector.provideMovieDetailViewModelFactory(Schedulers.io(), AndroidSchedulers.mainThread()))
                 .get(MovieDetailViewModel::class.java)
     }
 

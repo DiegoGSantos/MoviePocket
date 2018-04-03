@@ -2,20 +2,18 @@ package com.moviepocket.features.movieDetail.viewmodel
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider
-import android.content.Context
-import com.moviepocket.App
 import com.moviepocket.features.movieDetail.data.MovieDetailRepository
-import com.moviepocket.features.moviesList.data.MovieRepository
-import com.moviepocket.features.moviesList.viewmodel.MoviesViewModel
+import io.reactivex.Scheduler
 
 /**
  * Created by diego.santos on 27/02/18.
  */
-class MovieDetailViewModelFactory(private val repository: MovieDetailRepository)
+class MovieDetailViewModelFactory(private val repository: MovieDetailRepository, val processScheduler: Scheduler,
+                                  val androidScheduler: Scheduler)
     : ViewModelProvider.Factory {
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(MovieDetailViewModel::class.java)) {
-            return MovieDetailViewModel(repository) as T
+            return MovieDetailViewModel(repository, processScheduler, androidScheduler) as T
         }
 
         throw IllegalArgumentException("Unknown ViewModel Class")
