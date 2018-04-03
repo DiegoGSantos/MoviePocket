@@ -30,11 +30,4 @@ class MovieRepository(private val netManager: NetManager,
     fun saveMovies(movies: List<Movie>, listType: String, page: String) {
         movieLocalDataSource.saveMovies(movies, listType, page);
     }
-
-    interface LoadMoviesCallback {
-
-        fun onMoviesLoaded(listType: String, movies: List<Movie>, totalPages: String)
-
-        fun onDataNotAvailable()
-    }
 }

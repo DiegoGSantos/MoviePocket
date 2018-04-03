@@ -15,7 +15,7 @@ import io.reactivex.Scheduler
  */
 class MoviesViewModel(val movieRepository: MovieRepository,
                       val processScheduler: Scheduler,
-                      val androidScheduler: Scheduler): ViewModel(), MovieRepository.LoadMoviesCallback {
+                      val androidScheduler: Scheduler): ViewModel() {
 
     var moviesLiveData: MutableLiveData<List<Movie>> = MutableLiveData()
     val isLoading = ObservableField(false)
@@ -86,28 +86,33 @@ class MoviesViewModel(val movieRepository: MovieRepository,
         else return 1
     }
 
-    override fun onMoviesLoaded(listType: String, movies: List<Movie>, totalPages: String) {
+    private fun onMoviesLoaded(listType: String, movies: List<Movie>, totalPages: String) {
         totalOfPages = totalPages.toIntOrNull() ?: 1
 
-        if (listType.equals(MovieListTypes.NOW_PLAYING.listType)) {
-            currentInTheaterPage += 1
-            isThereMoreInTheaterToLoad = currentInTheaterPage <= totalOfPages
-        } else if (listType.equals(MovieListTypes.UPCOMING.listType)) {
-            currentUpcomingPage += 1
-            isThereMoreUpcomingToLoad = currentUpcomingPage <= totalOfPages
-        }else if (listType.equals(MovieListTypes.POPULAR.listType)) {
-            currentPopularPage += 1
-            isThereMorePopularToLoad = currentPopularPage <= totalOfPages
-        }else if (listType.equals(MovieListTypes.TOP_RATED.listType)) {
-            currentTopRatedPage += 1
-            isThereMoreTopRatedToLoad = currentTopRatedPage <= totalOfPages
+        when {
+            listType.equals(MovieListTypes.NOW_PLAYING.listType) -> {
+                currentInTheaterPage += 1
+                isThereMoreInTheaterToLoad = currentInTheaterPage <= totalOfPages
+            }
+            listType.equals(MovieListTypes.UPCOMING.listType) -> {
+                currentUpcomingPage += 1
+                isThereMoreUpcomingToLoad = currentUpcomingPage <= totalOfPages
+            }
+            listType.equals(MovieListTypes.POPULAR.listType) -> {
+                currentPopularPage += 1
+                isThereMorePopularToLoad = currentPopularPage <= totalOfPages
+            }
+            listType.equals(MovieListTypes.TOP_RATED.listType) -> {
+                currentTopRatedPage += 1
+                isThereMoreTopRatedToLoad = currentTopRatedPage <= totalOfPages
+            }
         }
 
         moviesLiveData.value = movies
         isLoading.set(false)
     }
 
-    override fun onDataNotAvailable() {
+    fun onDataNotAvailable() {
 
     }
 }
