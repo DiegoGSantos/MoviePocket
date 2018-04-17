@@ -1,4 +1,9 @@
 language: android
+
+env:
+  global:
+    - ADB_INSTALL_TIMEOUT=16
+
 android:
   components:
     - build-tools-26.0.2
