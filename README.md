@@ -1,5 +1,7 @@
 <h1>Movie Pocket</h1>
 
+[![Build Status](https://travis-ci.org/DiegoGSantos/MoviePocket.svg?branch=master)](https://travis-ci.org/DiegoGSantos/MoviePocket)
+
 <p align="center">
   <img src="screenshot-1.png" width="250"/>
   <img src="screenshot-2.png" width="250"/>
