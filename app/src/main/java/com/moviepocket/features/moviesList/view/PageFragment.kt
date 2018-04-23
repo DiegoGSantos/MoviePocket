@@ -72,6 +72,11 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
         viewModel()?.listMovies(listType)
     }
 
+    override fun onDestroy() {
+        viewModel()?.reset()
+        super.onDestroy()
+    }
+
     private fun resetInfiniteScroll() {
         if (listType.equals(MovieListTypes.NOW_PLAYING.listType)) {
             viewModel()?.currentInTheaterPage = 1

@@ -2,13 +2,13 @@ package com.moviepocket.features.moviesList.viewmodel
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import android.content.Context
 import android.databinding.ObservableField
 import com.moviepocket.features.moviesList.data.MovieListTypes
 import com.moviepocket.features.moviesList.data.MovieRepository
 import com.moviepocket.features.moviesList.model.Movie
-import com.moviepocket.restclient.Service
 import io.reactivex.Scheduler
+import io.reactivex.disposables.CompositeDisposable
+
 
 /**
  * Created by diego.santos on 01/02/18.
@@ -35,6 +35,8 @@ class MoviesViewModel(val movieRepository: MovieRepository,
     var isThereMorePopularToLoad: Boolean = true
     var isThereMoreTopRatedToLoad: Boolean = true
 
+    private var compositeDisposable = CompositeDisposable()
+
     fun listMovies(listType: String) {
 
         if (listType.equals(MovieListTypes.NOW_PLAYING.listType)) {
@@ -57,7 +59,7 @@ class MoviesViewModel(val movieRepository: MovieRepository,
                 isLoading.set(true)
             }
 
-            movieRepository.getMovies(currentPage.toString(), listType)
+            var disposable = movieRepository.getMovies(currentPage.toString(), listType)
                     ?.observeOn(androidScheduler)
                     ?.subscribeOn(processScheduler)
                     ?.subscribe ({
@@ -67,6 +69,8 @@ class MoviesViewModel(val movieRepository: MovieRepository,
                     }, { error ->
                         error.printStackTrace()
                     })
+
+            compositeDisposable.add(disposable)
         }
     }
 
@@ -114,5 +118,16 @@ class MoviesViewModel(val movieRepository: MovieRepository,
 
     fun onDataNotAvailable() {
 
+    }
+
+    private fun unSubscribeFromObservable() {
+        if (!compositeDisposable.isDisposed) {
+            compositeDisposable.dispose()
+        }
+    }
+
+    fun reset() {
+        unSubscribeFromObservable()
+        compositeDisposable.clear()
     }
 }

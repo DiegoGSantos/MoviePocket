@@ -1,18 +1,14 @@
 package com.moviepocket.features.movieDetail.viewmodel
 
-import android.arch.lifecycle.AndroidViewModel
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.databinding.ObservableField
-import android.view.View
 import com.moviepocket.App
 import com.moviepocket.R
 import com.moviepocket.features.movieDetail.data.MovieDetailRepository
-import com.moviepocket.features.moviesList.data.MovieRepository
-import com.moviepocket.features.moviesList.model.Movie
 import com.moviepocket.restclient.response.MovieDetailResponse
 import io.reactivex.Scheduler
-import kotlinx.android.synthetic.main.activity_movie_detail.*
+import io.reactivex.disposables.CompositeDisposable
 
 /**
  * Created by diego.santos on 01/02/18.
@@ -29,11 +25,13 @@ class MovieDetailViewModel(val movieRepository: MovieDetailRepository,
     val ratingText = ObservableField("")
     val ratingVisible = ObservableField(true)
 
+    private var compositeDisposable = CompositeDisposable()
+
     fun getMovieDetail(movieId: String) {
 
         isLoading.set(true)
 
-        movieRepository.getMovieDetail(movieId)
+        var disposable = movieRepository.getMovieDetail(movieId)
                 .observeOn(androidScheduler)
                 .subscribeOn(processScheduler)
                 .subscribe({
@@ -52,6 +50,8 @@ class MovieDetailViewModel(val movieRepository: MovieDetailRepository,
                 }, { error ->
 
                 })
+
+        compositeDisposable.add(disposable)
     }
 
     private fun setRating(movieDetail: MovieDetailResponse) {
@@ -94,5 +94,16 @@ class MovieDetailViewModel(val movieRepository: MovieDetailRepository,
         }
 
         if (genres.isNotEmpty())  movieGenres.set(genres)
+    }
+
+    private fun unSubscribeFromObservable() {
+        if (!compositeDisposable.isDisposed) {
+            compositeDisposable.dispose()
+        }
+    }
+
+    fun reset() {
+        unSubscribeFromObservable()
+        compositeDisposable.clear()
     }
 }

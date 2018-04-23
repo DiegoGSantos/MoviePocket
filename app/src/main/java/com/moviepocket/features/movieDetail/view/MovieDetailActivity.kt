@@ -68,6 +68,11 @@ class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
         }
     }
 
+    override fun onDestroy() {
+        viewModel()?.reset()
+        super.onDestroy()
+    }
+
     private fun viewModel(): MovieDetailViewModel? {
         return ViewModelProviders.of(this,
             Injector.provideMovieDetailViewModelFactory(Schedulers.io(), AndroidSchedulers.mainThread()))
