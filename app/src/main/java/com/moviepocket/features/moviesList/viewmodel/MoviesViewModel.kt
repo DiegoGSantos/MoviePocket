@@ -126,8 +126,13 @@ class MoviesViewModel(val movieRepository: MovieRepository,
         }
     }
 
-    fun reset() {
+    private fun reset() {
         unSubscribeFromObservable()
         compositeDisposable.clear()
+    }
+
+    override fun onCleared() {
+        reset()
+        super.onCleared()
     }
 }
