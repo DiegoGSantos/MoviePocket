@@ -26,8 +26,5 @@ class LoadingView : LinearLayout {
 
     fun initView(){
         inflate(getContext(), R.layout.loading_view, this);
-
-        val rotation = AnimationUtils.loadAnimation(this.context, R.anim.rotate_animation)
-        loadingProgress.startAnimation(rotation)
     }
 }
