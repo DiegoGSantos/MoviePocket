@@ -12,9 +12,9 @@ import io.reactivex.schedulers.Schedulers
 /**
  * Created by diegosantos on 2/4/18.
  */
-class MovieRemoteDataSource(val service: Service){
+class MovieRemoteDataSource(){
 
     fun getMovies(page: String, listType: String): Observable<MovieListResponse> {
-        return service.listMovies(listType, page)
+        return Service.Factory.create().listMovies(listType, page)
     }
 }

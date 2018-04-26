@@ -11,9 +11,9 @@ import io.reactivex.schedulers.Schedulers
 /**
  * Created by diegosantos on 2/4/18.
  */
-class MovieDetailRemoteDataSource(val service: Service) {
+class MovieDetailRemoteDataSource() {
 
     fun getMovieDetail(movieId: String): Observable<MovieDetailResponse> {
-        return service.getMovieDetail(movieId)
+        return Service.Factory.create().getMovieDetail(movieId)
     }
 }

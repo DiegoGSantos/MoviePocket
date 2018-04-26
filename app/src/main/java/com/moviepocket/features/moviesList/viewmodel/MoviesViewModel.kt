@@ -9,15 +9,17 @@ import com.moviepocket.features.moviesList.data.MovieListTypes
 import com.moviepocket.features.moviesList.data.MovieRepository
 import com.moviepocket.features.moviesList.model.Movie
 import io.reactivex.Scheduler
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 
 
 /**
  * Created by diego.santos on 01/02/18.
  */
 class MoviesViewModel(private val movieRepository: MovieRepository,
-                      private val processScheduler: Scheduler,
-                      private val androidScheduler: Scheduler): ViewModel() {
+                      private val processScheduler: Scheduler = Schedulers.io(),
+                      private val androidScheduler: Scheduler = AndroidSchedulers.mainThread()): ViewModel() {
 
     var moviesLiveData: MutableLiveData<MovieListScreenState> = MutableLiveData()
     val isLoading = ObservableField(false)

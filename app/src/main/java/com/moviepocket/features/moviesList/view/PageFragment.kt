@@ -21,22 +21,20 @@ import com.moviepocket.R
 import com.moviepocket.customViews.InfiniteScrollListener
 import com.moviepocket.customViews.OnReleaseScreenListener
 import com.moviepocket.databinding.FragmentPageBinding
-import com.moviepocket.di.Injector
 import com.moviepocket.features.movieDetail.view.MovieDetailActivity
 import com.moviepocket.features.moviesList.data.MovieListTypes
 import com.moviepocket.features.moviesList.model.Movie
 import com.moviepocket.features.moviesList.view.adapter.MoviesAdapter
 import com.moviepocket.features.moviesList.viewmodel.MovieListScreenState
 import com.moviepocket.features.moviesList.viewmodel.MoviesViewModel
-import com.moviepocket.features.moviesList.viewmodel.ScreenStatus
+import com.moviepocket.features.moviesList.viewmodel.MoviesViewModelFactory
 import com.moviepocket.interfaces.MoviesCLickListener
 import com.moviepocket.manager.NetManager
 import com.moviepocket.util.extensions.loadUrl
 import com.moviepocket.util.extensions.reObserve
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.fragment_page.*
 import kotlinx.android.synthetic.main.view_movie_preview.view.*
+import org.koin.android.ext.android.inject
 
 
 /**
@@ -45,6 +43,8 @@ import kotlinx.android.synthetic.main.view_movie_preview.view.*
 class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
     var builder: Dialog? = null
     lateinit var moviesAdapter: MoviesAdapter
+    val viewModelFactory : MoviesViewModelFactory by inject()
+    val netManager: NetManager by inject()
     lateinit var listType: String
     private val observer = Observer<MovieListScreenState> { screenState ->
         screenState?.let {
@@ -92,8 +92,7 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
 
     private fun viewModel(): MoviesViewModel? {
         this.context?.let {
-            return ViewModelProviders.of(this,
-                    Injector.provideMoviesViewModelFactory(it, Schedulers.io(), AndroidSchedulers.mainThread())).get(MoviesViewModel::class.java)
+            return ViewModelProviders.of(this, viewModelFactory).get(MoviesViewModel::class.java)
         }
 
         return null
@@ -139,7 +138,7 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
     override fun onMovieClick(movie: Movie, imageView: ImageView) {
 
         this.context?.let {
-            if (Injector.provideNetManager(it).isConnectedToInternet){
+            if (netManager.isConnectedToInternet){
                 val intent = Intent(this.activity, MovieDetailActivity::class.java)
                 intent.putExtra(Movie.MOVIE, movie)
 
@@ -158,7 +157,7 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
     override fun onMovieLongClick(movie: Movie) {
 
         this.context?.let {
-            if (Injector.provideNetManager(it).isConnectedToInternet){
+            if (netManager.isConnectedToInternet){
                 moviesList.isLayoutFrozen = true;
 
                 val layoutInflater = LayoutInflater.from(context)

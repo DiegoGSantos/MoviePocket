@@ -34,6 +34,7 @@ android {
 }
 
 repositories {
+    jcenter()
     mavenCentral()
     maven { url "https://oss.sonatype.org/content/repositories/snapshots/" }
 }
@@ -76,4 +77,6 @@ dependencies {
     compile "io.objectbox:objectbox-android:$objectboxVersion"
     compile "io.objectbox:objectbox-kotlin:$objectboxVersion"
     kapt "io.objectbox:objectbox-processor:$objectboxVersion"
+
+    compile "org.koin:koin-android-architecture:$koin_version"
 }

@@ -3,7 +3,6 @@ package com.moviepocket.features.movieDetail.view
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
-import android.database.DatabaseUtils
 import android.databinding.DataBindingUtil
 import android.graphics.PorterDuff
 import android.graphics.drawable.LayerDrawable
@@ -14,7 +13,6 @@ import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View.*
 import android.view.WindowManager
-import android.widget.TextView
 import com.Videopocket.features.VideoDetail.view.adapter.VideosAdapter
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -24,22 +22,21 @@ import com.eightbitlab.supportrenderscriptblur.SupportRenderScriptBlur
 import com.moviepocket.R
 import com.moviepocket.customViews.RoundedCornersTransformation
 import com.moviepocket.databinding.ActivityMovieDetailBinding
-import com.moviepocket.di.Injector
-import com.moviepocket.features.movieDetail.data.MovieDetailRemoteDataSource
 import com.moviepocket.features.movieDetail.model.Video
 import com.moviepocket.features.movieDetail.viewmodel.MovieDetailViewModel
+import com.moviepocket.features.movieDetail.viewmodel.MovieDetailViewModelFactory
 import com.moviepocket.features.moviesList.model.Movie
 import com.moviepocket.interfaces.VideoCLickListener
 import com.moviepocket.restclient.response.MovieDetailResponse
 import com.moviepocket.util.extensions.loadUrl
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_movie_detail.*
+import org.koin.android.ext.android.inject
 
 
 class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
 
     private lateinit var binding: ActivityMovieDetailBinding
+    val viewModelFactory: MovieDetailViewModelFactory by inject()
 
     override fun onVideoClick(video: Video) {
         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(video.getVideoUrl())))
@@ -69,8 +66,7 @@ class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
     }
 
     private fun viewModel(): MovieDetailViewModel? {
-        return ViewModelProviders.of(this,
-            Injector.provideMovieDetailViewModelFactory(Schedulers.io(), AndroidSchedulers.mainThread()))
+        return ViewModelProviders.of(this, viewModelFactory)
                 .get(MovieDetailViewModel::class.java)
     }
 
