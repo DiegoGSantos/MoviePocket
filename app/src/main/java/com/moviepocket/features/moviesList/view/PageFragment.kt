@@ -26,7 +26,9 @@ import com.moviepocket.features.movieDetail.view.MovieDetailActivity
 import com.moviepocket.features.moviesList.data.MovieListTypes
 import com.moviepocket.features.moviesList.model.Movie
 import com.moviepocket.features.moviesList.view.adapter.MoviesAdapter
+import com.moviepocket.features.moviesList.viewmodel.MovieListScreenState
 import com.moviepocket.features.moviesList.viewmodel.MoviesViewModel
+import com.moviepocket.features.moviesList.viewmodel.ScreenStatus
 import com.moviepocket.interfaces.MoviesCLickListener
 import com.moviepocket.manager.NetManager
 import com.moviepocket.util.extensions.loadUrl
@@ -44,9 +46,9 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
     var builder: Dialog? = null
     lateinit var moviesAdapter: MoviesAdapter
     lateinit var listType: String
-    private val observer = Observer<List<Movie>> { posts ->
-        posts?.let {
-            updateUi(posts, viewModel()?.isThereMoreItemsToLoad(listType) ?: true)
+    private val observer = Observer<MovieListScreenState> { screenState ->
+        screenState?.let {
+            updateUi(screenState.movies, viewModel()?.isThereMoreItemsToLoad(listType) ?: true)
         }
     }
     private lateinit var binding: FragmentPageBinding

@@ -15,4 +15,5 @@
     <string name="videos">Videos</string>
     <string name="movie_transition">movie_transition</string>
     <string name="default_plot">Sinopse indisponível no momento</string>
+    <string name="movie_list_error">Não foi possível carregar a lista. Tente novamente.</string>
 </resources>
