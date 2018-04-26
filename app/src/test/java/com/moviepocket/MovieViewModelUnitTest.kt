@@ -3,33 +3,27 @@ package com.moviepocket
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import android.arch.lifecycle.Observer
 import com.google.common.collect.Lists
-import com.moviepocket.features.moviesList.data.MovieRepository
-import com.moviepocket.features.moviesList.model.Movie
-import com.moviepocket.features.moviesList.viewmodel.MoviesViewModel
-import org.junit.Test
-
-import org.junit.Assert.*
-import org.junit.Before
-import org.mockito.*
-import io.reactivex.android.plugins.RxAndroidPlugins
-import io.reactivex.plugins.RxJavaPlugins
-import io.reactivex.internal.schedulers.ExecutorScheduler
-import android.support.annotation.NonNull
 import com.moviepocket.features.moviesList.data.MovieLocalDataSource
 import com.moviepocket.features.moviesList.data.MovieRemoteDataSource
+import com.moviepocket.features.moviesList.data.MovieRepository
+import com.moviepocket.features.moviesList.model.Movie
+import com.moviepocket.features.moviesList.viewmodel.MovieListScreenState
+import com.moviepocket.features.moviesList.viewmodel.MoviesViewModel
+import com.moviepocket.features.moviesList.viewmodel.ScreenStatus
 import com.moviepocket.manager.NetManager
 import com.moviepocket.restclient.response.MovieListResponse
 import io.reactivex.Observable
-import io.reactivex.Scheduler
-import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
-import org.junit.BeforeClass
-import java.util.concurrent.Executor
-import java.util.concurrent.TimeUnit
 import io.reactivex.schedulers.TestScheduler
+import org.junit.Assert.*
+import org.junit.Before
 import org.junit.Rule
+import org.junit.Test
 import org.junit.rules.TestRule
-import org.mockito.Mockito.*
+import org.mockito.Mock
+import org.mockito.Mockito
+import org.mockito.Mockito.spy
+import org.mockito.Mockito.verify
+import org.mockito.MockitoAnnotations
 
 
 /**
@@ -43,7 +37,7 @@ class MovieViewModelUnitTest {
     @Mock lateinit var mockMovieLocalDataSource: MovieLocalDataSource
     @Mock lateinit var mockMovieRemoteDataSource: MovieRemoteDataSource
     val testScheduler = TestScheduler()
-    val mockObserver = mock<Observer<List<Movie>>>()
+    val mockObserver = mock<Observer<MovieListScreenState>>()
 
     @get:Rule
     var rule: TestRule = InstantTaskExecutorRule()
@@ -84,8 +78,9 @@ class MovieViewModelUnitTest {
 
         assertFalse("Finished loading", viewModel.isLoading.get())
 
-        assertTrue(viewModel.moviesLiveData.value?.size ?: 0 > 0)
-        assertEquals("Mock movie 1", viewModel.moviesLiveData.value?.get(0)?.title)
+        assertEquals("Invalid Status", ScreenStatus.OK.status, viewModel.moviesLiveData.value?.status)
+        assertTrue("No data found", viewModel.moviesLiveData.value?.movies?.size ?: 0 > 0)
+        assertEquals("Wrong list received","Mock movie 1", viewModel.moviesLiveData.value?.movies?.get(0)?.title)
     }
 
     @Test
@@ -104,8 +99,9 @@ class MovieViewModelUnitTest {
 
         assertFalse("Finished loading", viewModel.isLoading.get())
 
-        assertTrue(viewModel.moviesLiveData.value?.size ?: 0 > 0)
-        assertEquals("Mock cached movie 1", viewModel.moviesLiveData.value?.get(0)?.title)
+        assertEquals("Invalid Status", ScreenStatus.OK.status, viewModel.moviesLiveData.value?.status)
+        assertTrue("No data found",viewModel.moviesLiveData.value?.movies?.size ?: 0 > 0)
+        assertEquals("Wrong list received","Mock cached movie 1", viewModel.moviesLiveData.value?.movies?.get(0)?.title)
 
     }
 }

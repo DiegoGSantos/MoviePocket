@@ -125,21 +125,21 @@ class MoviesViewModel(private val movieRepository: MovieRepository,
             }
         }
 
-        moviesLiveData.value = MovieListScreenState(200, "", movies)
+        moviesLiveData.value = MovieListScreenState(ScreenStatus.OK.status, "", movies)
         errorMessage.set("")
         isLoading.set(false)
         hasError.set(false)
     }
 
     private fun onDataNotAvailable() {
-        moviesLiveData.value = MovieListScreenState(204,  "", emptyList())
+        moviesLiveData.value = MovieListScreenState(ScreenStatus.NO_DATA_FOUND.status,  "", emptyList())
         errorMessage.set(App.appContext.getString(R.string.movie_list_error))
         hasError.set(true)
         isLoading.set(false)
     }
 
     private fun onRequestError() {
-        moviesLiveData.value = MovieListScreenState(400,  "", emptyList())
+        moviesLiveData.value = MovieListScreenState(ScreenStatus.ERROR.status,  "", emptyList())
         errorMessage.set(App.appContext.getString(R.string.app_name))
         hasError.set(true)
         isLoading.set(false)
