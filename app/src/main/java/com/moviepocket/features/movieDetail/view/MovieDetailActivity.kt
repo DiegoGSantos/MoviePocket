@@ -19,10 +19,12 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.GlideDrawable
 import com.bumptech.glide.request.RequestListener
 import com.eightbitlab.supportrenderscriptblur.SupportRenderScriptBlur
+import com.moviepocket.App
 import com.moviepocket.R
 import com.moviepocket.customViews.RoundedCornersTransformation
 import com.moviepocket.databinding.ActivityMovieDetailBinding
 import com.moviepocket.features.movieDetail.model.Video
+import com.moviepocket.features.movieDetail.viewmodel.MovieDetailScreenState
 import com.moviepocket.features.movieDetail.viewmodel.MovieDetailViewModel
 import com.moviepocket.features.movieDetail.viewmodel.MovieDetailViewModelFactory
 import com.moviepocket.features.moviesList.model.Movie
@@ -36,7 +38,7 @@ import org.koin.android.ext.android.inject
 class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
 
     private lateinit var binding: ActivityMovieDetailBinding
-    val viewModelFactory: MovieDetailViewModelFactory by inject()
+    private val viewModelFactory: MovieDetailViewModelFactory by inject()
 
     override fun onVideoClick(video: Video) {
         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(video.getVideoUrl())))
@@ -48,7 +50,6 @@ class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
         supportPostponeEnterTransition()
 
         binding = DataBindingUtil.setContentView(this, R.layout.activity_movie_detail)
-        binding.viewModel = viewModel()
 
         setStatusBar()
 
@@ -61,7 +62,7 @@ class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
         intent.extras.getParcelable<Movie>(Movie.MOVIE).let {
             setMoviePosterBackground(it)
             movieTitle.text = it.title
-            viewModel()?.getMovieDetail(it.movieId ?: "")
+            viewModel()?.getMovieDetail(it.movieId)
         }
     }
 
@@ -71,9 +72,13 @@ class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
     }
 
     private fun loadObservers() {
-        viewModel()?.movieDetailLiveData?.observe(this, Observer<MovieDetailResponse> { movieDetail ->
+        viewModel()?.movieDetailLiveData?.observe(this, Observer<MovieDetailScreenState> { movieDetail ->
             movieDetail?.let {
-                updateUi(it)
+                if (it.isStatusOk()) {
+                    updateUi(it.movieDetail)
+                } else if (it.isLoading()) {
+                    binding.progress.visibility = VISIBLE
+                }
             }
         })
     }
@@ -84,12 +89,24 @@ class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
         }
     }
 
-    private fun updateUi(movieDetailResponse: MovieDetailResponse) {
-        setTopCover(movieDetailResponse)
+    private fun updateUi(movieDetailResponse: MovieDetailResponse?) {
+        if (movieDetailResponse != null) {
+            setTopCover(movieDetailResponse)
 
-        movieGenres.isSelected = true
+            movieGenres.isSelected = true
 
-        setVideoList(movieDetailResponse)
+            setVideoList(movieDetailResponse)
+
+            setPlot(movieDetailResponse)
+
+            setReleaseDate(movieDetailResponse)
+
+            setGenres(movieDetailResponse)
+
+            setRating(movieDetailResponse)
+        }
+
+        binding.progress.visibility = GONE
     }
 
     private fun setVideoList(movieDetailResponse: MovieDetailResponse) {
@@ -158,5 +175,50 @@ class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
                     }
                 })
                 .into(movieCover)
+    }
+
+    private fun setPlot(movieDetail: MovieDetailResponse) {
+        if (!movieDetail.overview.isEmpty()) {
+            binding.moviePlot.text = movieDetail.overview
+        } else {
+            binding.moviePlot.text = getString(R.string.default_plot)
+        }
+
+        binding.moviePlot.visibility = VISIBLE
+    }
+
+    private fun setReleaseDate(movieDetailResponse: MovieDetailResponse) {
+        var releaseDateText = movieDetailResponse.releaseDate
+
+        movieDetailResponse.releaseDates.results.forEach {
+            if (it.country.equals("BR")) {
+                releaseDateText = it.releaseDates.get(0).releaseDate
+            }
+        }
+
+        val date = releaseDateText.substring(8, 10) + "/" +
+                releaseDateText.substring(5, 7) + "/" +
+                releaseDateText.substring(0, 4)
+        binding.releaseDate.text = getString(R.string.releaseDate, date)
+    }
+
+    private fun setRating(movieDetail: MovieDetailResponse) {
+        if (movieDetail.voteAverage.toFloat() != 0f) {
+            ratingBar.rating = (movieDetail.voteAverage.toFloat() / 2)
+            binding.rating.text = getString(R.string.movieRating, "%.1f".format(movieDetail.voteAverage.toFloat()))
+            ratingBar.visibility = VISIBLE
+        } else {
+            ratingBar.visibility = INVISIBLE
+
+        }
+    }
+
+    private fun setGenres(movieDetailResponse: MovieDetailResponse) {
+        var genres = ""
+        movieDetailResponse.genres.forEachIndexed { index, genre ->
+            genres += genre.name + if (index == (movieDetailResponse.genres.size - 1)) "" else ", "
+        }
+
+        if (genres.isNotEmpty())  binding.movieGenres.text = genres
     }
 }
