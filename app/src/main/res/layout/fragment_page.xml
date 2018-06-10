@@ -2,14 +2,6 @@
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <data>
-        <import type="android.view.View"/>
-
-        <variable
-            name="viewModel"
-            type="com.moviepocket.features.moviesList.viewmodel.MoviesViewModel" />
-    </data>
-
     <com.moviepocket.customViews.TouchableLinearLayout
         android:id="@+id/mainLayout"
         android:layout_width="match_parent"
@@ -27,19 +19,18 @@
                 android:layout_height="match_parent"
                 android:padding="@dimen/nano_margin"
                 android:clipToPadding="false"
-                android:visibility="@{!viewModel.isLoading &amp;&amp; !viewModel.hasError ? View.VISIBLE : View.GONE}"
                 android:gravity="center" />
 
             <com.moviepocket.customViews.LoadingView
+                android:id="@+id/loadingView"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="@{viewModel.isLoading &amp;&amp; !viewModel.hasError ? View.VISIBLE : View.GONE}"/>
+                android:layout_height="match_parent" />
 
             <com.moviepocket.customViews.ErrorView
+                android:id="@+id/errorView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:visibility="@{!viewModel.isLoading &amp;&amp; viewModel.hasError ? View.VISIBLE : View.GONE}"/>
+                android:layout_gravity="center" />
 
         </FrameLayout>
 

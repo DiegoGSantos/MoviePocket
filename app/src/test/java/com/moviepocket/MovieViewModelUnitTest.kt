@@ -22,7 +22,6 @@ import org.junit.rules.TestRule
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.Mockito.spy
-import org.mockito.Mockito.verify
 import org.mockito.MockitoAnnotations
 
 
@@ -36,8 +35,8 @@ class MovieViewModelUnitTest {
     @Mock lateinit var mockNetManager: NetManager
     @Mock lateinit var mockMovieLocalDataSource: MovieLocalDataSource
     @Mock lateinit var mockMovieRemoteDataSource: MovieRemoteDataSource
-    val testScheduler = TestScheduler()
-    val mockObserver = mock<Observer<MovieListScreenState>>()
+    private val testScheduler = TestScheduler()
+    private val mockObserver = mock<Observer<MovieListScreenState>>()
 
     @get:Rule
     var rule: TestRule = InstantTaskExecutorRule()
@@ -67,20 +66,15 @@ class MovieViewModelUnitTest {
         Mockito.`when`(mockNetManager.isConnectedToInternet).thenReturn(true)
         Mockito.`when`(mockMovieRemoteDataSource.getMovies("1", "")).thenReturn(Observable.just(MovieListResponse(1, movies)))
 
-        viewModel.moviesLiveData.observeForever(mockObserver)
+        viewModel.moviesScreenState.observeForever(mockObserver)
 
         viewModel.listMovies("")
-        verify(viewModel).listMovies("")
 
-        assertTrue("Is loading", viewModel.isLoading.get())
+        handleLoadingProperly()
 
-        testScheduler.triggerActions()
-
-        assertFalse("Finished loading", viewModel.isLoading.get())
-
-        assertEquals("Invalid Status", ScreenStatus.OK.status, viewModel.moviesLiveData.value?.status)
-        assertTrue("No data found", viewModel.moviesLiveData.value?.movies?.size ?: 0 > 0)
-        assertEquals("Wrong list received","Mock movie 1", viewModel.moviesLiveData.value?.movies?.get(0)?.title)
+        assertEquals("Invalid Status", ScreenStatus.OK.status, viewModel.moviesScreenState.value?.status)
+        assertTrue("No data found", viewModel.moviesScreenState.value?.movies?.size ?: 0 > 0)
+        assertEquals("Wrong list received","Mock movie 1", viewModel.moviesScreenState.value?.movies?.get(0)?.title)
     }
 
     @Test
@@ -88,20 +82,48 @@ class MovieViewModelUnitTest {
         Mockito.`when`(mockNetManager.isConnectedToInternet).thenReturn(false)
         Mockito.`when`(mockMovieLocalDataSource.getMovies("1", "")).thenReturn(Observable.just(MovieListResponse(1, moviesCached)))
 
-        viewModel.moviesLiveData.observeForever(mockObserver)
+        viewModel.moviesScreenState.observeForever(mockObserver)
 
         viewModel.listMovies("")
-        verify(viewModel).listMovies("")
 
-        assertTrue("Is loading", viewModel.isLoading.get())
+        handleLoadingProperly()
+
+        assertEquals("Invalid Status", ScreenStatus.OK.status,
+                viewModel.moviesScreenState.value?.status)
+        assertTrue("No data found",
+                viewModel.moviesScreenState.value?.movies?.size ?: 0 > 0)
+        assertEquals("Wrong list received","Mock cached movie 1",
+                viewModel.moviesScreenState.value?.movies?.get(0)?.title)
+    }
+
+    @Test
+    fun getMovieList_NoDataFound() {
+        Mockito.`when`(mockNetManager.isConnectedToInternet).thenReturn(false)
+        Mockito.`when`(mockMovieLocalDataSource.getMovies("1", ""))
+                .thenReturn(Observable.just(MovieListResponse(1, ArrayList())))
+
+        viewModel.moviesScreenState.observeForever(mockObserver)
+
+        viewModel.listMovies("")
+
+        handleLoadingProperly()
+
+        assertEquals("Invalid Status", ScreenStatus.NO_DATA_FOUND.status,
+                viewModel.moviesScreenState.value?.status)
+
+        assertTrue("Should not receive data",
+                viewModel.moviesScreenState.value?.movies?.size ?: 0 == 0)
+    }
+
+    private fun handleLoadingProperly() {
+        viewModel.moviesScreenState.value?.isLoading()?.let {
+            assertTrue("Is loading", it)
+        }
 
         testScheduler.triggerActions()
 
-        assertFalse("Finished loading", viewModel.isLoading.get())
-
-        assertEquals("Invalid Status", ScreenStatus.OK.status, viewModel.moviesLiveData.value?.status)
-        assertTrue("No data found",viewModel.moviesLiveData.value?.movies?.size ?: 0 > 0)
-        assertEquals("Wrong list received","Mock cached movie 1", viewModel.moviesLiveData.value?.movies?.get(0)?.title)
-
+        viewModel.moviesScreenState.value?.isLoading()?.let {
+            assertFalse("Finished loading", it)
+        }
     }
 }

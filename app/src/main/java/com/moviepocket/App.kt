@@ -32,7 +32,7 @@ class App : Application() {
     override fun onCreate() {
         super.onCreate()
         appContext = this.applicationContext
-        myboxStore = MyObjectBox.builder().androidContext(appContext).build()
+        myboxStore = MyObjectBox.builder().androidContext(this.applicationContext).build()
 
         startKoin(this, listOf(module))
     }

@@ -2,9 +2,6 @@ package com.moviepocket.features.moviesList.viewmodel
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import android.databinding.ObservableField
-import com.moviepocket.App
-import com.moviepocket.R
 import com.moviepocket.features.moviesList.data.MovieListTypes
 import com.moviepocket.features.moviesList.data.MovieRepository
 import com.moviepocket.features.moviesList.model.Movie
@@ -21,10 +18,7 @@ class MoviesViewModel(private val movieRepository: MovieRepository,
                       private val processScheduler: Scheduler = Schedulers.io(),
                       private val androidScheduler: Scheduler = AndroidSchedulers.mainThread()): ViewModel() {
 
-    var moviesLiveData: MutableLiveData<MovieListScreenState> = MutableLiveData()
-    val isLoading = ObservableField(false)
-    val hasError = ObservableField(false)
-    val errorMessage = ObservableField("")
+    var moviesScreenState: MutableLiveData<MovieListScreenState> = MutableLiveData()
 
     private var totalOfPages: Int = 0
 
@@ -44,19 +38,23 @@ class MoviesViewModel(private val movieRepository: MovieRepository,
     private var compositeDisposable = CompositeDisposable()
 
     fun listMovies(listType: String) {
-
-        if (listType.equals(MovieListTypes.NOW_PLAYING.listType)) {
-            currentPage = currentInTheaterPage
-            isThereMoreItemsToLoad = isThereMoreInTheaterToLoad
-        } else if (listType.equals(MovieListTypes.UPCOMING.listType)) {
-            currentPage = currentUpcomingPage
-            isThereMoreItemsToLoad = isThereMoreUpcomingToLoad
-        }else if (listType.equals(MovieListTypes.POPULAR.listType)) {
-            currentPage = currentPopularPage
-            isThereMoreItemsToLoad = isThereMorePopularToLoad
-        }else if (listType.equals(MovieListTypes.TOP_RATED.listType)) {
-            currentPage = currentTopRatedPage
-            isThereMoreItemsToLoad = isThereMoreTopRatedToLoad
+        when {
+            listType.equals(MovieListTypes.NOW_PLAYING.listType) -> {
+                currentPage = currentInTheaterPage
+                isThereMoreItemsToLoad = isThereMoreInTheaterToLoad
+            }
+            listType.equals(MovieListTypes.UPCOMING.listType) -> {
+                currentPage = currentUpcomingPage
+                isThereMoreItemsToLoad = isThereMoreUpcomingToLoad
+            }
+            listType.equals(MovieListTypes.POPULAR.listType) -> {
+                currentPage = currentPopularPage
+                isThereMoreItemsToLoad = isThereMorePopularToLoad
+            }
+            listType.equals(MovieListTypes.TOP_RATED.listType) -> {
+                currentPage = currentTopRatedPage
+                isThereMoreItemsToLoad = isThereMoreTopRatedToLoad
+            }
         }
 
         if (isThereMoreItemsToLoad) {
@@ -76,8 +74,7 @@ class MoviesViewModel(private val movieRepository: MovieRepository,
 
                         movieRepository.saveMovies(result.results, listType, currentPage.toString())
                     }, { error ->
-//                        onRequestError()
-                        onDataNotAvailable()
+                        onRequestError()
                         error.printStackTrace()
                     })
 
@@ -87,20 +84,20 @@ class MoviesViewModel(private val movieRepository: MovieRepository,
 
     fun isThereMoreItemsToLoad(listType: String): Boolean {
         return when {
-            listType.equals(MovieListTypes.NOW_PLAYING.listType) -> isThereMoreInTheaterToLoad
-            listType.equals(MovieListTypes.UPCOMING.listType) -> isThereMoreUpcomingToLoad
-            listType.equals(MovieListTypes.POPULAR.listType) -> isThereMorePopularToLoad
-            listType.equals(MovieListTypes.TOP_RATED.listType) -> isThereMoreTopRatedToLoad
+            listType == MovieListTypes.NOW_PLAYING.listType -> isThereMoreInTheaterToLoad
+            listType == MovieListTypes.UPCOMING.listType -> isThereMoreUpcomingToLoad
+            listType == MovieListTypes.POPULAR.listType -> isThereMorePopularToLoad
+            listType == MovieListTypes.TOP_RATED.listType -> isThereMoreTopRatedToLoad
             else -> false
         }
     }
 
     fun getCurrentPage(listType: String): Int {
-        return when {
-            listType.equals(MovieListTypes.NOW_PLAYING.listType) -> currentInTheaterPage
-            listType.equals(MovieListTypes.UPCOMING.listType) -> currentUpcomingPage
-            listType.equals(MovieListTypes.POPULAR.listType) -> currentPopularPage
-            listType.equals(MovieListTypes.TOP_RATED.listType) -> currentTopRatedPage
+        return when (listType) {
+            MovieListTypes.NOW_PLAYING.listType -> currentInTheaterPage
+            MovieListTypes.UPCOMING.listType -> currentUpcomingPage
+            MovieListTypes.POPULAR.listType -> currentPopularPage
+            MovieListTypes.TOP_RATED.listType -> currentTopRatedPage
             else -> 1
         }
     }
@@ -127,24 +124,19 @@ class MoviesViewModel(private val movieRepository: MovieRepository,
             }
         }
 
-        moviesLiveData.value = MovieListScreenState(ScreenStatus.OK.status, "", movies)
-        errorMessage.set("")
-        isLoading.set(false)
-        hasError.set(false)
+        moviesScreenState.value = MovieListScreenState(ScreenStatus.OK.status, "", movies)
     }
 
     private fun onDataNotAvailable() {
-        moviesLiveData.value = MovieListScreenState(ScreenStatus.NO_DATA_FOUND.status,  "", emptyList())
-        errorMessage.set(App.appContext.getString(R.string.movie_list_error))
-        hasError.set(true)
-        isLoading.set(false)
+        moviesScreenState.value = MovieListScreenState(ScreenStatus.NO_DATA_FOUND.status,  "", emptyList())
     }
 
     private fun onRequestError() {
-        moviesLiveData.value = MovieListScreenState(ScreenStatus.ERROR.status,  "", emptyList())
-        errorMessage.set(App.appContext.getString(R.string.app_name))
-        hasError.set(true)
-        isLoading.set(false)
+        moviesScreenState.value = MovieListScreenState(ScreenStatus.ERROR.status,  "", emptyList())
+    }
+
+    private fun onLoading() {
+        moviesScreenState.value = MovieListScreenState(ScreenStatus.LOADING.status,  "", emptyList())
     }
 
     private fun unSubscribeFromObservable() {
@@ -155,10 +147,8 @@ class MoviesViewModel(private val movieRepository: MovieRepository,
 
     private fun resetState() {
         if (currentPage == 1) {
-            isLoading.set(true)
+            onLoading()
         }
-        hasError.set(false)
-        errorMessage.set("")
     }
 
     private fun reset() {

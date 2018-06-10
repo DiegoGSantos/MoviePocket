@@ -13,6 +13,8 @@ import android.support.v4.view.ViewCompat
 import android.support.v7.widget.GridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.GONE
+import android.view.View.VISIBLE
 import android.view.ViewGroup
 import android.view.Window
 import android.widget.ImageView
@@ -48,16 +50,25 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
     lateinit var listType: String
     private val observer = Observer<MovieListScreenState> { screenState ->
         screenState?.let {
-            updateUi(screenState.movies, viewModel()?.isThereMoreItemsToLoad(listType) ?: true)
+            when {
+                screenState.isStatusOk() -> updateList(screenState.movies,
+                        viewModel()?.isThereMoreItemsToLoad(listType) ?: true)
+                screenState.isDataNotAvailable() ->
+                    showNotDataAvailableScreen()
+                screenState.isLoading() ->
+                    showLoadingScreen()
+                screenState.isThereError() ->
+                    showErrorScreen()
+            }
         }
     }
+
     private lateinit var binding: FragmentPageBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         loadObservers()
         binding = DataBindingUtil.inflate(
                 inflater, R.layout.fragment_page, container, false)
-        binding.viewModel = viewModel()
 
         return binding.mainLayout
     }
@@ -114,11 +125,14 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
     }
 
     private fun loadObservers() {
-        viewModel()?.moviesLiveData?.reObserve(this, observer)
+        viewModel()?.moviesScreenState?.reObserve(this, observer)
     }
 
-    private fun updateUi(movies: List<Movie>, isThereMoreItemsToLoad: Boolean) {
+    private fun updateList(movies: List<Movie>, isThereMoreItemsToLoad: Boolean) {
         if (viewModel()?.getCurrentPage(listType) != 1) {
+            binding.moviesList.visibility = VISIBLE
+            binding.loadingView.visibility = GONE
+            binding.errorView.visibility = GONE
             moviesAdapter.addMovies(movies, isThereMoreItemsToLoad)
         }
     }
@@ -191,5 +205,25 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
     override fun onReleaseScreenListener() {
         hidePreview()
         (this.activity as MainActivity).hideBlurView()
+    }
+
+    private fun showErrorScreen() {
+        binding.moviesList.visibility = GONE
+        binding.loadingView.visibility = GONE
+        binding.errorView.visibility = VISIBLE
+        binding.errorView.setErrorMessage(getString(R.string.movie_list_error))
+    }
+
+    private fun showLoadingScreen() {
+        binding.moviesList.visibility = GONE
+        binding.loadingView.visibility = VISIBLE
+        binding.errorView.visibility = GONE
+    }
+
+    private fun showNotDataAvailableScreen() {
+        binding.moviesList.visibility = GONE
+        binding.loadingView.visibility = GONE
+        binding.errorView.visibility = VISIBLE
+        binding.errorView.setErrorMessage(getString(R.string.movie_list_error))
     }
 }

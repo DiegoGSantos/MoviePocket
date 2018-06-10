@@ -43,4 +43,8 @@ class ErrorView : LinearLayout {
             }
         }
     }
+
+    fun setErrorMessage(message: String) {
+        errorMessage.text = message
+    }
 }
