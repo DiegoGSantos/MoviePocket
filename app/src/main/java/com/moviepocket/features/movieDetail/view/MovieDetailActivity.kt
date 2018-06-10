@@ -78,6 +78,8 @@ class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
                     updateUi(it.movieDetail)
                 } else if (it.isLoading()) {
                     binding.progress.visibility = VISIBLE
+                } else if (it.isThereError()) {
+                    showErrorScreen()
                 }
             }
         })
@@ -220,5 +222,9 @@ class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
         }
 
         if (genres.isNotEmpty())  binding.movieGenres.text = genres
+    }
+
+    private fun showErrorScreen() {
+        binding.progress.visibility = GONE
     }
 }

@@ -34,7 +34,8 @@ class MovieDetailViewModel(val movieRepository: MovieDetailRepository,
                     movieDetailLiveData.value =
                             MovieDetailScreenState(ScreenStatus.OK.status, "", movieDetail)
                 }, { error ->
-
+                    movieDetailLiveData.value =
+                            MovieDetailScreenState(ScreenStatus.ERROR.status, "", null)
                 })
 
         compositeDisposable.add(disposable)
