@@ -38,20 +38,20 @@ class MoviesViewModel(private val movieRepository: MovieRepository,
     private var compositeDisposable = CompositeDisposable()
 
     fun listMovies(listType: String) {
-        when {
-            listType.equals(MovieListTypes.NOW_PLAYING.listType) -> {
+        when (listType) {
+            MovieListTypes.NOW_PLAYING.listType -> {
                 currentPage = currentInTheaterPage
                 isThereMoreItemsToLoad = isThereMoreInTheaterToLoad
             }
-            listType.equals(MovieListTypes.UPCOMING.listType) -> {
+            MovieListTypes.UPCOMING.listType -> {
                 currentPage = currentUpcomingPage
                 isThereMoreItemsToLoad = isThereMoreUpcomingToLoad
             }
-            listType.equals(MovieListTypes.POPULAR.listType) -> {
+            MovieListTypes.POPULAR.listType -> {
                 currentPage = currentPopularPage
                 isThereMoreItemsToLoad = isThereMorePopularToLoad
             }
-            listType.equals(MovieListTypes.TOP_RATED.listType) -> {
+            MovieListTypes.TOP_RATED.listType -> {
                 currentPage = currentTopRatedPage
                 isThereMoreItemsToLoad = isThereMoreTopRatedToLoad
             }
@@ -62,9 +62,9 @@ class MoviesViewModel(private val movieRepository: MovieRepository,
             resetState()
 
             val disposable = movieRepository.getMovies(currentPage.toString(), listType)
-                    ?.observeOn(androidScheduler)
-                    ?.subscribeOn(processScheduler)
-                    ?.subscribe ({
+                    .observeOn(androidScheduler)
+                    .subscribeOn(processScheduler)
+                    .subscribe ({
                         result ->
                         if (result.results.size > 0) {
                             onMoviesLoaded(listType, result.results, result.totalPages.toString())
@@ -83,11 +83,11 @@ class MoviesViewModel(private val movieRepository: MovieRepository,
     }
 
     fun isThereMoreItemsToLoad(listType: String): Boolean {
-        return when {
-            listType == MovieListTypes.NOW_PLAYING.listType -> isThereMoreInTheaterToLoad
-            listType == MovieListTypes.UPCOMING.listType -> isThereMoreUpcomingToLoad
-            listType == MovieListTypes.POPULAR.listType -> isThereMorePopularToLoad
-            listType == MovieListTypes.TOP_RATED.listType -> isThereMoreTopRatedToLoad
+        return when (listType) {
+            MovieListTypes.NOW_PLAYING.listType -> isThereMoreInTheaterToLoad
+            MovieListTypes.UPCOMING.listType -> isThereMoreUpcomingToLoad
+            MovieListTypes.POPULAR.listType -> isThereMorePopularToLoad
+            MovieListTypes.TOP_RATED.listType -> isThereMoreTopRatedToLoad
             else -> false
         }
     }
@@ -105,20 +105,20 @@ class MoviesViewModel(private val movieRepository: MovieRepository,
     private fun onMoviesLoaded(listType: String, movies: List<Movie>, totalPages: String) {
         totalOfPages = totalPages.toIntOrNull() ?: 1
 
-        when {
-            listType.equals(MovieListTypes.NOW_PLAYING.listType) -> {
+        when (listType) {
+            MovieListTypes.NOW_PLAYING.listType -> {
                 currentInTheaterPage += 1
                 isThereMoreInTheaterToLoad = currentInTheaterPage <= totalOfPages
             }
-            listType.equals(MovieListTypes.UPCOMING.listType) -> {
+            MovieListTypes.UPCOMING.listType -> {
                 currentUpcomingPage += 1
                 isThereMoreUpcomingToLoad = currentUpcomingPage <= totalOfPages
             }
-            listType.equals(MovieListTypes.POPULAR.listType) -> {
+            MovieListTypes.POPULAR.listType -> {
                 currentPopularPage += 1
                 isThereMorePopularToLoad = currentPopularPage <= totalOfPages
             }
-            listType.equals(MovieListTypes.TOP_RATED.listType) -> {
+            MovieListTypes.TOP_RATED.listType -> {
                 currentTopRatedPage += 1
                 isThereMoreTopRatedToLoad = currentTopRatedPage <= totalOfPages
             }

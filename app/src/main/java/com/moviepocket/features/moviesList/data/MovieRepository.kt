@@ -16,9 +16,9 @@ class MovieRepository(private val netManager: NetManager,
                       private val movieRemoteDataSource: MovieRemoteDataSource,
                       private val movieLocalDataSource: MovieLocalDataSource) {
 
-    fun getMovies(page: String, listType: String): Observable<MovieListResponse>? {
+    fun getMovies(page: String, listType: String): Observable<MovieListResponse> {
 
-        netManager.isConnectedToInternet?.let {
+        netManager.isConnectedToInternet.let {
             return if (it) {
                 movieRemoteDataSource.getMovies(page, listType)
             } else {
@@ -28,6 +28,6 @@ class MovieRepository(private val netManager: NetManager,
     }
 
     fun saveMovies(movies: List<Movie>, listType: String, page: String) {
-        movieLocalDataSource.saveMovies(movies, listType, page);
+        movieLocalDataSource.saveMovies(movies, listType, page)
     }
 }

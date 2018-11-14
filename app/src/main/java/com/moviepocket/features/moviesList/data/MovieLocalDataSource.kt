@@ -14,12 +14,12 @@ import org.jetbrains.anko.doAsync
 /**
  * Created by diegosantos on 2/4/18.
  */
-class MovieLocalDataSource() {
+class MovieLocalDataSource {
 
-    fun getMovies(page: String, listType: String): Observable<MovieListResponse>? {
-        return Observable.create(ObservableOnSubscribe<MovieListResponse> {
+    fun getMovies(page: String, listType: String): Observable<MovieListResponse> {
+        return Observable.create {
             emitter -> emitter.onNext(Movie.getAllFromType(listType, page))
-        })
+        }
     }
 
     fun saveMovies(movies: List<Movie>, listType: String, page: String) {

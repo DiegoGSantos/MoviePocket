@@ -172,7 +172,7 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
 
         this.context?.let {
             if (netManager.isConnectedToInternet){
-                moviesList.isLayoutFrozen = true;
+                moviesList.isLayoutFrozen = true
 
                 val layoutInflater = LayoutInflater.from(context)
                 val view = layoutInflater.inflate(R.layout.view_movie_preview, null)
@@ -181,9 +181,9 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
                 view.imdbRate.text = movie.voteAverage
                 view.mMovieCover.loadUrl(movie.getPosterUrl())
 
-                builder = Dialog(context);
-                builder?.requestWindowFeature(Window.FEATURE_NO_TITLE);
-                builder?.setContentView(view);
+                builder = Dialog(context)
+                builder?.requestWindowFeature(Window.FEATURE_NO_TITLE)
+                builder?.setContentView(view)
                 builder?.show()
 
                 (this.activity as MainActivity).showBlurView()
@@ -194,12 +194,12 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
     }
 
     private fun onConnectivityError() {
-        Toast.makeText(this.context, "Verifique sua conexão com a internet", Toast.LENGTH_SHORT).show()
+        Toast.makeText(this.context, getString(R.string.connectivity_error), Toast.LENGTH_SHORT).show()
     }
 
     fun hidePreview() {
         builder?.dismiss()
-        moviesList.isLayoutFrozen = false;
+        moviesList.isLayoutFrozen = false
     }
 
     override fun onReleaseScreenListener() {

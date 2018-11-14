@@ -5,8 +5,8 @@ package com.moviepocket.util
  */
 object Constants{
     val CATEGORY: String = "/now_playing"
-    val API_KEY: String = "08be2ddccd76e47b36c5eaa4797bd6a4"
+    const val API_KEY: String = "YOUR API KEY HERE"
     val LANGUAGE: String = "en-US"
     val PAGE: String = "1"
-    val BASE_URL: String = "https://api.themoviedb.org/3/"
+    const val BASE_URL: String = "https://api.themoviedb.org/3/"
 }
