@@ -2,22 +2,19 @@ package com.moviepocket.features.movieDetail.viewmodel
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import android.databinding.ObservableField
-import com.moviepocket.App
-import com.moviepocket.R
-import com.moviepocket.features.ScreenState
 import com.moviepocket.features.movieDetail.data.MovieDetailRepository
 import com.moviepocket.features.moviesList.viewmodel.ScreenStatus
-import com.moviepocket.restclient.response.MovieDetailResponse
 import io.reactivex.Scheduler
+import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
 
 /**
  * Created by diego.santos on 01/02/18.
  */
-class MovieDetailViewModel(val movieRepository: MovieDetailRepository,
-                           val processScheduler: Scheduler,
-                           val androidScheduler: Scheduler): ViewModel() {
+class MovieDetailViewModel(private val movieRepository: MovieDetailRepository,
+                           private val processScheduler: Scheduler = Schedulers.io(),
+                           private val androidScheduler: Scheduler = AndroidSchedulers.mainThread()): ViewModel() {
     var movieDetailLiveData: MutableLiveData<MovieDetailScreenState> = MutableLiveData()
 
     private var compositeDisposable = CompositeDisposable()
@@ -26,7 +23,7 @@ class MovieDetailViewModel(val movieRepository: MovieDetailRepository,
 
         movieDetailLiveData.value = MovieDetailScreenState(ScreenStatus.LOADING.status, "", null)
 
-        var disposable = movieRepository.getMovieDetail(movieId)
+        val disposable = movieRepository.getMovieDetail(movieId)
                 .observeOn(androidScheduler)
                 .subscribeOn(processScheduler)
                 .subscribe({

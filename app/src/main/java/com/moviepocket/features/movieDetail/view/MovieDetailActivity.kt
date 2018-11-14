@@ -32,13 +32,14 @@ import com.moviepocket.interfaces.VideoCLickListener
 import com.moviepocket.restclient.response.MovieDetailResponse
 import com.moviepocket.util.extensions.loadUrl
 import kotlinx.android.synthetic.main.activity_movie_detail.*
+import org.koin.android.architecture.ext.viewModel
 import org.koin.android.ext.android.inject
 
 
 class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
 
     private lateinit var binding: ActivityMovieDetailBinding
-    private val viewModelFactory: MovieDetailViewModelFactory by inject()
+    private val movieDetailViewModel: MovieDetailViewModel by viewModel()
 
     override fun onVideoClick(video: Video) {
         startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(video.getVideoUrl())))
@@ -62,24 +63,17 @@ class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
         intent.extras.getParcelable<Movie>(Movie.MOVIE).let {
             setMoviePosterBackground(it)
             movieTitle.text = it.title
-            viewModel()?.getMovieDetail(it.movieId)
+            movieDetailViewModel.getMovieDetail(it.movieId)
         }
     }
 
-    private fun viewModel(): MovieDetailViewModel? {
-        return ViewModelProviders.of(this, viewModelFactory)
-                .get(MovieDetailViewModel::class.java)
-    }
-
     private fun loadObservers() {
-        viewModel()?.movieDetailLiveData?.observe(this, Observer<MovieDetailScreenState> { movieDetail ->
+        movieDetailViewModel.movieDetailLiveData.observe(this, Observer<MovieDetailScreenState> { movieDetail ->
             movieDetail?.let {
-                if (it.isStatusOk()) {
-                    updateUi(it.movieDetail)
-                } else if (it.isLoading()) {
-                    binding.progress.visibility = VISIBLE
-                } else if (it.isThereError()) {
-                    showErrorScreen()
+                when {
+                    it.isStatusOk() -> updateUi(it.movieDetail)
+                    it.isLoading() -> binding.progress.visibility = VISIBLE
+                    it.isThereError() -> showErrorScreen()
                 }
             }
         })
@@ -112,7 +106,7 @@ class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
     }
 
     private fun setVideoList(movieDetailResponse: MovieDetailResponse) {
-        if(movieDetailResponse.videos.results.size > 0) {
+        if(movieDetailResponse.videos.results.isNotEmpty()) {
             videosList.apply {
                 setHasFixedSize(true)
                 layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
@@ -193,7 +187,7 @@ class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
         var releaseDateText = movieDetailResponse.releaseDate
 
         movieDetailResponse.releaseDates.results.forEach {
-            if (it.country.equals("BR")) {
+            if (it.country == "BR") {
                 releaseDateText = it.releaseDates.get(0).releaseDate
             }
         }

@@ -36,8 +36,8 @@ import com.moviepocket.util.extensions.loadUrl
 import com.moviepocket.util.extensions.reObserve
 import kotlinx.android.synthetic.main.fragment_page.*
 import kotlinx.android.synthetic.main.view_movie_preview.view.*
+import org.koin.android.architecture.ext.viewModel
 import org.koin.android.ext.android.inject
-
 
 /**
  * Created by diegosantos on 12/17/17.
@@ -45,14 +45,14 @@ import org.koin.android.ext.android.inject
 class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
     var builder: Dialog? = null
     lateinit var moviesAdapter: MoviesAdapter
-    val viewModelFactory : MoviesViewModelFactory by inject()
-    val netManager: NetManager by inject()
+    private val moviesViewModel: MoviesViewModel by viewModel()
+    private val netManager: NetManager by inject()
     lateinit var listType: String
     private val observer = Observer<MovieListScreenState> { screenState ->
         screenState?.let {
             when {
                 screenState.isStatusOk() -> updateList(screenState.movies,
-                        viewModel()?.isThereMoreItemsToLoad(listType) ?: true)
+                        moviesViewModel.isThereMoreItemsToLoad(listType))
                 screenState.isDataNotAvailable() ->
                     showNotDataAvailableScreen()
                 screenState.isLoading() ->
@@ -82,32 +82,37 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
         resetInfiniteScroll()
         setListeners()
 
-        viewModel()?.listMovies(listType)
+        moviesViewModel.listMovies(listType)
     }
 
     private fun resetInfiniteScroll() {
-        if (listType.equals(MovieListTypes.NOW_PLAYING.listType)) {
-            viewModel()?.currentInTheaterPage = 1
-            viewModel()?.isThereMoreInTheaterToLoad = true
-        } else if (listType.equals(MovieListTypes.UPCOMING.listType)) {
-            viewModel()?.currentUpcomingPage = 1
-            viewModel()?.isThereMoreUpcomingToLoad = true
-        }else if (listType.equals(MovieListTypes.POPULAR.listType)) {
-            viewModel()?.currentPopularPage = 1
-            viewModel()?.isThereMorePopularToLoad = true
-        }else if (listType.equals(MovieListTypes.TOP_RATED.listType)) {
-            viewModel()?.currentTopRatedPage = 1
-            viewModel()?.isThereMoreTopRatedToLoad = true
+        when {
+            listType == MovieListTypes.NOW_PLAYING.listType -> {
+                moviesViewModel.currentInTheaterPage = 1
+                moviesViewModel.isThereMoreInTheaterToLoad = true
+            }
+            listType.equals(MovieListTypes.UPCOMING.listType) -> {
+                moviesViewModel.currentUpcomingPage = 1
+                moviesViewModel.isThereMoreUpcomingToLoad = true
+            }
+            listType.equals(MovieListTypes.POPULAR.listType) -> {
+                moviesViewModel.currentPopularPage = 1
+                moviesViewModel.isThereMorePopularToLoad = true
+            }
+            listType.equals(MovieListTypes.TOP_RATED.listType) -> {
+                moviesViewModel.currentTopRatedPage = 1
+                moviesViewModel.isThereMoreTopRatedToLoad = true
+            }
         }
     }
 
-    private fun viewModel(): MoviesViewModel? {
-        this.context?.let {
-            return ViewModelProviders.of(this, viewModelFactory).get(MoviesViewModel::class.java)
-        }
-
-        return null
-    }
+//    private fun viewModel(): MoviesViewModel? {
+//        this.context?.let {
+//            return ViewModelProviders.of(this, viewModelFactory).get(MoviesViewModel::class.java)
+//        }
+//
+//        return null
+//    }
 
     private fun setListeners() {
         mainLayout.setOnRealeseListener(this)
@@ -119,17 +124,17 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
             val gridLayoutManager = GridLayoutManager(this.context, 3)
             layoutManager = gridLayoutManager
             addOnScrollListener(InfiniteScrollListener({
-                viewModel()?.listMovies(listType)
+                moviesViewModel.listMovies(listType)
             }, gridLayoutManager))
         }
     }
 
     private fun loadObservers() {
-        viewModel()?.moviesScreenState?.reObserve(this, observer)
+        moviesViewModel.moviesScreenState.reObserve(this, observer)
     }
 
     private fun updateList(movies: List<Movie>, isThereMoreItemsToLoad: Boolean) {
-        if (viewModel()?.getCurrentPage(listType) != 1) {
+        if (moviesViewModel.getCurrentPage(listType) != 1) {
             binding.moviesList.visibility = VISIBLE
             binding.loadingView.visibility = GONE
             binding.errorView.visibility = GONE
