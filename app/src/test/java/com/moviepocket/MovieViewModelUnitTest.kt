@@ -14,11 +14,18 @@ import com.moviepocket.manager.NetManager
 import com.moviepocket.restclient.response.MovieListResponse
 import io.reactivex.Observable
 import io.reactivex.schedulers.TestScheduler
+import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
+import org.koin.dsl.module.applicationContext
+import org.koin.standalone.StandAloneContext.closeKoin
+import org.koin.standalone.StandAloneContext.loadKoinModules
+import org.koin.standalone.StandAloneContext.startKoin
+import org.koin.standalone.inject
+import org.koin.test.KoinTest
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.Mockito.spy
@@ -30,7 +37,7 @@ import org.mockito.MockitoAnnotations
  *
  * See [testing documentation](http://d.android.com/tools/testing).
  */
-class MovieViewModelUnitTest {
+class MovieViewModelUnitTest : KoinTest {
 
     @Mock lateinit var mockNetManager: NetManager
     @Mock lateinit var mockMovieLocalDataSource: MovieLocalDataSource
@@ -41,16 +48,21 @@ class MovieViewModelUnitTest {
     @get:Rule
     var rule: TestRule = InstantTaskExecutorRule()
 
-    lateinit var mockRepository: MovieRepository
-    lateinit var viewModel: MoviesViewModel
-    lateinit var movies: ArrayList<Movie>
-    lateinit var moviesCached: ArrayList<Movie>
+    private val mockRepository: MovieRepository by inject()
+    private lateinit var viewModel: MoviesViewModel
+    private lateinit var movies: ArrayList<Movie>
+    private lateinit var moviesCached: ArrayList<Movie>
 
     @Before
     fun setUpTest() {
         MockitoAnnotations.initMocks(this)
 
-        mockRepository = MovieRepository(mockNetManager, mockMovieRemoteDataSource, mockMovieLocalDataSource)
+        loadKoinModules(listOf(applicationContext {
+            bean { mockNetManager }
+            bean { mockMovieRemoteDataSource }
+            bean { mockMovieLocalDataSource }
+            bean { MovieRepository(get(), get(), get()) }
+        }))
 
         viewModel = spy(MoviesViewModel(mockRepository, testScheduler, testScheduler))
 
@@ -59,6 +71,11 @@ class MovieViewModelUnitTest {
 
         val movieCached1 = Movie(1, "", "Mock cached movie 1", "0", "0", "0", "")
         moviesCached = Lists.newArrayList(movieCached1)
+    }
+
+    @After
+    fun after() {
+        closeKoin()
     }
 
     @Test

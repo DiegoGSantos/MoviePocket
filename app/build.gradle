@@ -78,4 +78,5 @@ dependencies {
     kapt "io.objectbox:objectbox-processor:$objectboxVersion"
 
     compile "org.koin:koin-android-architecture:$koin_version"
+    testCompile "org.koin:koin-test:$koin_version"
 }
