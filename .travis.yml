@@ -27,4 +27,3 @@ before_script:
 script:
   - chmod +x ./gradlew
   - ./gradlew test
-  - ./gradlew connectedAndroidTest
