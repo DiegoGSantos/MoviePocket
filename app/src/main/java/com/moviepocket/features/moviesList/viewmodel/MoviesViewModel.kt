@@ -2,7 +2,6 @@ package com.moviepocket.features.moviesList.viewmodel
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import com.moviepocket.features.moviesList.data.MovieListTypes
 import com.moviepocket.features.moviesList.data.MovieRepository
 import com.moviepocket.features.moviesList.model.Movie
 import io.reactivex.Scheduler
@@ -22,42 +21,13 @@ class MoviesViewModel(private val movieRepository: MovieRepository,
 
     private var totalOfPages: Int = 0
 
-    private var isThereMoreItemsToLoad: Boolean = true
-    private var currentPage: Int = 1
-
-    var currentInTheaterPage: Int = 1
-    var currentUpcomingPage: Int = 1
-    var currentPopularPage: Int = 1
-    var currentTopRatedPage: Int = 1
-
-    var isThereMoreInTheaterToLoad: Boolean = true
-    var isThereMoreUpcomingToLoad: Boolean = true
-    var isThereMorePopularToLoad: Boolean = true
-    var isThereMoreTopRatedToLoad: Boolean = true
+    var currentPage: Int = 1
+    var isThereMoreToLoad: Boolean = true
 
     private var compositeDisposable = CompositeDisposable()
 
     fun listMovies(listType: String) {
-        when (listType) {
-            MovieListTypes.NOW_PLAYING.listType -> {
-                currentPage = currentInTheaterPage
-                isThereMoreItemsToLoad = isThereMoreInTheaterToLoad
-            }
-            MovieListTypes.UPCOMING.listType -> {
-                currentPage = currentUpcomingPage
-                isThereMoreItemsToLoad = isThereMoreUpcomingToLoad
-            }
-            MovieListTypes.POPULAR.listType -> {
-                currentPage = currentPopularPage
-                isThereMoreItemsToLoad = isThereMorePopularToLoad
-            }
-            MovieListTypes.TOP_RATED.listType -> {
-                currentPage = currentTopRatedPage
-                isThereMoreItemsToLoad = isThereMoreTopRatedToLoad
-            }
-        }
-
-        if (isThereMoreItemsToLoad) {
+        if (isThereMoreToLoad) {
 
             resetState()
 
@@ -67,7 +37,7 @@ class MoviesViewModel(private val movieRepository: MovieRepository,
                     .subscribe ({
                         result ->
                         if (result.results.size > 0) {
-                            onMoviesLoaded(listType, result.results, result.totalPages.toString())
+                            onMoviesLoaded(result.results, result.totalPages.toString())
                         } else {
                             onDataNotAvailable()
                         }
@@ -82,47 +52,14 @@ class MoviesViewModel(private val movieRepository: MovieRepository,
         }
     }
 
-    fun isThereMoreItemsToLoad(listType: String): Boolean {
-        return when (listType) {
-            MovieListTypes.NOW_PLAYING.listType -> isThereMoreInTheaterToLoad
-            MovieListTypes.UPCOMING.listType -> isThereMoreUpcomingToLoad
-            MovieListTypes.POPULAR.listType -> isThereMorePopularToLoad
-            MovieListTypes.TOP_RATED.listType -> isThereMoreTopRatedToLoad
-            else -> false
-        }
+    fun isThereMoreItemsToLoad(): Boolean {
+        return isThereMoreToLoad
     }
 
-    fun getCurrentPage(listType: String): Int {
-        return when (listType) {
-            MovieListTypes.NOW_PLAYING.listType -> currentInTheaterPage
-            MovieListTypes.UPCOMING.listType -> currentUpcomingPage
-            MovieListTypes.POPULAR.listType -> currentPopularPage
-            MovieListTypes.TOP_RATED.listType -> currentTopRatedPage
-            else -> 1
-        }
-    }
-
-    private fun onMoviesLoaded(listType: String, movies: List<Movie>, totalPages: String) {
+    private fun onMoviesLoaded(movies: List<Movie>, totalPages: String) {
         totalOfPages = totalPages.toIntOrNull() ?: 1
-
-        when (listType) {
-            MovieListTypes.NOW_PLAYING.listType -> {
-                currentInTheaterPage += 1
-                isThereMoreInTheaterToLoad = currentInTheaterPage <= totalOfPages
-            }
-            MovieListTypes.UPCOMING.listType -> {
-                currentUpcomingPage += 1
-                isThereMoreUpcomingToLoad = currentUpcomingPage <= totalOfPages
-            }
-            MovieListTypes.POPULAR.listType -> {
-                currentPopularPage += 1
-                isThereMorePopularToLoad = currentPopularPage <= totalOfPages
-            }
-            MovieListTypes.TOP_RATED.listType -> {
-                currentTopRatedPage += 1
-                isThereMoreTopRatedToLoad = currentTopRatedPage <= totalOfPages
-            }
-        }
+        currentPage += 1
+        isThereMoreToLoad = currentPage <= totalOfPages
 
         moviesScreenState.value = MovieListScreenState(ScreenStatus.OK.status, "", movies)
     }

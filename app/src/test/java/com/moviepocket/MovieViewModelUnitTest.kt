@@ -23,7 +23,6 @@ import org.junit.rules.TestRule
 import org.koin.dsl.module.applicationContext
 import org.koin.standalone.StandAloneContext.closeKoin
 import org.koin.standalone.StandAloneContext.loadKoinModules
-import org.koin.standalone.StandAloneContext.startKoin
 import org.koin.standalone.inject
 import org.koin.test.KoinTest
 import org.mockito.Mock

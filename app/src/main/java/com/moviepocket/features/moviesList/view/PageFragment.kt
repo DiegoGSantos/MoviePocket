@@ -3,7 +3,6 @@ package com.moviepocket.features.moviesList.view
 import android.app.ActivityOptions
 import android.app.Dialog
 import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.os.Build
@@ -24,16 +23,13 @@ import com.moviepocket.customViews.InfiniteScrollListener
 import com.moviepocket.customViews.OnReleaseScreenListener
 import com.moviepocket.databinding.FragmentPageBinding
 import com.moviepocket.features.movieDetail.view.MovieDetailActivity
-import com.moviepocket.features.moviesList.data.MovieListTypes
 import com.moviepocket.features.moviesList.model.Movie
 import com.moviepocket.features.moviesList.view.adapter.MoviesAdapter
 import com.moviepocket.features.moviesList.viewmodel.MovieListScreenState
 import com.moviepocket.features.moviesList.viewmodel.MoviesViewModel
-import com.moviepocket.features.moviesList.viewmodel.MoviesViewModelFactory
 import com.moviepocket.interfaces.MoviesCLickListener
 import com.moviepocket.manager.NetManager
 import com.moviepocket.util.extensions.loadUrl
-import com.moviepocket.util.extensions.reObserve
 import kotlinx.android.synthetic.main.fragment_page.*
 import kotlinx.android.synthetic.main.view_movie_preview.view.*
 import org.koin.android.architecture.ext.viewModel
@@ -43,27 +39,25 @@ import org.koin.android.ext.android.inject
  * Created by diegosantos on 12/17/17.
  */
 class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
-    var builder: Dialog? = null
-    lateinit var moviesAdapter: MoviesAdapter
+    private var builder: Dialog? = null
+    lateinit var listType: String
+    private lateinit var moviesAdapter: MoviesAdapter
+    private lateinit var binding: FragmentPageBinding
+
     private val moviesViewModel: MoviesViewModel by viewModel()
     private val netManager: NetManager by inject()
-    lateinit var listType: String
-    private val observer = Observer<MovieListScreenState> { screenState ->
-        screenState?.let {
-            when {
-                screenState.isStatusOk() -> updateList(screenState.movies,
-                        moviesViewModel.isThereMoreItemsToLoad(listType))
-                screenState.isDataNotAvailable() ->
-                    showNotDataAvailableScreen()
-                screenState.isLoading() ->
-                    showLoadingScreen()
-                screenState.isThereError() ->
-                    showErrorScreen()
-            }
+
+    companion object {
+        const val LIST_TYPE = "LIST_TYPE"
+
+        fun newInstance(listType: String): PageFragment {
+            val args = Bundle()
+            args.putString(LIST_TYPE, listType)
+            val fragment = PageFragment()
+            fragment.arguments = args
+            return fragment
         }
     }
-
-    private lateinit var binding: FragmentPageBinding
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         loadObservers()
@@ -76,82 +70,13 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        listType = arguments?.getString(ARG_PAGE) as String
+        listType = arguments?.getString(LIST_TYPE) as String
 
         moviesAdapter = MoviesAdapter(this@PageFragment)
         resetInfiniteScroll()
         setListeners()
 
         moviesViewModel.listMovies(listType)
-    }
-
-    private fun resetInfiniteScroll() {
-        when {
-            listType == MovieListTypes.NOW_PLAYING.listType -> {
-                moviesViewModel.currentInTheaterPage = 1
-                moviesViewModel.isThereMoreInTheaterToLoad = true
-            }
-            listType.equals(MovieListTypes.UPCOMING.listType) -> {
-                moviesViewModel.currentUpcomingPage = 1
-                moviesViewModel.isThereMoreUpcomingToLoad = true
-            }
-            listType.equals(MovieListTypes.POPULAR.listType) -> {
-                moviesViewModel.currentPopularPage = 1
-                moviesViewModel.isThereMorePopularToLoad = true
-            }
-            listType.equals(MovieListTypes.TOP_RATED.listType) -> {
-                moviesViewModel.currentTopRatedPage = 1
-                moviesViewModel.isThereMoreTopRatedToLoad = true
-            }
-        }
-    }
-
-//    private fun viewModel(): MoviesViewModel? {
-//        this.context?.let {
-//            return ViewModelProviders.of(this, viewModelFactory).get(MoviesViewModel::class.java)
-//        }
-//
-//        return null
-//    }
-
-    private fun setListeners() {
-        mainLayout.setOnRealeseListener(this)
-
-        moviesList.apply {
-            setHasFixedSize(true)
-
-            adapter = moviesAdapter
-            val gridLayoutManager = GridLayoutManager(this.context, 3)
-            layoutManager = gridLayoutManager
-            addOnScrollListener(InfiniteScrollListener({
-                moviesViewModel.listMovies(listType)
-            }, gridLayoutManager))
-        }
-    }
-
-    private fun loadObservers() {
-        moviesViewModel.moviesScreenState.reObserve(this, observer)
-    }
-
-    private fun updateList(movies: List<Movie>, isThereMoreItemsToLoad: Boolean) {
-        if (moviesViewModel.getCurrentPage(listType) != 1) {
-            binding.moviesList.visibility = VISIBLE
-            binding.loadingView.visibility = GONE
-            binding.errorView.visibility = GONE
-            moviesAdapter.addMovies(movies, isThereMoreItemsToLoad)
-        }
-    }
-
-    companion object {
-        val ARG_PAGE = "ARG_PAGE"
-
-        fun newInstance(listType: String): PageFragment {
-            val args = Bundle()
-            args.putString(ARG_PAGE, listType)
-            val fragment = PageFragment()
-            fragment.setArguments(args)
-            return fragment
-        }
     }
 
     override fun onMovieClick(movie: Movie, imageView: ImageView) {
@@ -202,7 +127,7 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
         Toast.makeText(this.context, getString(R.string.connectivity_error), Toast.LENGTH_SHORT).show()
     }
 
-    fun hidePreview() {
+    private fun hidePreview() {
         builder?.dismiss()
         moviesList.isLayoutFrozen = false
     }
@@ -210,6 +135,52 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
     override fun onReleaseScreenListener() {
         hidePreview()
         (this.activity as MainActivity).hideBlurView()
+    }
+
+    private fun resetInfiniteScroll() {
+        moviesViewModel.currentPage = 1
+        moviesViewModel.isThereMoreToLoad = true
+    }
+
+    private fun setListeners() {
+        mainLayout.setOnRealeseListener(this)
+
+        moviesList.apply {
+            setHasFixedSize(true)
+
+            adapter = moviesAdapter
+            val gridLayoutManager = GridLayoutManager(this.context, 3)
+            layoutManager = gridLayoutManager
+            addOnScrollListener(InfiniteScrollListener({
+                moviesViewModel.listMovies(listType)
+            }, gridLayoutManager))
+        }
+    }
+
+    private fun loadObservers() {
+        moviesViewModel.moviesScreenState.observe(this, Observer<MovieListScreenState> { screenState ->
+            screenState?.apply {
+                when {
+                    isStatusOk() -> updateList(screenState.movies,
+                            moviesViewModel.isThereMoreItemsToLoad())
+                    isDataNotAvailable() ->
+                        showNoDataAvailableScreen()
+                    isLoading() ->
+                        showLoadingScreen()
+                    isThereError() ->
+                        showErrorScreen()
+                }
+            }
+        })
+    }
+
+    private fun updateList(movies: List<Movie>, isThereMoreItemsToLoad: Boolean) {
+        if (moviesViewModel.currentPage != 1) {
+            binding.moviesList.visibility = VISIBLE
+            binding.loadingView.visibility = GONE
+            binding.errorView.visibility = GONE
+            moviesAdapter.addMovies(movies, isThereMoreItemsToLoad)
+        }
     }
 
     private fun showErrorScreen() {
@@ -225,7 +196,7 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
         binding.errorView.visibility = GONE
     }
 
-    private fun showNotDataAvailableScreen() {
+    private fun showNoDataAvailableScreen() {
         binding.moviesList.visibility = GONE
         binding.loadingView.visibility = GONE
         binding.errorView.visibility = VISIBLE
