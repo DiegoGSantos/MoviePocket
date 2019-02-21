@@ -35,14 +35,16 @@ class MoviesAdapter(listener: MoviesCLickListener) : RecyclerView.Adapter<Recycl
         // insert movies and the loading at the end of the list
         movies.addAll(newMovies)
 
+        var loadingView = 0
         if (isThereMoreItemsToLoad) {
             movies.add(loadingItem)
+            loadingView = 1
         }
 
-        notifyItemRangeChanged(initPosition, movies.size + 1 /* plus loading item */)
+        notifyItemRangeChanged(initPosition, movies.size + loadingView /* plus loading item */)
     }
     
-    override fun getItemCount(): Int = movies?.size ?: 0
+    override fun getItemCount(): Int = movies.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)=
             delegateAdapters.get(viewType).onCreateViewHolder(parent)

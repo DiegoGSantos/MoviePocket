@@ -30,6 +30,7 @@ import com.moviepocket.features.moviesList.viewmodel.MoviesViewModel
 import com.moviepocket.interfaces.MoviesCLickListener
 import com.moviepocket.manager.NetManager
 import com.moviepocket.util.extensions.loadUrl
+import com.moviepocket.util.extensions.reObserve
 import kotlinx.android.synthetic.main.fragment_page.*
 import kotlinx.android.synthetic.main.view_movie_preview.view.*
 import org.koin.android.architecture.ext.viewModel
@@ -73,10 +74,9 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
         listType = arguments?.getString(LIST_TYPE) as String
 
         moviesAdapter = MoviesAdapter(this@PageFragment)
-        resetInfiniteScroll()
         setListeners()
 
-        moviesViewModel.listMovies(listType)
+        moviesViewModel.listMovies(listType, true)
     }
 
     override fun onMovieClick(movie: Movie, imageView: ImageView) {
@@ -137,11 +137,6 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
         (this.activity as MainActivity).hideBlurView()
     }
 
-    private fun resetInfiniteScroll() {
-        moviesViewModel.currentPage = 1
-        moviesViewModel.isThereMoreToLoad = true
-    }
-
     private fun setListeners() {
         mainLayout.setOnRealeseListener(this)
 
@@ -152,17 +147,16 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
             val gridLayoutManager = GridLayoutManager(this.context, 3)
             layoutManager = gridLayoutManager
             addOnScrollListener(InfiniteScrollListener({
-                moviesViewModel.listMovies(listType)
+                moviesViewModel.listMovies(listType, false)
             }, gridLayoutManager))
         }
     }
 
     private fun loadObservers() {
-        moviesViewModel.moviesScreenState.observe(this, Observer<MovieListScreenState> { screenState ->
+        moviesViewModel.moviesScreenState.reObserve(this, Observer<MovieListScreenState> { screenState ->
             screenState?.apply {
                 when {
-                    isStatusOk() -> updateList(screenState.movies,
-                            moviesViewModel.isThereMoreItemsToLoad())
+                    isStatusOk() -> updateList(screenState)
                     isDataNotAvailable() ->
                         showNoDataAvailableScreen()
                     isLoading() ->
@@ -174,13 +168,11 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
         })
     }
 
-    private fun updateList(movies: List<Movie>, isThereMoreItemsToLoad: Boolean) {
-        if (moviesViewModel.currentPage != 1) {
-            binding.moviesList.visibility = VISIBLE
-            binding.loadingView.visibility = GONE
-            binding.errorView.visibility = GONE
-            moviesAdapter.addMovies(movies, isThereMoreItemsToLoad)
-        }
+    private fun updateList(screenState: MovieListScreenState) {
+        binding.moviesList.visibility = VISIBLE
+        binding.loadingView.visibility = GONE
+        binding.errorView.visibility = GONE
+        moviesAdapter.addMovies(screenState.movies, screenState.isThereMorePages)
     }
 
     private fun showErrorScreen() {
