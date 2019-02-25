@@ -76,7 +76,7 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
         moviesAdapter = MoviesAdapter(this@PageFragment)
         setListeners()
 
-        moviesViewModel.listMovies(listType, true)
+        moviesViewModel.onViewCreated(listType)
     }
 
     override fun onMovieClick(movie: Movie, imageView: ImageView) {
@@ -147,7 +147,7 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
             val gridLayoutManager = GridLayoutManager(this.context, 3)
             layoutManager = gridLayoutManager
             addOnScrollListener(InfiniteScrollListener({
-                moviesViewModel.listMovies(listType, false)
+                moviesViewModel.onNewPageRequested(listType)
             }, gridLayoutManager))
         }
     }

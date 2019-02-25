@@ -23,6 +23,14 @@ class MoviesViewModel(private val movieRepository: MovieRepository,
     private var totalOfPages: Int = 0
     private var compositeDisposable = CompositeDisposable()
 
+    fun onViewCreated(listType: String) {
+        listMovies(listType, true)
+    }
+
+    fun onNewPageRequested(listType: String) {
+        listMovies(listType, false)
+    }
+
     fun listMovies(listType: String, isStartingView: Boolean) {
         val pageToBeLoaded = getPageToLoad(isStartingView)
 
