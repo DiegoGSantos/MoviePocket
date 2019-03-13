@@ -31,11 +31,11 @@ class MoviesViewModel(private val movieRepository: MovieRepository,
         listMovies(listType, false)
     }
 
-    fun listMovies(listType: String, isStartingView: Boolean) {
+    private fun listMovies(listType: String, isStartingView: Boolean) {
         val pageToBeLoaded = getPageToLoad(isStartingView)
 
         if (isStartingView && isRestartingPage(pageToBeLoaded)) {
-            onMoviesLoaded((moviesScreenState.value?.currentPage ?: 1), moviesList, totalOfPages.toString())
+            onMoviesLoaded((moviesScreenState.value?.currentPage ?: 1), moviesList, totalOfPages)
         } else if (isThereMoreItemsToLoad(pageToBeLoaded)) {
 
             if (pageToBeLoaded == 1) onLoading()
@@ -46,7 +46,7 @@ class MoviesViewModel(private val movieRepository: MovieRepository,
                     .subscribe ({
                         result ->
                         if (result.results.size > 0) {
-                            onMoviesLoaded(pageToBeLoaded, result.results, result.totalPages.toString())
+                            onMoviesLoaded(pageToBeLoaded, result.results, result.totalPages)
                         } else {
                             onDataNoAvailable(pageToBeLoaded)
                         }
@@ -65,7 +65,7 @@ class MoviesViewModel(private val movieRepository: MovieRepository,
     private fun getPageToLoad(isStartingView: Boolean): Int {
         var pageToBeLoaded = 1
         if (!isStartingView) {
-            pageToBeLoaded = 1 + (moviesScreenState.value?.currentPage ?: 1)
+            pageToBeLoaded = 1 + (moviesScreenState.value?.currentPage ?: 0)
         }
         return pageToBeLoaded
     }
@@ -74,17 +74,17 @@ class MoviesViewModel(private val movieRepository: MovieRepository,
         var isRestartingPage = false
         moviesScreenState.value?.let {
             isRestartingPage = pageToBeLoaded <= it.currentPage
-                    && moviesList.size >= (it.movies.size)
+                    && moviesList.size >= it.movies.size
         }
         return isRestartingPage
     }
 
-    fun isThereMoreItemsToLoad(pageToBeLoaded: Int): Boolean {
+    private fun isThereMoreItemsToLoad(pageToBeLoaded: Int): Boolean {
         return totalOfPages == 0 || pageToBeLoaded <= totalOfPages
     }
 
-    private fun onMoviesLoaded(pageLoaded: Int, movies: List<Movie>, totalPages: String) {
-        totalOfPages = totalPages.toIntOrNull() ?: 1
+    private fun onMoviesLoaded(pageLoaded: Int, movies: List<Movie>, totalPages: Int) {
+        totalOfPages = totalPages
         val nextPage = pageLoaded + 1
         moviesScreenState.value = MovieListScreenState(pageLoaded, isThereMoreItemsToLoad(nextPage), ScreenStatus.OK.status, "", movies)
     }
@@ -105,15 +105,11 @@ class MoviesViewModel(private val movieRepository: MovieRepository,
         if (!compositeDisposable.isDisposed) {
             compositeDisposable.dispose()
         }
-    }
-
-    private fun reset() {
-        unSubscribeFromObservable()
         compositeDisposable.clear()
     }
 
     override fun onCleared() {
-        reset()
+        unSubscribeFromObservable()
         super.onCleared()
     }
 }
