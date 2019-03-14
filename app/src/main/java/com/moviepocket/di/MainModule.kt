@@ -8,7 +8,6 @@ import com.moviepocket.features.moviesList.data.MovieLocalDataSource
 import com.moviepocket.features.moviesList.data.MovieRemoteDataSource
 import com.moviepocket.features.moviesList.data.MovieRepository
 import com.moviepocket.features.moviesList.viewmodel.MoviesViewModel
-import com.moviepocket.features.moviesList.viewmodel.MoviesViewModelFactory
 import com.moviepocket.manager.NetManager
 import org.koin.android.architecture.ext.viewModel
 import org.koin.dsl.module.Module
@@ -18,7 +17,6 @@ import org.koin.dsl.module.applicationContext
  * Created by diego.santos on 26/04/18.
  */
 val module : Module = applicationContext {
-    factory { MoviesViewModelFactory(get()) }
     bean { MovieRepository(get(), get(), get()) }
     bean { NetManager() }
     bean { MovieRemoteDataSource() }

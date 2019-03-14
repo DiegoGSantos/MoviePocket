@@ -8,5 +8,5 @@ object Constants{
     const val API_KEY: String = "YOUR API KEY HERE"
     val LANGUAGE: String = "en-US"
     val PAGE: String = "1"
-    const val BASE_URL: String = "https://api.themoviedb.org/3/"
+    var BASE_URL: String = "https://api.themoviedb.org/3/"
 }

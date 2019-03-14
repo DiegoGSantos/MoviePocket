@@ -1,0 +1,405 @@
+{
+  "results":[
+    {
+      "vote_count":1580,
+      "id":299537,
+      "video":false,
+      "vote_average":7.3,
+      "title":"Capitã Marvel",
+      "popularity":611.128,
+      "poster_path":"\/hVgLHgnsO46oSHJy5I4ekhqtoYv.jpg",
+      "original_language":"en",
+      "original_title":"Captain Marvel",
+      "genre_ids":[
+        28,
+        12,
+        878,
+        36
+      ],
+      "backdrop_path":"\/w2PMyoyLU22YvrGK3smVM9fW1jj.jpg",
+      "adult":false,
+      "overview":"A história segue Carol Danvers e como ela se torna um dos heróis mais poderosos do universo quando a Terra é pega no meio de uma guerra galáctica entre duas raças alienígenas. Situado na década de 1990, Capitã Marvel é uma nova aventura de um período inédito na história do universo cinematográfico da Marvel.",
+      "release_date":"2019-03-06"
+    },
+    {
+      "vote_count":1460,
+      "id":399579,
+      "video":false,
+      "vote_average":6.7,
+      "title":"Alita: Anjo de Combate",
+      "popularity":202.615,
+      "poster_path":"\/IRCVlGKsuOsYRfPPb3jS9IC7Gi.jpg",
+      "original_language":"en",
+      "original_title":"Alita: Battle Angel",
+      "genre_ids":[
+        28,
+        878,
+        53,
+        12
+      ],
+      "backdrop_path":"\/aQXTw3wIWuFMy0beXRiZ1xVKtcf.jpg",
+      "adult":false,
+      "overview":"Uma ciborgue é descoberta por um cientista. Ela não tem memórias de sua criação, mas possui grande conhecimento de artes marciais. Enquanto busca informações sobre seu passado, trabalha como caçadora de recompensas e descobre um interesse amoroso.",
+      "release_date":"2019-01-31"
+    },
+    {
+      "vote_count":276,
+      "id":280217,
+      "video":false,
+      "vote_average":6.8,
+      "title":"Uma Aventura Lego 2",
+      "popularity":100.064,
+      "poster_path":"\/naoItRpLWdEPe8CJUNy4r04HHSa.jpg",
+      "original_language":"en",
+      "original_title":"The Lego Movie 2: The Second Part",
+      "genre_ids":[
+        28,
+        12,
+        16,
+        35,
+        10751,
+        878,
+        14
+      ],
+      "backdrop_path":"\/8kPozGb4BDrcWBSsGPrkULG2tP9.jpg",
+      "adult":false,
+      "overview":"Já faz cinco anos desde que tudo foi incrível e os cidadãos estão enfrentando uma nova e enorme ameaça: os invasores LEGO DUPLO® do espaço sideral, destruindo tudo mais rápido do que podem reconstruir.",
+      "release_date":"2019-01-26"
+    },
+    {
+      "vote_count":235,
+      "id":438650,
+      "video":false,
+      "vote_average":5.2,
+      "title":"Vingança a Sangue-Frio",
+      "popularity":60.938,
+      "poster_path":"\/hXgmWPd1SuujRZ4QnKLzrj79PAw.jpg",
+      "original_language":"en",
+      "original_title":"Cold Pursuit",
+      "genre_ids":[
+        53,
+        28,
+        18
+      ],
+      "backdrop_path":"\/7Wg6FOEvhduISlxSzSCutAl4lPq.jpg",
+      "adult":false,
+      "overview":"Nels é um tranquilo homem de família que trabalha como motorista de um removedor de neve e vê seu mundo virado de cabeça para baixo quando seu filho é morto por um poderoso traficante de drogas. Impulsionado pelo desejo de vingança e sem nada para perder, ele faz tudo o que por preciso para destruir o cartel.",
+      "release_date":"2019-02-07"
+    },
+    {
+      "vote_count":757,
+      "id":429197,
+      "video":false,
+      "vote_average":7.2,
+      "title":"Vice",
+      "popularity":43.912,
+      "poster_path":"\/e0NZxqQ4B8YZ6kRrZish2DPqtdi.jpg",
+      "original_language":"en",
+      "original_title":"Vice",
+      "genre_ids":[
+        18,
+        36,
+        35
+      ],
+      "backdrop_path":"\/uvy89JLcYEiUb0VOoSjkUrIW3nJ.jpg",
+      "adult":false,
+      "overview":"A história de Dick Cheney, o vice-presidente mais poderoso da história, e como suas políticas mudaram o mundo como conhecemos.",
+      "release_date":"2018-12-25"
+    },
+    {
+      "vote_count":377,
+      "id":457136,
+      "video":false,
+      "vote_average":6.6,
+      "title":"Duas Rainhas",
+      "popularity":43.195,
+      "poster_path":"\/sg1Luwycid66JT2oiFkEHgjAjrp.jpg",
+      "original_language":"en",
+      "original_title":"Mary Queen of Scots",
+      "genre_ids":[
+        18,
+        36
+      ],
+      "backdrop_path":"\/iv5N169nQIzrS0pZ8MBEiemTtVt.jpg",
+      "adult":false,
+      "overview":"Mary (Saoirse Ronan), ainda criança, foi prometida ao filho mais velho do rei Henrique II, Francis, e então foi levada para França. Mas logo Francis morre e Mary volta para a Escócia, na tentativa de derrubar sua prima Elizabeth I (Margot Robbie), a Rainha da Inglaterra.",
+      "release_date":"2018-12-21"
+    },
+    {
+      "vote_count":37,
+      "id":440626,
+      "video":false,
+      "vote_average":5.3,
+      "title":"Sobibor",
+      "popularity":19.341,
+      "poster_path":"\/b6jICB1qs15PyWujObSOTZ0VEhz.jpg",
+      "original_language":"ru",
+      "original_title":"Собибор",
+      "genre_ids":[
+        18,
+        10752,
+        36
+      ],
+      "backdrop_path":"\/fx70AwHSIDkX6U8WNfUQW53SoU3.jpg",
+      "adult":false,
+      "overview":"O ano de 2018 marca o 75º aniversário da fuga do Campo de Sobibor. O renomado ator russo Konstantin Khabenskiy faz o papel principal, como Alexander \"Sasha\" Pechersky, além de dirigir o filme. Khabenskiy disse que o filme não é uma representação documental dos eventos, mas uma \"história ficcionalizada\". Outro papel de destaque, é o do comandante do campo, Karl Frenzel, interpretado pelo ator Christopher Lambert.",
+      "release_date":"2018-05-03"
+    },
+    {
+      "vote_count":236,
+      "id":507076,
+      "video":false,
+      "vote_average":7.3,
+      "title":"Climax",
+      "popularity":18.954,
+      "poster_path":"\/bwNcyPfcEDl2ckz53Wanm2uYUD0.jpg",
+      "original_language":"fr",
+      "original_title":"Climax",
+      "genre_ids":[
+        18,
+        27,
+        10402,
+        53
+      ],
+      "backdrop_path":"\/v0sblc9A8eaE8EqDQ5Y6fELj4oB.jpg",
+      "adult":false,
+      "overview":"Um grupo de jovens dançarinos se reúne em uma remota escola vazia para a última noite de ensaio antes do espetáculo. Em comemoração, eles fazem uma festa que dura a noite toda, que se torna um pesadelo alucinante quando os dançarinos descobrem que alguém misturou um potente LSD na sangria que estão bebendo. Da euforia ao caos, paixões, rivalidades e violência em meio a um colapso psicodélico coletivo se transformam em armas para uma verdadeira tragédia.",
+      "release_date":"2018-09-19"
+    },
+    {
+      "vote_count":365,
+      "id":451915,
+      "video":false,
+      "vote_average":7.5,
+      "title":"Querido Menino",
+      "popularity":17.051,
+      "poster_path":"\/xxWVLnkx9lPMqer70AZRR4OC3KS.jpg",
+      "original_language":"en",
+      "original_title":"Beautiful Boy",
+      "genre_ids":[
+        18
+      ],
+      "backdrop_path":"\/sOhtC4cmaYPOlcjXCWxxrx2NKKn.jpg",
+      "adult":false,
+      "overview":"David Sheff (Steve Carell) é um conceituado jornalista e escritor que vive com a segunda esposa e os filhos. O filho mais velho, Nic Sheff (Timothée Chalamet), é viciado em metanfetamina e abala completamente a rotina da família e daquele lar. David tenta entender o que acontece com o filho, que teve uma infância de carinho e suporte, ao mesmo tempo em que estuda a droga e sua dependência. Nic, por sua vez, passa por diversos ciclos da vida de um dependente químico, lutando para se recuperar, mas volta e meia se entregando ao vício.",
+      "release_date":"2018-10-12"
+    },
+    {
+      "vote_count":12,
+      "id":428882,
+      "video":false,
+      "vote_average":8.5,
+      "title":"Mal Nosso",
+      "popularity":15.502,
+      "poster_path":"\/hFhVtHcLkqhjD7jZ0OJAVpwP8DF.jpg",
+      "original_language":"pt",
+      "original_title":"Mal Nosso",
+      "genre_ids":[
+        53,
+        27,
+        18
+      ],
+      "backdrop_path":"\/9o1JRv5CGivMiBcd1Oq81iPz9Zg.jpg",
+      "adult":false,
+      "overview":"Arthur, um homem com poderes mediúnicos, é avisado pelo seu mentor espiritual que uma entidade demoníaca pretende destruir a alma de sua filha. Para que isso não aconteça, Arthur toma medidas drásticas, contratando um serial killer nas profundezas da deep web.",
+      "release_date":"2019-03-14"
+    },
+    {
+      "vote_count":30,
+      "id":532671,
+      "video":false,
+      "vote_average":6.1,
+      "title":"Maligno",
+      "popularity":15.442,
+      "poster_path":"\/saUN02otNkP3IyGebojjwHc6wrw.jpg",
+      "original_language":"en",
+      "original_title":"The Prodigy",
+      "genre_ids":[
+        27,
+        53
+      ],
+      "backdrop_path":"\/g5fUxWupgKTSqV3cHSx0QdGT2tB.jpg",
+      "adult":false,
+      "overview":"",
+      "release_date":"2019-02-06"
+    },
+    {
+      "vote_count":42,
+      "id":508763,
+      "video":false,
+      "vote_average":6.7,
+      "title":"A Caminho de Casa",
+      "popularity":9.621,
+      "poster_path":"\/l8HKxYbgX6SlkxQ9oR0XytAk5H5.jpg",
+      "original_language":"en",
+      "original_title":"A Dog's Way Home",
+      "genre_ids":[
+        18,
+        10751,
+        12
+      ],
+      "backdrop_path":"\/bUhKLpns44kXGTWz8TSejzFFClr.jpg",
+      "adult":false,
+      "overview":"Bella é uma cadelinha especial que vive com Lucas, um estudante de medicina veterinária que trabalha como voluntário em um hospital local. Um dia ela é encontrada pelo Controle de Animais na rua e acaba sendo levada para um abrigo a 400 milhas de distância de seu dono. No entanto, Bella, extremamente leal e corajosa, decide iniciar sozinha uma longa jornada de volta para a casa, emocionando a todos que cruzam o seu caminho.",
+      "release_date":"2019-01-10"
+    },
+    {
+      "vote_count":0,
+      "id":586441,
+      "video":false,
+      "vote_average":0,
+      "title":"Albatroz",
+      "popularity":5.42,
+      "poster_path":"\/i671nltd57AReZOgEwj4x3z6125.jpg",
+      "original_language":"en",
+      "original_title":"Albatroz",
+      "genre_ids":[
+        18,
+        878
+      ],
+      "backdrop_path":null,
+      "adult":false,
+      "overview":"",
+      "release_date":"2019-03-07"
+    },
+    {
+      "vote_count":0,
+      "id":472311,
+      "video":false,
+      "vote_average":0,
+      "title":"Diários de Classe",
+      "popularity":5.083,
+      "poster_path":"\/a865BWAhbHzmMDt46DMHolSQb1U.jpg",
+      "original_language":"pt",
+      "original_title":"Diários de Classe",
+      "genre_ids":[
+        99
+      ],
+      "backdrop_path":null,
+      "adult":false,
+      "overview":"Diários de Classe acompanha três mulheres – uma jovem trans, uma mãe encarcerada e uma empregada doméstica – estudantes nos centros de alfabetização para adultos em Salvador.",
+      "release_date":"2019-03-07"
+    },
+    {
+      "vote_count":36,
+      "id":492550,
+      "video":false,
+      "vote_average":5.6,
+      "title":"Normandia Nua",
+      "popularity":4.73,
+      "poster_path":"\/eLgBeKESRVEhrCMrzggI9WQ2ggG.jpg",
+      "original_language":"fr",
+      "original_title":"Normandie Nue",
+      "genre_ids":[
+        18,
+        35
+      ],
+      "backdrop_path":"\/s4W2hnyO00EQOcwAdaYAQbVCCvF.jpg",
+      "adult":false,
+      "overview":"Em Mêle sur Sarthe, uma pequena aldeia da Normandia, os agricultores são gravemente afetados pela crise. Georges Balbuzard, o prefeito da cidade, não aceita a difícil situação e decide tentar de tudo para salvar seu povoado. Por obra do destino, Blake Newman, um grande fotógrafo conceitual, que tem por estilo deixar a multidão sem roupas para suas fotos, está passando pela região. Balbuzard vê nesse encontro a oportunidade de salvar sua aldeia, resta saber se a população estará disposta a ficar nua.",
+      "release_date":"2018-01-10"
+    },
+    {
+      "vote_count":3,
+      "id":518997,
+      "video":false,
+      "vote_average":3.8,
+      "title":"As Filhas do Fogo",
+      "popularity":3.932,
+      "poster_path":"\/neBtlg2N8EXKLABWVRAZMl8qFDG.jpg",
+      "original_language":"es",
+      "original_title":"Las Hijas del Fuego",
+      "genre_ids":[
+        18
+      ],
+      "backdrop_path":"\/x42ljBaT4Y7sELPGVYo9hihLv9j.jpg",
+      "adult":false,
+      "overview":"Três mulheres começam uma jornada poliamorosa em busca de prazer, diversão e novas formas de relação. Através de suas anotações, Violeta nos conta sobre as aventuras das Filhas do Fogo: um grupo de mulheres em busca de seu próprio erotismo.",
+      "release_date":"2018-10-25"
+    },
+    {
+      "vote_count":0,
+      "id":528356,
+      "video":false,
+      "vote_average":0,
+      "title":"A Pedra da Serpente",
+      "popularity":3.919,
+      "poster_path":"\/macqEjm083i5dBjuxbInHTshJWO.jpg",
+      "original_language":"pt",
+      "original_title":"A Pedra da Serpente",
+      "genre_ids":[
+        878,
+        18,
+        14,
+        53
+      ],
+      "backdrop_path":null,
+      "adult":false,
+      "overview":"Após ter perdido um bebê nos últimos meses de gestação, Joana tira férias em Peruíbe, uma pequena cidade litorânea conhecida por aparições de discos voadores. Depois de uma noite de sexo com um desconhecido, ela atropela e mata um homem. Joana inicia uma estranha relação com Maria, esposa do homem que atropelou, e se vê envolvida em uma trama sobre uma abdução alienígena.",
+      "release_date":"2019-02-14"
+    },
+    {
+      "vote_count":0,
+      "id":586792,
+      "video":false,
+      "vote_average":0,
+      "title":"Vão acabar com a Praça Onze",
+      "popularity":3.867,
+      "poster_path":"\/ett3UVyMZW4Pt6pDoi0umHNE0bo.jpg",
+      "original_language":"pt",
+      "original_title":"Vão acabar com a Praça Onze",
+      "genre_ids":[
+        99
+      ],
+      "backdrop_path":null,
+      "adult":false,
+      "overview":"Curta documentário sobre a canção \"Praça Onze\", de Herivelto Martins, baseada no esforço do ator Grande Otelo em salvar a região da Praça Onze de uma iminente demolição.",
+      "release_date":"2019-03-19"
+    },
+    {
+      "vote_count":7,
+      "id":573660,
+      "video":false,
+      "vote_average":5.3,
+      "title":"Sai de Baixo - O Filme",
+      "popularity":3.787,
+      "poster_path":"\/rIdrvJZittNFRqb4GKTBF6cU9Ak.jpg",
+      "original_language":"pt",
+      "original_title":"Sai de Baixo - O Filme",
+      "genre_ids":[
+        35
+      ],
+      "backdrop_path":"\/zcgh9cq1BQWTAKrhzJQ8o4ayLfj.jpg",
+      "adult":false,
+      "overview":"Depois de uma longa temporada na prisão, Caco Antibes (Falabella) volta ao Largo do Arouche para descobrir que todos estão mais falidos do que nunca. A família foi despejada do apartamento e, como se não bastasse, está morando de favor com o porteiro Ribamar (Tom Cavalcante). Como algumas coisas nunca mudam, não demorou muito até Caco meter a família inteira em uma nova roubada. Ao lado de Magda (Orth), Ribamar, Vavá (Gustavo), Cassandra (Balabanian) e Cibalena (Protásio), que dessa vez será a nível internacional e ninguém vai querer ficar de fora desse esquema.",
+      "release_date":"2019-02-21"
+    },
+    {
+      "vote_count":2,
+      "id":528112,
+      "video":false,
+      "vote_average":7,
+      "title":"Tito e os Pássaros",
+      "popularity":3.263,
+      "poster_path":"\/ao6Isiw9oy5jwfBj013T0wiX5U7.jpg",
+      "original_language":"pt",
+      "original_title":"Tito e os Pássaros",
+      "genre_ids":[
+        16,
+        12,
+        18
+      ],
+      "backdrop_path":"\/zGckz21FhdtxwJNH7DgFO6awlnK.jpg",
+      "adult":false,
+      "overview":"Tito é um menino tímido de 10 anos que vive com sua mãe. De repente, uma estranha epidemia começa a se espalhar, fazendo com que pessoas fiquem doentes quando se assustam. Tito rapidamente descobre que a cura está relacionada à pesquisa feita por seu pai ausente sobre o canto dos pássaros. Ele embarca numa jornada com seus amigos para salvar o mundo da epidemia. A busca de Tito pelo antídoto se torna uma jornada para encontrar seu pai ausente e sua própria identidade.",
+      "release_date":"2019-02-14"
+    }
+  ],
+  "page":1,
+  "total_results":29,
+  "dates":{
+    "maximum":"2019-03-19",
+    "minimum":"2019-01-30"
+  },
+  "total_pages":2
+}

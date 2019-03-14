@@ -1,0 +1,174 @@
+{
+  "results":[
+    {
+      "vote_count":2,
+      "id":553608,
+      "video":false,
+      "vote_average":5,
+      "title":"Cinderela Pop",
+      "popularity":3.485,
+      "poster_path":"\/hCuWrbbbyrqYg7Ln08YhEtISx5J.jpg",
+      "original_language":"pt",
+      "original_title":"Cinderela Pop",
+      "genre_ids":[
+        10749
+      ],
+      "backdrop_path":"\/3tt3tp81aGboViMplQItugAI2RO.jpg",
+      "adult":false,
+      "overview":"Cintia é uma princesa dos dias atuais: antenada, com opiniões próprias, decidida e adora música. Essa princesa pop morava com os pais em um castelo enorme de onde via toda a cidade. Todas as noites, ela olhava pela janela, de onde ficava admirando a vista e sonhando com um príncipe que ainda não conhecia. Porém, um dia, o castelo de Cintia desmoronou e com ele tudo à sua volta. Com a separação dos pais, ela vai morar com a tia, se afasta do pai e, principalmente, deixa de acreditar no amor. Ela só não contava com um detalhe... Havia mesmo um belo príncipe encantando em sua história. E tudo o que ele mais queria era descongelar o coração da nossa gata (nada) borralheira!",
+      "release_date":"2019-02-28"
+    },
+    {
+      "vote_count":1,
+      "id":569071,
+      "video":false,
+      "vote_average":7,
+      "title":"Minha Fama de Mau",
+      "popularity":3.121,
+      "poster_path":"\/vLPRydQ9rrm2mctpgFyGSA43g6S.jpg",
+      "original_language":"pt",
+      "original_title":"Minha Fama de Mau",
+      "genre_ids":[
+        18
+      ],
+      "backdrop_path":null,
+      "adult":false,
+      "overview":"Na Tijuca dos anos sessenta o jovem Erasmo Carlos alimenta uma paixão: o rock and roll. Fã de Elvis, Bill Haley e Chuck Berry, ele aprende a tocar violão enquanto vive de sonhos, bicos e pequenas delinquências. Sua fama de roqueiro atrai Roberto Carlos , e logo se tornam parceiros e amigos. Um mega sucesso chega com a Jovem Guarda, programa de televisão onde Roberto, Erasmo e Wanderlea são a atração principal. \"Minha Fama de Mau\" é um mergulho emocionante na música e na vida de Erasmo Carlos que, com cabeça de homem e coração de menino, se tornou o Tremendão, símbolo vivo do rock nacional.",
+      "release_date":"2019-02-14"
+    },
+    {
+      "vote_count":1,
+      "id":496049,
+      "video":false,
+      "vote_average":10,
+      "title":"Lembro Mais dos Corvos",
+      "popularity":2.493,
+      "poster_path":"\/e53JgAZkMOxi8ElAFIu1nF1OZr5.jpg",
+      "original_language":"pt",
+      "original_title":"Lembro Mais dos Corvos",
+      "genre_ids":[
+        99
+      ],
+      "backdrop_path":"\/AsCxLEzaUlKMoJI30j0CftG1yhh.jpg",
+      "adult":false,
+      "overview":"Júlia conta histórias para atravessar uma noite de insônia.",
+      "release_date":"2018-05-05"
+    },
+    {
+      "vote_count":0,
+      "id":585163,
+      "video":false,
+      "vote_average":0,
+      "title":"Mirante",
+      "popularity":1.527,
+      "poster_path":"\/kCIT3tYY3l3uUnd1qVsE82c37Yk.jpg",
+      "original_language":"pt",
+      "original_title":"Mirante",
+      "genre_ids":[
+
+      ],
+      "backdrop_path":null,
+      "adult":false,
+      "overview":"",
+      "release_date":"2019-02-28"
+    },
+    {
+      "vote_count":0,
+      "id":575645,
+      "video":false,
+      "vote_average":0,
+      "title":"O Galã",
+      "popularity":1.111,
+      "poster_path":"\/gYhIZO7JZE5f84GYlqBfzBXXnEx.jpg",
+      "original_language":"pt",
+      "original_title":"O Galã",
+      "genre_ids":[
+        35
+      ],
+      "backdrop_path":null,
+      "adult":false,
+      "overview":"Júlio aspira se tornar um grande ator, mas a grande maioria de suas empreitadas nas telas costumam dar errado. Quando o dinheiro aperta, ele resolve recorrer ao seu meio irmão Beto, um obcecado roteirista de novelas que vive em reclusão, com quem ele não tem muito contato. O ator acredita que sua grande chance será concedida pelo irmão, mas a relação entre os dois se torna a cada dia mais insustentável.",
+      "release_date":"2019-02-07"
+    },
+    {
+      "vote_count":0,
+      "id":578856,
+      "video":false,
+      "vote_average":0,
+      "title":"Ultraje",
+      "popularity":0.803,
+      "poster_path":"\/vFtvqUQiHhhM7SrQToRaLzlTDkm.jpg",
+      "original_language":"pt",
+      "original_title":"Ultraje",
+      "genre_ids":[
+        99
+      ],
+      "backdrop_path":null,
+      "adult":false,
+      "overview":"O documentário conta a história do Ultraje a Rigor, um dos mais influentes e irreverentes grupos da história do rock brasileiro, desde o sucesso de “Inútil”, hino das Diretas Já, passando por diversas formações e transformações até os dias atuais, revelando uma trajetória de mais de três décadas de fidelidade ao rock'n'roll.",
+      "release_date":"2019-01-31"
+    },
+    {
+      "vote_count":0,
+      "id":581827,
+      "video":false,
+      "vote_average":0,
+      "title":"Barulho da Revolução",
+      "popularity":0.685,
+      "poster_path":"\/gqGkhCwFBDlHBTjfUDEccDp1LzS.jpg",
+      "original_language":"pt",
+      "original_title":"Barulho da Revolução",
+      "genre_ids":[
+        18,
+        10402
+      ],
+      "backdrop_path":null,
+      "adult":false,
+      "overview":"Barulho da Revolução fala sobre Bruna, (interpretada por Vitória Regina), uma jovem negra de 17 anos que está cursando o terceiro ano do ensino médio. No seu tempo livre ela se reúne com os amigos pra dançar os passinhos do brega funk. Com questionamentos e anseios, Bruna se prepara para realizar uma mudança.",
+      "release_date":"2019-02-11"
+    },
+    {
+      "vote_count":0,
+      "id":581565,
+      "video":false,
+      "vote_average":0,
+      "title":"“Às vezes os olhos brilham a ponto de marejar.”",
+      "popularity":0.663,
+      "poster_path":"\/RXd0BQjyxeZl8h40KWULbbfO4p.jpg",
+      "original_language":"en",
+      "original_title":"“Às vezes os olhos brilham a ponto de marejar.”",
+      "genre_ids":[
+        99
+      ],
+      "backdrop_path":null,
+      "adult":false,
+      "overview":"",
+      "release_date":"2019-02-10"
+    },
+    {
+      "vote_count":0,
+      "id":555817,
+      "video":false,
+      "vote_average":0,
+      "title":"Cano Serrado",
+      "popularity":0.6,
+      "poster_path":"\/fNPFGg3S1Nirx1Nq4NfGjchNyzt.jpg",
+      "original_language":"pt",
+      "original_title":"Cano Serrado",
+      "genre_ids":[
+
+      ],
+      "backdrop_path":null,
+      "adult":false,
+      "overview":"Sargento Sebastião busca vingar a morte do seu irmão, caminhoneiro, com sua arma, uma 12 cano serrado. Violência e redenção em plena Região Centro-Oeste, nos confins do cerrado brasileiro.",
+      "release_date":"2018-11-10"
+    }
+  ],
+  "page":2,
+  "total_results":29,
+  "dates":{
+    "maximum":"2019-03-19",
+    "minimum":"2019-01-30"
+  },
+  "total_pages":2
+}
