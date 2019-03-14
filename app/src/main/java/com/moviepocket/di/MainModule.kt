@@ -3,7 +3,6 @@ package com.moviepocket.di
 import com.moviepocket.features.movieDetail.data.MovieDetailRemoteDataSource
 import com.moviepocket.features.movieDetail.data.MovieDetailRepository
 import com.moviepocket.features.movieDetail.viewmodel.MovieDetailViewModel
-import com.moviepocket.features.movieDetail.viewmodel.MovieDetailViewModelFactory
 import com.moviepocket.features.moviesList.data.MovieLocalDataSource
 import com.moviepocket.features.moviesList.data.MovieRemoteDataSource
 import com.moviepocket.features.moviesList.data.MovieRepository
@@ -22,7 +21,6 @@ val module : Module = applicationContext {
     bean { MovieRemoteDataSource() }
     bean { MovieLocalDataSource() }
 
-    factory { MovieDetailViewModelFactory(get()) }
     bean { MovieDetailRepository(get()) }
     bean { MovieDetailRemoteDataSource() }
 

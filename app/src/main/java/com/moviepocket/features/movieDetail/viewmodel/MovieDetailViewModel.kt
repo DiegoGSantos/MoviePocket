@@ -33,6 +33,7 @@ class MovieDetailViewModel(private val movieRepository: MovieDetailRepository,
                 }, { error ->
                     movieDetailLiveData.value =
                             MovieDetailScreenState(ScreenStatus.ERROR.status, "", null)
+                    error.printStackTrace()
                 })
 
         compositeDisposable.add(disposable)
@@ -42,15 +43,11 @@ class MovieDetailViewModel(private val movieRepository: MovieDetailRepository,
         if (!compositeDisposable.isDisposed) {
             compositeDisposable.dispose()
         }
-    }
-
-    private fun reset() {
-        unSubscribeFromObservable()
         compositeDisposable.clear()
     }
 
     override fun onCleared() {
-        reset()
+        unSubscribeFromObservable()
         super.onCleared()
     }
 }

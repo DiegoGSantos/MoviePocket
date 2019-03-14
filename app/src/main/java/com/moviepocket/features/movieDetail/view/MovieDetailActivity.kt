@@ -1,7 +1,6 @@
 package com.moviepocket.features.movieDetail.view
 
 import android.arch.lifecycle.Observer
-import android.arch.lifecycle.ViewModelProviders
 import android.content.Intent
 import android.databinding.DataBindingUtil
 import android.graphics.PorterDuff
@@ -19,21 +18,18 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.GlideDrawable
 import com.bumptech.glide.request.RequestListener
 import com.eightbitlab.supportrenderscriptblur.SupportRenderScriptBlur
-import com.moviepocket.App
 import com.moviepocket.R
 import com.moviepocket.customViews.RoundedCornersTransformation
 import com.moviepocket.databinding.ActivityMovieDetailBinding
 import com.moviepocket.features.movieDetail.model.Video
 import com.moviepocket.features.movieDetail.viewmodel.MovieDetailScreenState
 import com.moviepocket.features.movieDetail.viewmodel.MovieDetailViewModel
-import com.moviepocket.features.movieDetail.viewmodel.MovieDetailViewModelFactory
 import com.moviepocket.features.moviesList.model.Movie
 import com.moviepocket.interfaces.VideoCLickListener
 import com.moviepocket.restclient.response.MovieDetailResponse
 import com.moviepocket.util.extensions.loadUrl
 import kotlinx.android.synthetic.main.activity_movie_detail.*
 import org.koin.android.architecture.ext.viewModel
-import org.koin.android.ext.android.inject
 
 
 class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
