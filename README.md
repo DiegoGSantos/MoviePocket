@@ -1,6 +1,6 @@
 <h1>Movie Pocket</h1>
 
-[![Build Status](https://travis-ci.org/DiegoGSantos/MoviePocket.svg?branch=master)](https://travis-ci.org/DiegoGSantos/MoviePocket)
+[![Build Status](https://app.bitrise.io/app/dbd3c2c0520041c0/status.svg?token=TN24wrvTIDOCRlrcquvqHw)](https://app.bitrise.io/app/dbd3c2c0520041c0)
 
 <p align="center">
   <img src="screenshot-1.png" width="250"/>
