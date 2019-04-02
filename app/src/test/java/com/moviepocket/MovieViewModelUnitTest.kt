@@ -63,7 +63,7 @@ class MovieViewModelUnitTest : KoinTest {
             bean { MovieRepository(get(), get(), get()) }
         }))
 
-        viewModel = MoviesViewModel(mockRepository, testScheduler, testScheduler)
+        viewModel = MoviesViewModel(mockRepository, testScheduler, testScheduler, mockNetManager)
         viewModel.moviesScreenState.observeForever(mockObserver)
 
         val movieCached1 = Movie(1, "", "Mock cached movie 1", "0", "0", "0", "")

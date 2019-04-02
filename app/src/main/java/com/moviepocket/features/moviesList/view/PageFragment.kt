@@ -25,6 +25,8 @@ import com.moviepocket.databinding.FragmentPageBinding
 import com.moviepocket.features.movieDetail.view.MovieDetailActivity
 import com.moviepocket.features.moviesList.model.Movie
 import com.moviepocket.features.moviesList.view.adapter.MoviesAdapter
+import com.moviepocket.features.Event
+import com.moviepocket.features.moviesList.viewmodel.MovieListScreenEffect
 import com.moviepocket.features.moviesList.viewmodel.MovieListScreenState
 import com.moviepocket.features.moviesList.viewmodel.MoviesViewModel
 import com.moviepocket.interfaces.MoviesCLickListener
@@ -80,47 +82,46 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
     }
 
     override fun onMovieClick(movie: Movie, imageView: ImageView) {
-
         this.context?.let {
-            if (netManager.isConnectedToInternet){
-                val intent = Intent(this.activity, MovieDetailActivity::class.java)
-                intent.putExtra(Movie.MOVIE, movie)
+            moviesViewModel.onMovieClicked(movie, imageView)
+        }
+    }
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                    startActivityForResult(intent, 101, ActivityOptions.makeSceneTransitionAnimation(
-                            this.activity, imageView, ViewCompat.getTransitionName(imageView)).toBundle())
-                } else {
-                    startActivityForResult(intent, 101)
-                }
-            } else{
-                onConnectivityError()
-            }
+    private fun openMovieDetail(movie: Movie, imageView: ImageView) {
+        val intent = Intent(this.activity, MovieDetailActivity::class.java)
+        intent.putExtra(Movie.MOVIE, movie)
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            startActivityForResult(intent, 101, ActivityOptions.makeSceneTransitionAnimation(
+                    this.activity, imageView, ViewCompat.getTransitionName(imageView)).toBundle())
+        } else {
+            startActivityForResult(intent, 101)
         }
     }
 
     override fun onMovieLongClick(movie: Movie) {
 
         this.context?.let {
-            if (netManager.isConnectedToInternet){
-                moviesList.isLayoutFrozen = true
-
-                val layoutInflater = LayoutInflater.from(context)
-                val view = layoutInflater.inflate(R.layout.view_movie_preview, null)
-
-                view.movieTitle.text = movie.title
-                view.imdbRate.text = movie.voteAverage
-                view.mMovieCover.loadUrl(movie.getPosterUrl())
-
-                builder = Dialog(context)
-                builder?.requestWindowFeature(Window.FEATURE_NO_TITLE)
-                builder?.setContentView(view)
-                builder?.show()
-
-                (this.activity as MainActivity).showBlurView()
-            }else{
-                onConnectivityError()
-            }
+            moviesViewModel.onMovieLongClicked(movie)
         }
+    }
+
+    private fun openMoviePreview(movie: Movie) {
+        moviesList.isLayoutFrozen = true
+
+        val layoutInflater = LayoutInflater.from(context)
+        val view = layoutInflater.inflate(R.layout.view_movie_preview, null)
+
+        view.movieTitle.text = movie.title
+        view.imdbRate.text = movie.voteAverage
+        view.mMovieCover.loadUrl(movie.getPosterUrl())
+
+        builder = Dialog(context)
+        builder?.requestWindowFeature(Window.FEATURE_NO_TITLE)
+        builder?.setContentView(view)
+        builder?.show()
+
+        (this.activity as MainActivity).showBlurView()
     }
 
     private fun onConnectivityError() {
@@ -163,6 +164,19 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
                         showLoadingScreen()
                     isThereError() ->
                         showErrorScreen()
+                }
+            }
+        })
+
+        moviesViewModel.movieScreenEffect.reObserve(this, Observer<Event<MovieListScreenEffect>> { screenEffectEvent ->
+            screenEffectEvent?.apply {
+                val screenEffect = screenEffectEvent.getContentIfNotHandled()
+                when(screenEffect) {
+                    is MovieListScreenEffect.OpenMovieDetail ->
+                        openMovieDetail(screenEffect.movie, screenEffect.imageView)
+                    is MovieListScreenEffect.OpenMoviePreview ->
+                        openMoviePreview(screenEffect.movie)
+                    is MovieListScreenEffect.Error -> onConnectivityError()
                 }
             }
         })
