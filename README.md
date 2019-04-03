@@ -8,6 +8,8 @@
   <img src="screenshot-3.png" width="250"/>
 </p>
 
+You can try it out from this <a href="https://drive.google.com/file/d/1HtFx_KxOlCr8aVsan4i8Kw4O7AmDkoT1/view?usp=sharing">link here!</a>
+
 This is a poc created to showcase a few Android tools. It uses:
 <p>-Kotlin</p>
 <p>-MVVM</p>
