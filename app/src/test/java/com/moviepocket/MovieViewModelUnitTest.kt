@@ -2,18 +2,22 @@ package com.moviepocket
 
 import android.arch.core.executor.testing.InstantTaskExecutorRule
 import android.arch.lifecycle.Observer
+import android.widget.ImageView
 import com.diego.mvvmwithscreenstates.JsonUtils.Companion.getJson
 import com.google.common.collect.Lists
+import com.moviepocket.features.Event
 import com.moviepocket.features.moviesList.data.MovieLocalDataSource
 import com.moviepocket.features.moviesList.data.MovieRemoteDataSource
 import com.moviepocket.features.moviesList.data.MovieRepository
 import com.moviepocket.features.moviesList.model.Movie
+import com.moviepocket.features.moviesList.viewmodel.MovieListScreenEvent
 import com.moviepocket.features.moviesList.viewmodel.MovieListScreenState
 import com.moviepocket.features.moviesList.viewmodel.MoviesViewModel
 import com.moviepocket.manager.NetManager
 import com.moviepocket.restclient.response.MovieListResponse
 import com.moviepocket.util.Constants
 import io.reactivex.Observable
+import io.reactivex.internal.schedulers.TrampolineScheduler
 import io.reactivex.schedulers.TestScheduler
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
@@ -33,7 +37,6 @@ import org.koin.test.KoinTest
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.Mockito.anyString
-import org.mockito.Mockito.spy
 import org.mockito.MockitoAnnotations
 
 class MovieViewModelUnitTest : KoinTest {
@@ -41,7 +44,6 @@ class MovieViewModelUnitTest : KoinTest {
     @Mock lateinit var mockNetManager: NetManager
     @Mock lateinit var mockMovieLocalDataSource: MovieLocalDataSource
     @Mock lateinit var mockMovieRemoteDataSource: MovieRemoteDataSource
-    private val testScheduler = TestScheduler()
     private val mockObserver = mock<Observer<MovieListScreenState>>()
     private val server = MockWebServer()
 
@@ -51,6 +53,9 @@ class MovieViewModelUnitTest : KoinTest {
     private val mockRepository: MovieRepository by inject()
     private lateinit var viewModel: MoviesViewModel
     private lateinit var moviesCached: ArrayList<Movie>
+
+    private lateinit var screenEventLiveData: TestObserver<Event<MovieListScreenEvent>>
+    private lateinit var screenStateLiveData: TestObserver<MovieListScreenState>
 
     @Before
     fun setUpTest() {
@@ -63,7 +68,7 @@ class MovieViewModelUnitTest : KoinTest {
             bean { MovieRepository(get(), get(), get()) }
         }))
 
-        viewModel = MoviesViewModel(mockRepository, testScheduler, testScheduler, mockNetManager)
+        viewModel = MoviesViewModel(mockRepository, TrampolineScheduler.instance(), TrampolineScheduler.instance(), mockNetManager)
         viewModel.moviesScreenState.observeForever(mockObserver)
 
         val movieCached1 = Movie(1, "", "Mock cached movie 1", "0", "0", "0", "")
@@ -71,6 +76,9 @@ class MovieViewModelUnitTest : KoinTest {
 
         Mockito.`when`(mockMovieRemoteDataSource.getMovies(anyString(), anyString())).thenCallRealMethod()
         configureMockServer()
+
+        screenEventLiveData = viewModel.movieScreenEvent.testObserver()
+        screenStateLiveData = viewModel.moviesScreenState.testObserver()
     }
 
     @After
@@ -136,8 +144,6 @@ class MovieViewModelUnitTest : KoinTest {
 
         viewModel.onNewPageRequested("")
 
-        testScheduler.triggerActions()
-
         `assert that status OK is returned`()
 
         `assert that list returned is not empty`()
@@ -151,8 +157,6 @@ class MovieViewModelUnitTest : KoinTest {
 
         viewModel.onViewCreated("")
 
-        testScheduler.triggerActions()
-
         `assert that status OK is returned`()
 
         `assert that list returned is not empty`()
@@ -161,11 +165,7 @@ class MovieViewModelUnitTest : KoinTest {
 
         viewModel.onNewPageRequested("")
 
-        testScheduler.triggerActions()
-
         `assert that status OK is returned`()
-
-        `check second page was returned`()
 
         `assert list comes from second page remote`()
     }
@@ -176,7 +176,7 @@ class MovieViewModelUnitTest : KoinTest {
 
         viewModel.onViewCreated("")
 
-        testScheduler.triggerActions()
+        `assert that handle loading properly`()
 
         `assert that status OK is returned`()
 
@@ -186,9 +186,13 @@ class MovieViewModelUnitTest : KoinTest {
 
         viewModel.onNewPageRequested("")
 
-        testScheduler.triggerActions()
-
         `assert that status OK is returned`()
+
+        `assert list comes from second page remote`()
+
+        viewModel.onNewPageRequested("")
+
+        `assert that nothing is sent`()
     }
 
     @Test
@@ -238,6 +242,38 @@ class MovieViewModelUnitTest : KoinTest {
         `assert that empty list is returned`()
     }
 
+    @Test
+    fun `assert that it opens movie detail`() {
+        Mockito.`when`(mockNetManager.isConnectedToInternet).thenReturn(true)
+        viewModel.onMovieClicked(Movie(), ImageView(null))
+
+        `assert that it sends openMovieDetail screen event`()
+    }
+
+    @Test
+    fun `assert that it shows connectivity error when opening detail with no internet`() {
+        Mockito.`when`(mockNetManager.isConnectedToInternet).thenReturn(false)
+        viewModel.onMovieClicked(Movie(), ImageView(null))
+
+        `assert that it sends error screen event`()
+    }
+
+    @Test
+    fun `assert that it opens movie preview`() {
+        Mockito.`when`(mockNetManager.isConnectedToInternet).thenReturn(true)
+        viewModel.onMovieLongClicked(Movie())
+
+        `assert that it sends show preview screen event`()
+    }
+
+    @Test
+    fun `assert that it shows connectivity error when opening preview with no internet`() {
+        Mockito.`when`(mockNetManager.isConnectedToInternet).thenReturn(false)
+        viewModel.onMovieLongClicked(Movie())
+
+        `assert that it sends error screen event`()
+    }
+
     private fun configureMockServer() {
         server.start()
         Constants.BASE_URL = server.url("/").toString()
@@ -263,55 +299,95 @@ class MovieViewModelUnitTest : KoinTest {
     }
 
     private fun `assert no data status is returned`() {
-        viewModel.moviesScreenState.value?.isDataNotAvailable()?.let {
-            assertTrue("No data status expected", it)
+        screenStateLiveData.observedValues[1]?.apply {
+            assertTrue("No data status expected", isDataNotAvailable())
         }
     }
 
     private fun `assert that handle loading properly`() {
-        viewModel.moviesScreenState.value?.isLoading()?.let {
-            assertTrue("Is loading", it)
-        }
+        `assert that starts loading`()
 
-        testScheduler.triggerActions()
-
-        viewModel.moviesScreenState.value?.isLoading()?.let {
-            assertFalse("Finished loading", it)
-        }
+        `assert that stops loading`()
     }
 
     private fun `assert that list comes from remote`() {
-        assertEquals("Wrong list received", "Capitã Marvel", viewModel.moviesScreenState.value?.movies?.get(0)?.title)
+        screenStateLiveData.observedValues[1]?.apply {
+            assertEquals("List should come from remote", "Capitã Marvel",
+                    movies[0].title)
+        }
     }
 
     private fun `assert list comes from second page remote`() {
-        assertEquals("Wrong list received", "Cinderela Pop", viewModel.moviesScreenState.value?.movies?.get(0)?.title)
+        screenStateLiveData.observedValues[2]?.apply {
+            assertEquals("Second page should come from remote", "Cinderela Pop",
+                    movies[0].title)
+        }
     }
 
     private fun `assert list comes from cache`() {
-        assertEquals("Wrong list received", "Mock cached movie 1",
-                viewModel.moviesScreenState.value?.movies?.get(0)?.title)
+        screenStateLiveData.observedValues[1]?.apply {
+            assertEquals("List should comer from cache", "Mock cached movie 1",
+                    movies[0].title)
+        }
     }
 
     private fun `assert that status OK is returned`() {
-        assertTrue("OK status expected",
-                viewModel.moviesScreenState.value?.isStatusOk() ?: false)
+        screenStateLiveData.observedValues[1]?.apply {
+            assertTrue("OK status expected",
+                    isStatusOk())
+        }
     }
 
     private fun `assert that empty list is returned`() {
-        assertTrue("Should not receive data",
-                viewModel.moviesScreenState.value?.movies?.size ?: 0 == 0)
+        screenStateLiveData.observedValues[1]?.apply {
+            assertTrue("Should not receive data",
+                    movies.isEmpty())
+        }
     }
 
     private fun `assert that error status is returned`() {
-        assertTrue("Error status expected", viewModel.moviesScreenState.value?.isThereError() ?: false)
-    }
-
-    private fun `check second page was returned`() {
-        assertTrue("Second page not loaded", viewModel.moviesScreenState.value?.movies?.size ?: 0 > 0)
+        screenStateLiveData.observedValues[1]?.apply {
+            assertTrue("Error status expected", isThereError())
+        }
     }
 
     private fun `assert that list returned is not empty`() {
-        assertTrue("No data found", viewModel.moviesScreenState.value?.movies?.size ?: 0 > 0)
+        screenStateLiveData.observedValues[1]?.apply {
+            assertTrue("No data found", movies.isNotEmpty())
+        }
+    }
+
+    private fun `assert that it sends openMovieDetail screen event`() {
+        screenEventLiveData.observedValues[0]?.apply {
+            assertTrue("OpenMovieDetail screen effect expected", getContentIfNotHandled() is MovieListScreenEvent.OpenMovieDetail)
+        }
+    }
+
+    private fun `assert that it sends error screen event`() {
+        screenEventLiveData.observedValues[0]?.apply {
+            assertTrue("Error screen event expected", getContentIfNotHandled() is MovieListScreenEvent.Error)
+        }
+    }
+
+    private fun `assert that it sends show preview screen event`() {
+        screenEventLiveData.observedValues[0]?.apply {
+            assertTrue("OpenMoviePreview screen effect expected", getContentIfNotHandled() is MovieListScreenEvent.OpenMoviePreview)
+        }
+    }
+
+    private fun `assert that starts loading`() {
+        screenStateLiveData.observedValues[0]?.apply {
+            assertTrue("Should be loading", isLoading())
+        }
+    }
+
+    private fun `assert that stops loading`() {
+        screenStateLiveData.observedValues[1]?.apply {
+            assertFalse("Should not be loading", isLoading())
+        }
+    }
+
+    private fun `assert that nothing is sent`() {
+        assertTrue("Should not send anything", screenStateLiveData.observedValues.size < 4)
     }
 }

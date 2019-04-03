@@ -9,7 +9,8 @@ import com.moviepocket.features.movieDetail.viewmodel.MovieDetailScreenState
 import com.moviepocket.features.movieDetail.viewmodel.MovieDetailViewModel
 import com.moviepocket.util.Constants
 import io.reactivex.Observable
-import io.reactivex.schedulers.TestScheduler
+import io.reactivex.internal.schedulers.TrampolineScheduler
+import junit.framework.Assert.assertTrue
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.*
@@ -24,7 +25,6 @@ import org.mockito.MockitoAnnotations
 import org.mockito.Spy
 
 class MovieDetailViewModelUnitTest : KoinTest {
-    private val testScheduler = TestScheduler()
     private val mockObserver = mock<Observer<MovieDetailScreenState>>()
     private val server = MockWebServer()
 
@@ -35,6 +35,8 @@ class MovieDetailViewModelUnitTest : KoinTest {
     var rule: TestRule = InstantTaskExecutorRule()
 
     private lateinit var viewModel: MovieDetailViewModel
+
+    private lateinit var screenStatetLiveData: TestObserver<MovieDetailScreenState>
 
     @Before
     fun setUpTest() {
@@ -47,8 +49,10 @@ class MovieDetailViewModelUnitTest : KoinTest {
 
         configureMockServer()
 
-        viewModel = MovieDetailViewModel(movieDetailRepository, testScheduler, testScheduler)
+        viewModel = MovieDetailViewModel(movieDetailRepository, TrampolineScheduler.instance(), TrampolineScheduler.instance())
         viewModel.movieDetailLiveData.observeForever(mockObserver)
+
+        screenStatetLiveData = viewModel.movieDetailLiveData.testObserver()
     }
 
     @After
@@ -76,26 +80,33 @@ class MovieDetailViewModelUnitTest : KoinTest {
         `assert that error status is returned`()
     }
 
+    private fun `assert that starts loading`() {
+        screenStatetLiveData.observedValues[0]?.apply {
+            Assert.assertTrue("Should be loading", isLoading())
+        }
+    }
+
+    private fun `assert that stops loading`() {
+        screenStatetLiveData.observedValues[1]?.apply {
+            Assert.assertFalse("Should not be loading", isLoading())
+        }
+    }
+
     private fun `assert that handle loading properly`() {
-        viewModel.movieDetailLiveData.value?.isLoading()?.let {
-            Assert.assertTrue("Is loading", it)
-        }
-
-        testScheduler.triggerActions()
-
-        viewModel.movieDetailLiveData.value?.isLoading()?.let {
-            Assert.assertFalse("Finished loading", it)
-        }
+        `assert that starts loading`()
+        `assert that stops loading`()
     }
 
     private fun `assert that status OK is returned`() {
-        Assert.assertTrue("OK status expected",
-                viewModel.movieDetailLiveData.value?.isStatusOk() ?: false)
+        screenStatetLiveData.observedValues[1]?.apply {
+            assertTrue("OK status expected", isStatusOk())
+        }
     }
 
     private fun `assert that error status is returned`() {
-        Assert.assertTrue("Error status expected",
-                viewModel.movieDetailLiveData.value?.isThereError() ?: false)
+        screenStatetLiveData.observedValues[1]?.apply {
+            assertTrue("OK status expected", isThereError())
+        }
     }
 
     private fun configureMockServer() {

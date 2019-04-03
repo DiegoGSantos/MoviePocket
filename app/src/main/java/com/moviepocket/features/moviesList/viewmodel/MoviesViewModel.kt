@@ -21,7 +21,7 @@ class MoviesViewModel(private val movieRepository: MovieRepository,
                       private val netManager: NetManager = NetManager()): ViewModel() {
 
     val moviesScreenState: MutableLiveData<MovieListScreenState> = MutableLiveData()
-    val movieScreenEffect: MutableLiveData<Event<MovieListScreenEffect>> = MutableLiveData()
+    val movieScreenEvent: MutableLiveData<Event<MovieListScreenEvent>> = MutableLiveData()
 
     val moviesList = ArrayList<Movie>()
 
@@ -38,17 +38,17 @@ class MoviesViewModel(private val movieRepository: MovieRepository,
 
     fun onMovieClicked(movie: Movie, imageView: ImageView) {
         if (netManager.isConnectedToInternet){
-            movieScreenEffect.value = Event(MovieListScreenEffect.OpenMovieDetail(movie, imageView))
+            movieScreenEvent.value = Event(MovieListScreenEvent.OpenMovieDetail(movie, imageView))
         } else{
-            movieScreenEffect.value = Event(MovieListScreenEffect.Error(Throwable()))
+            movieScreenEvent.value = Event(MovieListScreenEvent.Error(Throwable()))
         }
     }
 
     fun onMovieLongClicked(movie: Movie) {
         if (netManager.isConnectedToInternet){
-            movieScreenEffect.value = Event(MovieListScreenEffect.OpenMoviePreview(movie))
+            movieScreenEvent.value = Event(MovieListScreenEvent.OpenMoviePreview(movie))
         } else{
-            movieScreenEffect.value = Event(MovieListScreenEffect.Error(Throwable()))
+            movieScreenEvent.value = Event(MovieListScreenEvent.Error(Throwable()))
         }
     }
 

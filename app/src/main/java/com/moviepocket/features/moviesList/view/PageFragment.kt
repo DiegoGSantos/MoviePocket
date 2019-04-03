@@ -26,7 +26,7 @@ import com.moviepocket.features.movieDetail.view.MovieDetailActivity
 import com.moviepocket.features.moviesList.model.Movie
 import com.moviepocket.features.moviesList.view.adapter.MoviesAdapter
 import com.moviepocket.features.Event
-import com.moviepocket.features.moviesList.viewmodel.MovieListScreenEffect
+import com.moviepocket.features.moviesList.viewmodel.MovieListScreenEvent
 import com.moviepocket.features.moviesList.viewmodel.MovieListScreenState
 import com.moviepocket.features.moviesList.viewmodel.MoviesViewModel
 import com.moviepocket.interfaces.MoviesCLickListener
@@ -168,15 +168,15 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
             }
         })
 
-        moviesViewModel.movieScreenEffect.reObserve(this, Observer<Event<MovieListScreenEffect>> { screenEffectEvent ->
+        moviesViewModel.movieScreenEvent.reObserve(this, Observer<Event<MovieListScreenEvent>> { screenEffectEvent ->
             screenEffectEvent?.apply {
                 val screenEffect = screenEffectEvent.getContentIfNotHandled()
                 when(screenEffect) {
-                    is MovieListScreenEffect.OpenMovieDetail ->
+                    is MovieListScreenEvent.OpenMovieDetail ->
                         openMovieDetail(screenEffect.movie, screenEffect.imageView)
-                    is MovieListScreenEffect.OpenMoviePreview ->
+                    is MovieListScreenEvent.OpenMoviePreview ->
                         openMoviePreview(screenEffect.movie)
-                    is MovieListScreenEffect.Error -> onConnectivityError()
+                    is MovieListScreenEvent.Error -> onConnectivityError()
                 }
             }
         })

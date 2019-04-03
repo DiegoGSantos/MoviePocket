@@ -15,7 +15,7 @@ import io.reactivex.schedulers.Schedulers
 class MovieDetailViewModel(private val movieRepository: MovieDetailRepository,
                            private val processScheduler: Scheduler = Schedulers.io(),
                            private val androidScheduler: Scheduler = AndroidSchedulers.mainThread()): ViewModel() {
-    var movieDetailLiveData: MutableLiveData<MovieDetailScreenState> = MutableLiveData()
+    val movieDetailLiveData: MutableLiveData<MovieDetailScreenState> = MutableLiveData()
 
     private var compositeDisposable = CompositeDisposable()
 
