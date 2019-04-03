@@ -3,12 +3,12 @@ package com.moviepocket
 import android.app.Application
 import android.content.Context
 import com.moviepocket.di.module
-import com.moviepocket.features.moviesList.model.Movie
-import com.moviepocket.features.moviesList.model.MyObjectBox
+import com.moviepocket.features.moviesList.model.domain.Movie
+import com.moviepocket.features.moviesList.model.domain.MyObjectBox
+
 import io.objectbox.Box
 import io.objectbox.BoxStore
 import org.koin.android.ext.android.startKoin
-import org.koin.dsl.module.Module
 
 /**
  * Created by diegosantos on 2/4/18.

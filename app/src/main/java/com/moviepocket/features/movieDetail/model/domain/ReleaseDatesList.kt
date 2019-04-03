@@ -1,4 +1,4 @@
-package com.moviepocket.features.movieDetail.model
+package com.moviepocket.features.movieDetail.model.domain
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName

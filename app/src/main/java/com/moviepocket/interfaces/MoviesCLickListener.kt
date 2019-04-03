@@ -1,7 +1,7 @@
 package com.moviepocket.interfaces
 
 import android.widget.ImageView
-import com.moviepocket.features.moviesList.model.Movie
+import com.moviepocket.features.moviesList.model.domain.Movie
 
 /**
  * Created by diego.santos on 21/12/17.

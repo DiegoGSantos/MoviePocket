@@ -23,7 +23,7 @@ import com.moviepocket.customViews.InfiniteScrollListener
 import com.moviepocket.customViews.OnReleaseScreenListener
 import com.moviepocket.databinding.FragmentPageBinding
 import com.moviepocket.features.movieDetail.view.MovieDetailActivity
-import com.moviepocket.features.moviesList.model.Movie
+import com.moviepocket.features.moviesList.model.domain.Movie
 import com.moviepocket.features.moviesList.view.adapter.MoviesAdapter
 import com.moviepocket.features.Event
 import com.moviepocket.features.moviesList.viewmodel.MovieListScreenEvent

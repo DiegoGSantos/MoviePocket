@@ -1,7 +1,7 @@
 package com.moviepocket.features.moviesList.viewmodel
 
 import android.widget.ImageView
-import com.moviepocket.features.moviesList.model.Movie
+import com.moviepocket.features.moviesList.model.domain.Movie
 
 sealed class MovieListScreenEvent {
     data class OpenMovieDetail(val movie: Movie, val imageView: ImageView) : MovieListScreenEvent()

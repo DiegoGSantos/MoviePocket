@@ -2,7 +2,7 @@ package com.moviepocket.features.moviesList.view.adapter
 import android.support.v4.util.SparseArrayCompat
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
-import com.moviepocket.features.moviesList.model.Movie
+import com.moviepocket.features.moviesList.model.domain.Movie
 import com.moviepocket.interfaces.MoviesCLickListener
 import com.moviepocket.util.adapter.AdapterConstants
 import com.moviepocket.util.adapter.ViewType

@@ -1,7 +1,7 @@
 package com.moviepocket.features.moviesList.viewmodel
 
 import com.moviepocket.features.ScreenState
-import com.moviepocket.features.moviesList.model.Movie
+import com.moviepocket.features.moviesList.model.domain.Movie
 
 /**
  * Created by diegosantos on 4/25/18.

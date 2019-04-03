@@ -3,21 +3,15 @@ package com.moviepocket.features.moviesList.view.adapter
 import android.support.v7.widget.RecyclerView
 import android.view.ViewGroup
 import com.moviepocket.R
-import com.moviepocket.features.moviesList.model.Movie
+import com.moviepocket.features.moviesList.model.domain.Movie
 import com.moviepocket.interfaces.MoviesCLickListener
 import com.moviepocket.util.adapter.ViewType
 import com.moviepocket.util.adapter.ViewTypeDelegateAdapter
 import com.moviepocket.util.extensions.inflate
-import com.moviepocket.util.extensions.loadUrl
 import kotlinx.android.synthetic.main.item_movie.view.*
-import android.support.v4.content.ContextCompat.startActivity
-import android.support.v4.view.ViewCompat
-import android.support.v4.app.ActivityOptionsCompat
-import android.content.Intent
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.moviepocket.customViews.RoundedCornersTransformation
-import com.moviepocket.features.movieDetail.view.MovieDetailActivity
 
 
 /**

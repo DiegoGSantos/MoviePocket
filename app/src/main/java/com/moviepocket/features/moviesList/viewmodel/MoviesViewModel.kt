@@ -4,8 +4,8 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import android.widget.ImageView
 import com.moviepocket.features.Event
-import com.moviepocket.features.moviesList.data.MovieRepository
-import com.moviepocket.features.moviesList.model.Movie
+import com.moviepocket.features.moviesList.model.data.MovieRepository
+import com.moviepocket.features.moviesList.model.domain.Movie
 import com.moviepocket.manager.NetManager
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers

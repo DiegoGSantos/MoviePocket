@@ -6,10 +6,10 @@ import android.widget.ImageView
 import com.diego.mvvmwithscreenstates.JsonUtils.Companion.getJson
 import com.google.common.collect.Lists
 import com.moviepocket.features.Event
-import com.moviepocket.features.moviesList.data.MovieLocalDataSource
-import com.moviepocket.features.moviesList.data.MovieRemoteDataSource
-import com.moviepocket.features.moviesList.data.MovieRepository
-import com.moviepocket.features.moviesList.model.Movie
+import com.moviepocket.features.moviesList.model.data.MovieLocalDataSource
+import com.moviepocket.features.moviesList.model.data.MovieRemoteDataSource
+import com.moviepocket.features.moviesList.model.data.MovieRepository
+import com.moviepocket.features.moviesList.model.domain.Movie
 import com.moviepocket.features.moviesList.viewmodel.MovieListScreenEvent
 import com.moviepocket.features.moviesList.viewmodel.MovieListScreenState
 import com.moviepocket.features.moviesList.viewmodel.MoviesViewModel
@@ -18,7 +18,6 @@ import com.moviepocket.restclient.response.MovieListResponse
 import com.moviepocket.util.Constants
 import io.reactivex.Observable
 import io.reactivex.internal.schedulers.TrampolineScheduler
-import io.reactivex.schedulers.TestScheduler
 import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
