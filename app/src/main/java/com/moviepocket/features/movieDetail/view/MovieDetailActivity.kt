@@ -68,7 +68,7 @@ class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
             movieDetail?.let {
                 when {
                     it.isStatusOk() -> updateUi(it.movieDetail)
-                    it.isLoading() -> binding.progress.visibility = VISIBLE
+                    it.isLoading() -> binding.loadingView.visibility = VISIBLE
                     it.isThereError() -> showErrorScreen()
                 }
             }
@@ -98,7 +98,7 @@ class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
             setRating(movieDetailResponse)
         }
 
-        binding.progress.visibility = GONE
+        binding.loadingView.visibility = GONE
     }
 
     private fun setVideoList(movieDetailResponse: MovieDetailResponse) {
@@ -215,6 +215,6 @@ class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
     }
 
     private fun showErrorScreen() {
-        binding.progress.visibility = GONE
+        binding.loadingView.visibility = GONE
     }
 }

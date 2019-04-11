@@ -281,9 +281,6 @@ class MovieViewModelUnitTest : KoinTest {
 
             @Throws(InterruptedException::class)
             override fun dispatch(request: RecordedRequest): MockResponse {
-
-                val test = getJson("movies-page-1.json")
-
                 return when {
                     request.path.contains("/movie") && request.path.contains("page=1") ->
                         MockResponse().setResponseCode(200).setBody(getJson("movies-page-1.json"))
