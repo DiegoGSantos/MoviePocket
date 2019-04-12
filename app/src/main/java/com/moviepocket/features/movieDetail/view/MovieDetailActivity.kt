@@ -140,10 +140,7 @@ class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
     }
 
     private fun setTopCover(movie: MovieDetailResponse) {
-        Glide.with(this)
-                .load(movie.getBackdropPathUrl())
-                .centerCrop()
-                .into(moviePoster)
+        moviePoster.loadUrl(movie.getBackdropPathUrl())
     }
 
     private fun setMovieCover(posterUrl: String) {
