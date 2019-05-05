@@ -22,6 +22,7 @@
                     android:id="@+id/movieBg"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
+                    android:paddingLeft="@dimen/hecto_margin"
                     android:scaleType="centerCrop"/>
 
                 <eightbitlab.com.blurview.BlurView
@@ -75,6 +76,7 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:gravity="right"
+                                android:paddingRight="@dimen/hecto_margin"
                                 android:background="@color/transparentWhite">
 
                                 <com.moviepocket.customViews.CustomTextView
@@ -111,8 +113,6 @@
                     <android.support.constraint.ConstraintLayout
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:paddingRight="@dimen/hecto_margin"
-                        android:paddingLeft="@dimen/hecto_margin"
                         android:paddingBottom="@dimen/hecto_margin"
                         android:paddingTop="34dp">
 
@@ -121,8 +121,11 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:background="?android:attr/selectableItemBackground"
+                            android:paddingRight="@dimen/hecto_margin"
+                            android:layout_marginLeft="@dimen/hecto_margin"
                             android:tint="@color/white"
                             android:paddingBottom="@dimen/centi_margin"
+                            app:layout_constraintStart_toStartOf="parent"
                             android:src="@drawable/back"/>
 
                         <ImageView
@@ -131,6 +134,7 @@
                             android:layout_height="wrap_content"
                             android:adjustViewBounds="true"
                             android:transitionName="@string/movie_transition"
+                            app:layout_constraintStart_toStartOf="@id/backButton"
                             app:layout_constraintTop_toBottomOf="@id/backButton"/>
 
                         <com.moviepocket.customViews.CustomTextView
@@ -144,6 +148,7 @@
                             app:layout_constraintRight_toRightOf="parent"
                             app:layout_constraintTop_toTopOf="@id/movieCover"
                             app:customTypeface="@string/bold"
+                            android:paddingRight="@dimen/hecto_margin"
                             android:layout_marginLeft="@dimen/hecto_margin" />
 
                         <com.moviepocket.customViews.CustomTextView
@@ -181,6 +186,8 @@
                             android:textSize="@dimen/deca_text"
                             android:textColor="@color/white"
                             app:layout_constraintStart_toStartOf="parent"
+                            android:paddingLeft="@dimen/hecto_margin"
+                            android:paddingTop="@dimen/centi_margin"
                             android:layout_marginTop="@dimen/hecto_margin"
                             app:customTypeface="@string/bold"
                             android:text="@string/plot"
@@ -192,6 +199,8 @@
                             android:layout_height="wrap_content"
                             android:textSize="@dimen/centi_text"
                             android:textColor="@color/white"
+                            android:paddingRight="@dimen/hecto_margin"
+                            android:paddingLeft="@dimen/hecto_margin"
                             android:paddingBottom="@dimen/hecto_margin"
                             app:layout_constraintStart_toStartOf="parent"
                             app:layout_constraintEnd_toEndOf="parent"
@@ -206,6 +215,8 @@
                             app:layout_constraintStart_toStartOf="parent"
                             app:customTypeface="@string/bold"
                             android:text="@string/videos"
+                            android:paddingRight="@dimen/hecto_margin"
+                            android:paddingLeft="@dimen/hecto_margin"
                             android:visibility="gone"
                             android:paddingBottom="@dimen/centi_margin"
                             app:layout_constraintTop_toBottomOf="@id/moviePlot"/>
@@ -214,6 +225,9 @@
                             android:id="@+id/videosList"
                             android:layout_width="match_parent"
                             android:layout_height="126dp"
+                            android:paddingRight="@dimen/hecto_margin"
+                            android:paddingLeft="@dimen/hecto_margin"
+                            android:clipToPadding="false"
                             android:visibility="gone"
                             app:layout_constraintTop_toBottomOf="@id/videos"/>
 

@@ -12,6 +12,8 @@
         android:id="@+id/mVideoImage"
         android:layout_width="224dp"
         android:layout_height="126dp"
+        android:padding="1dp"
+        android:background="@drawable/frame_border"
          android:scaleType="fitXY"/>
 
     <ImageView
