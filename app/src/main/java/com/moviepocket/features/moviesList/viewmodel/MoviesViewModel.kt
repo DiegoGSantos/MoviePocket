@@ -2,22 +2,27 @@ package com.moviepocket.features.moviesList.viewmodel
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import com.moviepocket.features.moviesList.data.MovieRepository
-import com.moviepocket.features.moviesList.model.Movie
+import android.widget.ImageView
+import com.moviepocket.features.Event
+import com.moviepocket.features.moviesList.model.data.MovieRepository
+import com.moviepocket.features.moviesList.model.domain.Movie
+import com.moviepocket.manager.NetManager
 import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-
 
 /**
  * Created by diego.santos on 01/02/18.
  */
 class MoviesViewModel(private val movieRepository: MovieRepository,
                       private val processScheduler: Scheduler = Schedulers.io(),
-                      private val androidScheduler: Scheduler = AndroidSchedulers.mainThread()): ViewModel() {
+                      private val androidScheduler: Scheduler = AndroidSchedulers.mainThread(),
+                      private val netManager: NetManager = NetManager()): ViewModel() {
 
     val moviesScreenState: MutableLiveData<MovieListScreenState> = MutableLiveData()
+    val movieScreenEvent: MutableLiveData<Event<MovieListScreenEvent>> = MutableLiveData()
+
     val moviesList = ArrayList<Movie>()
 
     private var totalOfPages: Int = 0
@@ -29,6 +34,22 @@ class MoviesViewModel(private val movieRepository: MovieRepository,
 
     fun onNewPageRequested(listType: String) {
         listMovies(listType, false)
+    }
+
+    fun onMovieClicked(movie: Movie, imageView: ImageView) {
+        if (netManager.isConnectedToInternet){
+            movieScreenEvent.value = Event(MovieListScreenEvent.OpenMovieDetail(movie, imageView))
+        } else{
+            movieScreenEvent.value = Event(MovieListScreenEvent.Error(Throwable()))
+        }
+    }
+
+    fun onMovieLongClicked(movie: Movie) {
+        if (netManager.isConnectedToInternet){
+            movieScreenEvent.value = Event(MovieListScreenEvent.OpenMoviePreview(movie))
+        } else{
+            movieScreenEvent.value = Event(MovieListScreenEvent.Error(Throwable()))
+        }
     }
 
     private fun listMovies(listType: String, isStartingView: Boolean) {

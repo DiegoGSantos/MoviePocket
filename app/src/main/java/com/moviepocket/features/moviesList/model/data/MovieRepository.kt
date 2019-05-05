@@ -1,12 +1,9 @@
-package com.moviepocket.features.moviesList.data
+package com.moviepocket.features.moviesList.model.data
 
-import com.moviepocket.features.movieDetail.data.MovieDetailRemoteDataSource
-import com.moviepocket.features.moviesList.model.Movie
+import com.moviepocket.features.moviesList.model.domain.Movie
 import com.moviepocket.manager.NetManager
-import com.moviepocket.restclient.response.MovieDetailResponse
 import com.moviepocket.restclient.response.MovieListResponse
 import io.reactivex.Observable
-import io.reactivex.Scheduler
 
 
 /**

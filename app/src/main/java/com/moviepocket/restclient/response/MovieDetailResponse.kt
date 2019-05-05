@@ -2,9 +2,9 @@ package com.moviepocket.restclient.response
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-import com.moviepocket.features.movieDetail.model.ReleaseDatesList
-import com.moviepocket.features.movieDetail.model.VideoList
-import com.moviepocket.features.moviesList.model.Genre
+import com.moviepocket.features.movieDetail.model.domain.ReleaseDatesList
+import com.moviepocket.features.movieDetail.model.domain.VideoList
+import com.moviepocket.features.moviesList.model.domain.Genre
 
 /**
  * Created by diego.santos on 15/02/18.

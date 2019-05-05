@@ -5,7 +5,7 @@
     <color name="colorAccent">#2F2F2F</color>
 
     <color name="white">#fff</color>
-    <color name="transparentWhite">#66ffffff</color>
+    <color name="transparentWhite">#1affffff</color>
 
     <color name="transparentBlack">#66000000</color>
     <color name="colorOverlay">#30000000</color>

@@ -1,4 +1,4 @@
-package com.moviepocket.features.moviesList.model
+package com.moviepocket.features.moviesList.model.domain
 
 import android.annotation.SuppressLint
 import android.os.Parcel

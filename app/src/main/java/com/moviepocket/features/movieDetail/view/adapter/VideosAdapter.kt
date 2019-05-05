@@ -7,10 +7,9 @@ import android.view.View
 import android.view.ViewGroup
 import com.bumptech.glide.Glide
 import com.moviepocket.R
-import com.moviepocket.features.movieDetail.model.Video
+import com.moviepocket.features.movieDetail.model.domain.Video
 import com.moviepocket.interfaces.VideoCLickListener
 import com.moviepocket.util.extensions.loadUrl
-import kotlinx.android.synthetic.main.activity_movie_detail.*
 import kotlinx.android.synthetic.main.item_video.view.*
 
 /**
@@ -32,12 +31,7 @@ class VideosAdapter(val context: Context, val videos: List<Video>, val listener:
 
     override fun onBindViewHolder(holder: VideoViewHolder, position: Int) {
         val video = videos.get(position)
-//        holder.videoCover.loadUrl(video.getVideoImageUrl())
-
-        Glide.with(this.context)
-                .load(video.getVideoImageUrl())
-                .centerCrop()
-                .into(holder.videoCover)
+        holder.videoCover.loadUrl(video.getVideoImageUrl())
 
         with (holder.container) {
             tag = video

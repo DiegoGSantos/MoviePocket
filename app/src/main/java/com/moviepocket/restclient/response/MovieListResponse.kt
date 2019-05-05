@@ -2,7 +2,7 @@ package com.moviepocket.restclient.response
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-import com.moviepocket.features.moviesList.model.Movie
+import com.moviepocket.features.moviesList.model.domain.Movie
 
 /**
  * Created by diegosantos on 12/17/17.

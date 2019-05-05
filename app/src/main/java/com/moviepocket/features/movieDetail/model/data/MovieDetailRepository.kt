@@ -1,4 +1,4 @@
-package com.moviepocket.features.movieDetail.data
+package com.moviepocket.features.movieDetail.model.data
 
 import com.moviepocket.restclient.response.MovieDetailResponse
 import io.reactivex.Observable

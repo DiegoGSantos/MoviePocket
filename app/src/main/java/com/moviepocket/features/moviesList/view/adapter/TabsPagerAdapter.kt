@@ -5,7 +5,7 @@ import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import com.moviepocket.features.moviesList.view.PageFragment
 import android.support.v4.app.FragmentPagerAdapter
-import com.moviepocket.features.moviesList.data.MovieListTypes
+import com.moviepocket.features.moviesList.model.data.MovieListTypes
 
 /**
  * Created by diegosantos on 12/17/17.

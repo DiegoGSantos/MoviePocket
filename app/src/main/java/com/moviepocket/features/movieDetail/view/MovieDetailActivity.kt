@@ -21,10 +21,10 @@ import com.eightbitlab.supportrenderscriptblur.SupportRenderScriptBlur
 import com.moviepocket.R
 import com.moviepocket.customViews.RoundedCornersTransformation
 import com.moviepocket.databinding.ActivityMovieDetailBinding
-import com.moviepocket.features.movieDetail.model.Video
+import com.moviepocket.features.movieDetail.model.domain.Video
 import com.moviepocket.features.movieDetail.viewmodel.MovieDetailScreenState
 import com.moviepocket.features.movieDetail.viewmodel.MovieDetailViewModel
-import com.moviepocket.features.moviesList.model.Movie
+import com.moviepocket.features.moviesList.model.domain.Movie
 import com.moviepocket.interfaces.VideoCLickListener
 import com.moviepocket.restclient.response.MovieDetailResponse
 import com.moviepocket.util.extensions.loadUrl
@@ -68,7 +68,7 @@ class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
             movieDetail?.let {
                 when {
                     it.isStatusOk() -> updateUi(it.movieDetail)
-                    it.isLoading() -> binding.progress.visibility = VISIBLE
+                    it.isLoading() -> binding.loadingView.visibility = VISIBLE
                     it.isThereError() -> showErrorScreen()
                 }
             }
@@ -98,7 +98,7 @@ class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
             setRating(movieDetailResponse)
         }
 
-        binding.progress.visibility = GONE
+        binding.loadingView.visibility = GONE
     }
 
     private fun setVideoList(movieDetailResponse: MovieDetailResponse) {
@@ -140,10 +140,7 @@ class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
     }
 
     private fun setTopCover(movie: MovieDetailResponse) {
-        Glide.with(this)
-                .load(movie.getBackdropPathUrl())
-                .centerCrop()
-                .into(moviePoster)
+        moviePoster.loadUrl(movie.getBackdropPathUrl())
     }
 
     private fun setMovieCover(posterUrl: String) {
@@ -215,6 +212,6 @@ class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
     }
 
     private fun showErrorScreen() {
-        binding.progress.visibility = GONE
+        binding.loadingView.visibility = GONE
     }
 }
