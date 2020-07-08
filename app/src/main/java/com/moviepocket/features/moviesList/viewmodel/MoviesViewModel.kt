@@ -2,7 +2,6 @@ package com.moviepocket.features.moviesList.viewmodel
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import android.widget.ImageView
 import com.moviepocket.features.Event
 import com.moviepocket.features.moviesList.model.data.MovieRepository
 import com.moviepocket.features.moviesList.model.domain.Movie
@@ -36,9 +35,9 @@ class MoviesViewModel(private val movieRepository: MovieRepository,
         listMovies(listType, false)
     }
 
-    fun onMovieClicked(movie: Movie, imageView: ImageView) {
+    fun onMovieClicked(movie: Movie) {
         if (netManager.isConnectedToInternet){
-            movieScreenEvent.value = Event(MovieListScreenEvent.OpenMovieDetail(movie, imageView))
+            movieScreenEvent.value = Event(MovieListScreenEvent.OpenMovieDetail(movie))
         } else{
             movieScreenEvent.value = Event(MovieListScreenEvent.Error(Throwable()))
         }

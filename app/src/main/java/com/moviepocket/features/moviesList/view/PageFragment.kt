@@ -48,7 +48,7 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
     private lateinit var binding: FragmentPageBinding
 
     private val moviesViewModel: MoviesViewModel by viewModel()
-    private val netManager: NetManager by inject()
+    private var currentImageViewClicked: ImageView? = null
 
     companion object {
         const val LIST_TYPE = "LIST_TYPE"
@@ -82,16 +82,22 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
     }
 
     override fun onMovieClick(movie: Movie, imageView: ImageView) {
+        currentImageViewClicked = imageView
+
         this.context?.let {
-            moviesViewModel.onMovieClicked(movie, imageView)
+            moviesViewModel.onMovieClicked(movie)
         }
     }
 
-    private fun openMovieDetail(movie: Movie, imageView: ImageView) {
+    private fun openMovieDetail(movie: Movie) {
         val intent = Intent(this.activity, MovieDetailActivity::class.java)
         intent.putExtra(Movie.MOVIE, movie)
 
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (currentImageViewClicked != null &&
+            Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+
+            val imageView = currentImageViewClicked
+            currentImageViewClicked = null
             startActivityForResult(intent, 101, ActivityOptions.makeSceneTransitionAnimation(
                     this.activity, imageView, ViewCompat.getTransitionName(imageView)).toBundle())
         } else {
@@ -100,7 +106,6 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
     }
 
     override fun onMovieLongClick(movie: Movie) {
-
         this.context?.let {
             moviesViewModel.onMovieLongClicked(movie)
         }
@@ -125,6 +130,7 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
     }
 
     private fun onConnectivityError() {
+        currentImageViewClicked = null
         Toast.makeText(this.context, getString(R.string.connectivity_error), Toast.LENGTH_SHORT).show()
     }
 
@@ -154,7 +160,7 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
     }
 
     private fun loadObservers() {
-        moviesViewModel.moviesScreenState.reObserve(this, Observer<MovieListScreenState> { screenState ->
+        moviesViewModel.moviesScreenState.reObserve(this, Observer { screenState ->
             screenState?.apply {
                 when {
                     isStatusOk() -> updateList(screenState)
@@ -168,12 +174,11 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
             }
         })
 
-        moviesViewModel.movieScreenEvent.reObserve(this, Observer<Event<MovieListScreenEvent>> { screenEffectEvent ->
+        moviesViewModel.movieScreenEvent.reObserve(this, Observer { screenEffectEvent ->
             screenEffectEvent?.apply {
-                val screenEffect = screenEffectEvent.getContentIfNotHandled()
-                when(screenEffect) {
+                when(val screenEffect = screenEffectEvent.getContentIfNotHandled()) {
                     is MovieListScreenEvent.OpenMovieDetail ->
-                        openMovieDetail(screenEffect.movie, screenEffect.imageView)
+                        openMovieDetail(screenEffect.movie)
                     is MovieListScreenEvent.OpenMoviePreview ->
                         openMoviePreview(screenEffect.movie)
                     is MovieListScreenEvent.Error -> onConnectivityError()
