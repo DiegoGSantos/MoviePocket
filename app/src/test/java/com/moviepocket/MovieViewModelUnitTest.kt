@@ -244,7 +244,7 @@ class MovieViewModelUnitTest : KoinTest {
     @Test
     fun `assert that it opens movie detail`() {
         Mockito.`when`(mockNetManager.isConnectedToInternet).thenReturn(true)
-        viewModel.onMovieClicked(Movie(), ImageView(null))
+        viewModel.onMovieClicked(Movie())
 
         `assert that it sends openMovieDetail screen event`()
     }
@@ -252,7 +252,7 @@ class MovieViewModelUnitTest : KoinTest {
     @Test
     fun `assert that it shows connectivity error when opening detail with no internet`() {
         Mockito.`when`(mockNetManager.isConnectedToInternet).thenReturn(false)
-        viewModel.onMovieClicked(Movie(), ImageView(null))
+        viewModel.onMovieClicked(Movie())
 
         `assert that it sends error screen event`()
     }
@@ -282,16 +282,16 @@ class MovieViewModelUnitTest : KoinTest {
             @Throws(InterruptedException::class)
             override fun dispatch(request: RecordedRequest): MockResponse {
                 return when {
-                    request.path.contains("/movie") && request.path.contains("page=1") ->
+                    request.path!!.contains("/movie") && request.path!!.contains("page=1") ->
                         MockResponse().setResponseCode(200).setBody(getJson("movies-page-1.json"))
-                    request.path.contains("/movie") && request.path.contains("page=2") ->
+                    request.path!!.contains("/movie") && request.path!!.contains("page=2") ->
                         MockResponse().setResponseCode(200).setBody(getJson("movies-page-2.json"))
                     else -> MockResponse().setResponseCode(404)
                 }
             }
         }
 
-        server.setDispatcher(dispatcher)
+        server.dispatcher = dispatcher
     }
 
     private fun `assert no data status is returned`() {

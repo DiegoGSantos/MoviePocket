@@ -94,12 +94,12 @@ project.afterEvaluate {
                                                'outputs/code_coverage/debugAndroidTest/connected/**/*.ec'])
                         }
 
-                        sourceDirectories = files([javaSrc, kotlinSrc])
-                        classDirectories = files([javaClasses, kotlinClasses])
+                        sourceDirectories.setFrom files([javaSrc, kotlinSrc])
+                        classDirectories.setFrom files([javaClasses, kotlinClasses])
 
                         print execution
 
-                        executionData = files(execution)
+                        executionData.setFrom files(execution)
 
                         doLast() {
                             print "file://${reports.html.destination}/index.html"
