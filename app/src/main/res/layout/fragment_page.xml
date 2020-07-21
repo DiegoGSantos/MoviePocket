@@ -1,38 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+<com.moviepocket.customViews.TouchableLinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mainLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center">
 
-    <com.moviepocket.customViews.TouchableLinearLayout
-        android:id="@+id/mainLayout"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center">
 
-        <FrameLayout
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/moviesList"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:gravity="center">
+            android:padding="@dimen/nano_margin"
+            android:clipToPadding="false"
+            android:gravity="center" />
 
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/moviesList"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:padding="@dimen/nano_margin"
-                android:clipToPadding="false"
-                android:gravity="center" />
+        <com.moviepocket.customViews.LoadingView
+            android:id="@+id/loadingView"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
-            <com.moviepocket.customViews.LoadingView
-                android:id="@+id/loadingView"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+        <com.moviepocket.customViews.ErrorView
+            android:id="@+id/errorView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center" />
 
-            <com.moviepocket.customViews.ErrorView
-                android:id="@+id/errorView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center" />
+    </FrameLayout>
 
-        </FrameLayout>
+</com.moviepocket.customViews.TouchableLinearLayout>
 
-    </com.moviepocket.customViews.TouchableLinearLayout>
-</layout>

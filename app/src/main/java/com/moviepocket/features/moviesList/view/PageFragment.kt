@@ -4,7 +4,6 @@ import android.app.ActivityOptions
 import android.app.Dialog
 import android.arch.lifecycle.Observer
 import android.content.Intent
-import android.databinding.DataBindingUtil
 import android.os.Build
 import android.os.Bundle
 import android.support.v4.app.Fragment
@@ -21,22 +20,18 @@ import android.widget.Toast
 import com.moviepocket.R
 import com.moviepocket.customViews.InfiniteScrollListener
 import com.moviepocket.customViews.OnReleaseScreenListener
-import com.moviepocket.databinding.FragmentPageBinding
 import com.moviepocket.features.movieDetail.view.MovieDetailActivity
 import com.moviepocket.features.moviesList.model.domain.Movie
 import com.moviepocket.features.moviesList.view.adapter.MoviesAdapter
-import com.moviepocket.features.Event
 import com.moviepocket.features.moviesList.viewmodel.MovieListScreenEvent
 import com.moviepocket.features.moviesList.viewmodel.MovieListScreenState
 import com.moviepocket.features.moviesList.viewmodel.MoviesViewModel
 import com.moviepocket.interfaces.MoviesCLickListener
-import com.moviepocket.manager.NetManager
 import com.moviepocket.util.extensions.loadUrl
 import com.moviepocket.util.extensions.reObserve
 import kotlinx.android.synthetic.main.fragment_page.*
 import kotlinx.android.synthetic.main.view_movie_preview.view.*
 import org.koin.android.architecture.ext.viewModel
-import org.koin.android.ext.android.inject
 
 /**
  * Created by diegosantos on 12/17/17.
@@ -45,7 +40,6 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
     private var builder: Dialog? = null
     lateinit var listType: String
     private lateinit var moviesAdapter: MoviesAdapter
-    private lateinit var binding: FragmentPageBinding
 
     private val moviesViewModel: MoviesViewModel by viewModel()
     private var currentImageViewClicked: ImageView? = null
@@ -64,10 +58,8 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         loadObservers()
-        binding = DataBindingUtil.inflate(
-                inflater, R.layout.fragment_page, container, false)
 
-        return binding.mainLayout
+        return inflater.inflate(R.layout.fragment_page, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -188,29 +180,29 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
     }
 
     private fun updateList(screenState: MovieListScreenState) {
-        binding.moviesList.visibility = VISIBLE
-        binding.loadingView.visibility = GONE
-        binding.errorView.visibility = GONE
+        moviesList.visibility = VISIBLE
+        loadingView.visibility = GONE
+        errorView.visibility = GONE
         moviesAdapter.addMovies(screenState.movies, screenState.isThereMorePages)
     }
 
     private fun showErrorScreen() {
-        binding.moviesList.visibility = GONE
-        binding.loadingView.visibility = GONE
-        binding.errorView.visibility = VISIBLE
-        binding.errorView.setErrorMessage(getString(R.string.movie_list_error))
+        moviesList.visibility = GONE
+        loadingView.visibility = GONE
+        errorView.visibility = VISIBLE
+        errorView.setErrorMessage(getString(R.string.movie_list_error))
     }
 
     private fun showLoadingScreen() {
-        binding.moviesList.visibility = GONE
-        binding.loadingView.visibility = VISIBLE
-        binding.errorView.visibility = GONE
+        moviesList.visibility = GONE
+        loadingView.visibility = VISIBLE
+        errorView.visibility = GONE
     }
 
     private fun showNoDataAvailableScreen() {
-        binding.moviesList.visibility = GONE
-        binding.loadingView.visibility = GONE
-        binding.errorView.visibility = VISIBLE
-        binding.errorView.setErrorMessage(getString(R.string.movie_list_error))
+        moviesList.visibility = GONE
+        loadingView.visibility = GONE
+        errorView.visibility = VISIBLE
+        errorView.setErrorMessage(getString(R.string.movie_list_error))
     }
 }

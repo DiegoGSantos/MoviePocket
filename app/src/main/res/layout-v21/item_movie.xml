@@ -13,6 +13,7 @@
         android:id="@+id/mMovieImage"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:transitionName="@string/movie_transition"
         android:adjustViewBounds="true"
         android:contentDescription="@string/movie_cover_thumb_content_description" />
 

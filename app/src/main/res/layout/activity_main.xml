@@ -9,7 +9,6 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        xmlns:tools="http://schemas.android.com/tools"
         android:orientation="vertical">
 
         <android.support.design.widget.AppBarLayout
@@ -27,7 +26,10 @@
                     android:layout_width="48dp"
                     android:layout_height="48dp"
                     android:src="@drawable/app_logo"
-                    android:paddingRight="@dimen/centi_margin"/>
+                    android:paddingRight="@dimen/centi_margin"
+                    android:paddingEnd="@dimen/centi_margin"
+                    android:contentDescription="@string/app_logo_content_description"
+                    tools:ignore="RtlSymmetry" />
 
                 <com.moviepocket.customViews.CustomTextView
                     android:layout_width="wrap_content"

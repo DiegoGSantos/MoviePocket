@@ -5,12 +5,6 @@ import android.util.AttributeSet
 import android.widget.LinearLayout
 import com.moviepocket.R
 import kotlinx.android.synthetic.main.error_view.view.*
-import android.databinding.BindingAdapter
-import java.security.MessageDigest
-import android.databinding.adapters.ImageViewBindingAdapter.setImageDrawable
-
-
-
 
 /**
  * Created by diegosantos on 4/25/18.
