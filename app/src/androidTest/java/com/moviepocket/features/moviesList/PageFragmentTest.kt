@@ -1,6 +1,6 @@
 package com.moviepocket
 
-import android.support.test.runner.AndroidJUnit4
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import com.diego.tweetssentimentsanalyzer.base.BaseRobot
 import com.moviepocket.base.BaseTest
 import com.moviepocket.features.movieDetail.view.MovieDetailActivity

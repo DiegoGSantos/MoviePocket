@@ -1,6 +1,6 @@
 package com.moviepocket.features.moviesList.view.adapter
-import android.support.v4.util.SparseArrayCompat
-import android.support.v7.widget.RecyclerView
+import androidx.collection.SparseArrayCompat
+import androidx.recyclerview.widget.RecyclerView
 import android.view.ViewGroup
 import com.moviepocket.features.moviesList.model.domain.Movie
 import com.moviepocket.interfaces.MoviesCLickListener
@@ -14,7 +14,8 @@ import com.moviepocket.util.adapter.ViewTypeDelegateAdapter
 class MoviesAdapter(listener: MoviesCLickListener) : RecyclerView.Adapter<RecyclerView.ViewHolder>(){
 
     private var movies: ArrayList<ViewType>
-    private var delegateAdapters = SparseArrayCompat<ViewTypeDelegateAdapter>()
+    private var delegateAdapters =
+        SparseArrayCompat<ViewTypeDelegateAdapter>()
     private val loadingItem = object : ViewType {
         override fun getViewType() = AdapterConstants.LOADING
     }
@@ -47,10 +48,10 @@ class MoviesAdapter(listener: MoviesCLickListener) : RecyclerView.Adapter<Recycl
     override fun getItemCount(): Int = movies.size
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int)=
-            delegateAdapters.get(viewType).onCreateViewHolder(parent)
+            delegateAdapters.get(viewType)!!.onCreateViewHolder(parent)
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        delegateAdapters.get(getItemViewType(position)).onBindViewHolder(holder, movies[position])
+        delegateAdapters.get(getItemViewType(position))?.onBindViewHolder(holder, movies[position])
     }
 
     override fun getItemViewType(position: Int) = movies[position].getViewType()

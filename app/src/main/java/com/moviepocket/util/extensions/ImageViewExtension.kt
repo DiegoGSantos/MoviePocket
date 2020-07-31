@@ -1,6 +1,6 @@
 package com.moviepocket.util.extensions
 
-import android.support.v4.content.ContextCompat
+import androidx.core.content.ContextCompat
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.moviepocket.R

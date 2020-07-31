@@ -2,13 +2,13 @@ package com.moviepocket.features.moviesList.view
 
 import android.app.ActivityOptions
 import android.app.Dialog
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Observer
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.support.v4.app.Fragment
-import android.support.v4.view.ViewCompat
-import android.support.v7.widget.GridLayoutManager
+import androidx.fragment.app.Fragment
+import androidx.core.view.ViewCompat
+import androidx.recyclerview.widget.GridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.View.GONE
@@ -91,7 +91,7 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
             val imageView = currentImageViewClicked
             currentImageViewClicked = null
             startActivityForResult(intent, 101, ActivityOptions.makeSceneTransitionAnimation(
-                    this.activity, imageView, ViewCompat.getTransitionName(imageView)).toBundle())
+                    this.activity, imageView, imageView?.let { ViewCompat.getTransitionName(it) }).toBundle())
         } else {
             startActivityForResult(intent, 101)
         }
@@ -143,7 +143,8 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
             setHasFixedSize(true)
 
             adapter = moviesAdapter
-            val gridLayoutManager = GridLayoutManager(this.context, 3)
+            val gridLayoutManager =
+                GridLayoutManager(this.context, 3)
             layoutManager = gridLayoutManager
             addOnScrollListener(InfiniteScrollListener({
                 moviesViewModel.onNewPageRequested(listType)

@@ -1,6 +1,6 @@
 package com.moviepocket.base;
 
-import android.support.test.rule.UiThreadTestRule;
+import androidx.test.rule.UiThreadTestRule;
 
 import org.junit.runner.Description;
 import org.junit.runners.model.Statement;

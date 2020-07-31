@@ -1,7 +1,7 @@
 package com.moviepocket
 
-import android.arch.core.executor.testing.InstantTaskExecutorRule
-import android.arch.lifecycle.Observer
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
+import androidx.lifecycle.Observer
 import android.widget.ImageView
 import com.diego.mvvmwithscreenstates.JsonUtils.Companion.getJson
 import com.google.common.collect.Lists

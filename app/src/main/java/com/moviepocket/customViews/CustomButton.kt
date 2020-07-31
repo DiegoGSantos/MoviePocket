@@ -10,7 +10,7 @@ import com.moviepocket.util.isStringValid
 /**
  * Created by diegosantos on 12/16/17.
  */
-class CustomButton : android.support.v7.widget.AppCompatButton, View.OnClickListener {
+class CustomButton : androidx.appcompat.widget.AppCompatButton, View.OnClickListener {
 
     internal var mListener: View.OnClickListener? = null
     internal var mContext: Context

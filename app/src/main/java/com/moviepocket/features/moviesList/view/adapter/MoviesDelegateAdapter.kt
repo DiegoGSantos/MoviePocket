@@ -1,6 +1,6 @@
 package com.moviepocket.features.moviesList.view.adapter
 
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView
 import android.view.ViewGroup
 import com.moviepocket.R
 import com.moviepocket.features.moviesList.model.domain.Movie

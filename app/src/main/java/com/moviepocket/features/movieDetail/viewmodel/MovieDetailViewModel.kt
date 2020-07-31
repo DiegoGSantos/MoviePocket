@@ -1,7 +1,7 @@
 package com.moviepocket.features.movieDetail.viewmodel
 
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.moviepocket.features.movieDetail.model.data.MovieDetailRepository
 import com.moviepocket.features.moviesList.viewmodel.ScreenStatus
 import io.reactivex.Scheduler

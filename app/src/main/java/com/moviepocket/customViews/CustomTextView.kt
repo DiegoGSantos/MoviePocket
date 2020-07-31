@@ -9,7 +9,7 @@ import com.moviepocket.util.FontUtils.setOpenSansFont
 /**
  * Created by diegosantos on 12/16/17.
  */
-class CustomTextView : android.support.v7.widget.AppCompatTextView {
+class CustomTextView : androidx.appcompat.widget.AppCompatTextView {
 
     internal var mContext: Context
 

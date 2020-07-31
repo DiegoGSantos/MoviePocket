@@ -37,7 +37,7 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <android.support.constraint.ConstraintLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -157,7 +157,7 @@
                     app:layout_constraintTop_toBottomOf="@id/backButton"
                     app:layout_constraintBottom_toBottomOf="@id/ratingContainer"/>
 
-            </android.support.constraint.ConstraintLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
 
             <LinearLayout
                 android:orientation="vertical"
@@ -206,7 +206,7 @@
                         android:paddingRight="@dimen/hecto_margin"
                         app:layout_constraintTop_toBottomOf="@id/moviePlot"/>
 
-                    <android.support.v7.widget.RecyclerView
+                    <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/videosList"
                         android:layout_width="match_parent"
                         android:layout_height="126dp"

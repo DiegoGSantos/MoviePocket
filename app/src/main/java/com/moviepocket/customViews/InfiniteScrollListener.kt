@@ -3,13 +3,14 @@ package com.moviepocket.customViews
 /**
  * Created by diegosantos on 2/18/18.
  */
-import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import android.util.Log
 
 class InfiniteScrollListener(
         val func: () -> Unit,
-        val layoutManager: LinearLayoutManager) : RecyclerView.OnScrollListener() {
+        val layoutManager: LinearLayoutManager
+) : RecyclerView.OnScrollListener() {
 
     private var previousTotal = 0
     private var loading = true

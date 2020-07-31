@@ -1,7 +1,7 @@
 package com.moviepocket.features.moviesList.viewmodel
 
-import android.arch.lifecycle.MutableLiveData
-import android.arch.lifecycle.ViewModel
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
 import com.moviepocket.features.Event
 import com.moviepocket.features.moviesList.model.data.MovieRepository
 import com.moviepocket.features.moviesList.model.domain.Movie

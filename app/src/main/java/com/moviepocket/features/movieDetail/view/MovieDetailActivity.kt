@@ -1,15 +1,15 @@
 package com.moviepocket.features.movieDetail.view
 
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.Observer
 import android.content.Intent
 import android.graphics.PorterDuff
 import android.graphics.drawable.LayerDrawable
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
-import android.support.v7.app.AppCompatActivity
-import android.support.v7.widget.LinearLayoutManager
+import androidx.core.content.ContextCompat
+import androidx.appcompat.app.AppCompatActivity
+import androidx.recyclerview.widget.LinearLayoutManager
 import android.view.View.*
 import android.view.WindowManager
 import com.Videopocket.features.VideoDetail.view.adapter.VideosAdapter
@@ -103,7 +103,11 @@ class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
         if(movieDetailResponse.videos.results.isNotEmpty()) {
             videosList.apply {
                 setHasFixedSize(true)
-                layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
+                layoutManager = LinearLayoutManager(
+                    this.context,
+                    LinearLayoutManager.HORIZONTAL,
+                    false
+                )
                 adapter = VideosAdapter(this.context, movieDetailResponse.videos.results, this@MovieDetailActivity)
             }
 

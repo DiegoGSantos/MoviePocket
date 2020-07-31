@@ -1,7 +1,7 @@
 package com.moviepocket
 
-import android.arch.lifecycle.LiveData
-import android.arch.lifecycle.Observer
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
 
 class TestObserver<T> : Observer<T> {
 

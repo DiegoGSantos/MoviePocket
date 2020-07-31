@@ -7,9 +7,8 @@ package com.moviepocket.customViews;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
-import android.widget.ImageView;
 
-public class FixedCenterCrop extends android.support.v7.widget.AppCompatImageView
+public class FixedCenterCrop extends androidx.appcompat.widget.AppCompatImageView
 {
     public FixedCenterCrop(final Context context, final AttributeSet attrs) {
         super(context, attrs);
