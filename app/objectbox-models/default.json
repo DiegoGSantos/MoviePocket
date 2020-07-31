@@ -4,71 +4,89 @@
   "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
   "entities": [
     {
-      "id": "1:36080585507692369",
-      "lastPropertyId": "3:7440522268050981664",
-      "name": "User",
-      "properties": [
-        {
-          "id": "1:6107639295793161081",
-          "name": "id"
-        },
-        {
-          "id": "2:8117208237945954499",
-          "name": "firstName"
-        },
-        {
-          "id": "3:7440522268050981664",
-          "name": "lastName"
-        }
-      ],
-      "relations": []
-    },
-    {
       "id": "2:3763932055301302335",
       "lastPropertyId": "7:7814461861098672193",
       "name": "Movie",
       "properties": [
         {
           "id": "1:2633296284477562806",
-          "name": "id"
+          "name": "id",
+          "type": 6,
+          "flags": 1
         },
         {
           "id": "2:7972357958210476611",
-          "name": "posterPath"
+          "name": "posterPath",
+          "type": 9
         },
         {
           "id": "3:6138775618247066730",
-          "name": "title"
+          "name": "title",
+          "type": 9
         },
         {
           "id": "4:3254932421006413806",
-          "name": "voteAverage"
+          "name": "voteAverage",
+          "type": 9
         },
         {
           "id": "5:6909295319292521771",
-          "name": "movieId"
+          "name": "movieId",
+          "type": 9
         },
         {
           "id": "6:7436233662882268368",
-          "name": "listType"
+          "name": "listType",
+          "type": 9
         },
         {
           "id": "7:7814461861098672193",
-          "name": "page"
+          "name": "page",
+          "type": 9
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "3:8576056080025276283",
+      "lastPropertyId": "3:114096299857235290",
+      "name": "User",
+      "properties": [
+        {
+          "id": "1:4764050541066829080",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:5757303523801205810",
+          "name": "firstName",
+          "type": 9
+        },
+        {
+          "id": "3:114096299857235290",
+          "name": "lastName",
+          "type": 9
         }
       ],
       "relations": []
     }
   ],
-  "lastEntityId": "2:3763932055301302335",
+  "lastEntityId": "3:8576056080025276283",
   "lastIndexId": "0:0",
   "lastRelationId": "0:0",
   "lastSequenceId": "0:0",
-  "modelVersion": 4,
-  "modelVersionParserMinimum": 4,
-  "retiredEntityUids": [],
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [
+    36080585507692369
+  ],
   "retiredIndexUids": [],
-  "retiredPropertyUids": [],
+  "retiredPropertyUids": [
+    6107639295793161081,
+    8117208237945954499,
+    7440522268050981664
+  ],
   "retiredRelationUids": [],
   "version": 1
 }

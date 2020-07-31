@@ -50,7 +50,11 @@ class CustomButton : android.support.v7.widget.AppCompatButton, View.OnClickList
                 ta.recycle()
 
                 if (isStringValid(style)) {
-                    FontUtils.setOpenSansFont(mContext, this, FontUtils.getFontFamily(style))
+                    style?.let { FontUtils.getFontFamily(it) }?.let {
+                        FontUtils.setOpenSansFont(mContext, this,
+                            it
+                        )
+                    }
                 } else {
                     FontUtils.setOpenSansFont(mContext, this, FontUtils.FontFamily.OPENSANS)
                 }

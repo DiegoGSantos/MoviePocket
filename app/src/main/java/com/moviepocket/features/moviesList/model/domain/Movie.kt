@@ -23,22 +23,22 @@ class Movie(@Id var id: Long = 0,
             val posterPath: String? = "",
             @Expose
             @SerializedName("title")
-            val title: String = "",
+            val title: String? = "",
             @Expose
             @SerializedName("vote_average")
-            val voteAverage: String = "",
+            val voteAverage: String? = "",
             @Expose
             @SerializedName("id")
             val movieId: String = "",
-            var page: String = "",
-            var listType: String = "") : ViewType, Parcelable {
+            var page: String? = "",
+            var listType: String? = "") : ViewType, Parcelable {
 
     constructor(parcel: Parcel) : this(
             parcel.readLong(),
             parcel.readString(),
             parcel.readString(),
             parcel.readString(),
-            parcel.readString(),
+            parcel.readString()!!,
             parcel.readString(),
             parcel.readString())
 

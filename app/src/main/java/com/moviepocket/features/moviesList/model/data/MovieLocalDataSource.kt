@@ -4,6 +4,7 @@ import android.util.Log
 import com.moviepocket.App
 import com.moviepocket.features.moviesList.model.domain.Movie
 import com.moviepocket.restclient.response.MovieListResponse
+import com.moviepocket.util.ObjectBox
 import io.reactivex.Observable
 
 /**
@@ -21,7 +22,7 @@ class MovieLocalDataSource {
 
         Movie.deleteAllFromType(listType, page)
 
-        App.getBoxStore().runInTxAsync({
+        ObjectBox.boxStore.runInTxAsync({
             for (movie in movies) {
                 movie.page = page
                 movie.listType = listType

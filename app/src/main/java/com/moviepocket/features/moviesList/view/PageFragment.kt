@@ -113,7 +113,7 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
         view.imdbRate.text = movie.voteAverage
         view.mMovieCover.loadUrl(movie.getPosterUrl())
 
-        builder = Dialog(context)
+        builder = context?.let { Dialog(it) }
         builder?.requestWindowFeature(Window.FEATURE_NO_TITLE)
         builder?.setContentView(view)
         builder?.show()
