@@ -2,9 +2,8 @@ package com.moviepocket
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import android.widget.ImageView
-import com.diego.mvvmwithscreenstates.JsonUtils.Companion.getJson
 import com.google.common.collect.Lists
+import com.moviepocket.JsonUtils.Companion.getJson
 import com.moviepocket.features.Event
 import com.moviepocket.features.moviesList.model.data.MovieLocalDataSource
 import com.moviepocket.features.moviesList.model.data.MovieRemoteDataSource

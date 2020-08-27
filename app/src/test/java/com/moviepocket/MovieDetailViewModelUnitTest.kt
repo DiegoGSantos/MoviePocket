@@ -2,7 +2,6 @@ package com.moviepocket
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
-import com.diego.mvvmwithscreenstates.JsonUtils
 import com.moviepocket.features.movieDetail.model.data.MovieDetailRemoteDataSource
 import com.moviepocket.features.movieDetail.model.data.MovieDetailRepository
 import com.moviepocket.features.movieDetail.viewmodel.MovieDetailScreenState
