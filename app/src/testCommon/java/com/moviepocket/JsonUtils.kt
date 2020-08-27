@@ -1,4 +1,4 @@
-package com.diego.mvvmwithscreenstates
+package com.moviepocket
 
 import java.io.File
 
