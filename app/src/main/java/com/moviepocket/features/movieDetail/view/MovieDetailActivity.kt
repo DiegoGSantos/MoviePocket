@@ -17,7 +17,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.drawable.GlideDrawable
 import com.bumptech.glide.request.RequestListener
-import com.eightbitlab.supportrenderscriptblur.SupportRenderScriptBlur
 import com.moviepocket.R
 import com.moviepocket.customViews.RoundedCornersTransformation
 import com.moviepocket.features.movieDetail.model.domain.Video
@@ -27,8 +26,9 @@ import com.moviepocket.features.moviesList.model.domain.Movie
 import com.moviepocket.interfaces.VideoCLickListener
 import com.moviepocket.restclient.response.MovieDetailResponse
 import com.moviepocket.util.extensions.loadUrl
+import eightbitlab.com.blurview.RenderScriptBlur
 import kotlinx.android.synthetic.main.activity_movie_detail.*
-import org.koin.android.architecture.ext.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 
 class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
@@ -62,7 +62,7 @@ class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
     }
 
     private fun loadObservers() {
-        movieDetailViewModel.movieDetailLiveData.observe(this, Observer<MovieDetailScreenState> { movieDetail ->
+        movieDetailViewModel.movieDetailLiveData.observe(this, { movieDetail ->
             movieDetail?.let {
                 when {
                     it.isStatusOk() -> updateUi(it.movieDetail)
@@ -136,9 +136,9 @@ class MovieDetailActivity : AppCompatActivity(), VideoCLickListener {
         val windowBackground = window.decorView.background
 
         blurView.setupWith(root)
-                .windowBackground(windowBackground)
-                .blurAlgorithm(SupportRenderScriptBlur(this))
-                .blurRadius(5f)
+                .setFrameClearDrawable(windowBackground)
+                .setBlurAlgorithm(RenderScriptBlur(this))
+                .setBlurRadius(5f)
     }
 
     private fun setTopCover(movie: MovieDetailResponse) {

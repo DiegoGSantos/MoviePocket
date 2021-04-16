@@ -31,7 +31,7 @@ import com.moviepocket.util.extensions.loadUrl
 import com.moviepocket.util.extensions.reObserve
 import kotlinx.android.synthetic.main.fragment_page.*
 import kotlinx.android.synthetic.main.view_movie_preview.view.*
-import org.koin.android.architecture.ext.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * Created by diegosantos on 12/17/17.
@@ -104,7 +104,7 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
     }
 
     private fun openMoviePreview(movie: Movie) {
-        moviesList.isLayoutFrozen = true
+        moviesList.suppressLayout(true)
 
         val layoutInflater = LayoutInflater.from(context)
         val view = layoutInflater.inflate(R.layout.view_movie_preview, null)
@@ -128,7 +128,7 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
 
     private fun hidePreview() {
         builder?.dismiss()
-        moviesList.isLayoutFrozen = false
+        moviesList.suppressLayout(false)
     }
 
     override fun onReleaseScreenListener() {
@@ -153,7 +153,7 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
     }
 
     private fun loadObservers() {
-        moviesViewModel.moviesScreenState.reObserve(this, Observer { screenState ->
+        moviesViewModel.moviesScreenState.reObserve(this, { screenState ->
             screenState?.apply {
                 when {
                     isStatusOk() -> updateList(screenState)
@@ -167,7 +167,7 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
             }
         })
 
-        moviesViewModel.movieScreenEvent.reObserve(this, Observer { screenEffectEvent ->
+        moviesViewModel.movieScreenEvent.reObserve(this, { screenEffectEvent ->
             screenEffectEvent?.apply {
                 when(val screenEffect = screenEffectEvent.getContentIfNotHandled()) {
                     is MovieListScreenEvent.OpenMovieDetail ->

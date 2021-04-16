@@ -4,6 +4,7 @@ import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
 import com.google.common.collect.Lists
 import com.moviepocket.JsonUtils.Companion.getJson
+import com.moviepocket.di.mainModule
 import com.moviepocket.features.Event
 import com.moviepocket.features.moviesList.model.data.MovieLocalDataSource
 import com.moviepocket.features.moviesList.model.data.MovieRemoteDataSource
@@ -27,11 +28,12 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TestRule
-import org.koin.dsl.module.applicationContext
-import org.koin.standalone.StandAloneContext.closeKoin
-import org.koin.standalone.StandAloneContext.loadKoinModules
-import org.koin.standalone.inject
+import org.koin.core.context.loadKoinModules
+import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
+import org.koin.dsl.module
 import org.koin.test.KoinTest
+import org.koin.test.inject
 import org.mockito.Mock
 import org.mockito.Mockito
 import org.mockito.Mockito.anyString
@@ -59,12 +61,15 @@ class MovieViewModelUnitTest : KoinTest {
     fun setUpTest() {
         MockitoAnnotations.initMocks(this)
 
-        loadKoinModules(listOf(applicationContext {
-            bean { mockNetManager }
-            bean { mockMovieRemoteDataSource }
-            bean { mockMovieLocalDataSource }
-            bean { MovieRepository(get(), get(), get()) }
-        }))
+        startKoin { modules(mainModule) }
+        loadKoinModules(
+            module {
+                factory(override = true) { mockNetManager }
+                factory(override = true) { mockMovieRemoteDataSource }
+                factory(override = true) { mockMovieLocalDataSource }
+                factory(override = true) { MovieRepository(get(), get(), get()) }
+            }
+        )
 
         viewModel = MoviesViewModel(mockRepository, TrampolineScheduler.instance(), TrampolineScheduler.instance(), mockNetManager)
         viewModel.moviesScreenState.observeForever(mockObserver)
@@ -81,7 +86,7 @@ class MovieViewModelUnitTest : KoinTest {
 
     @After
     fun after() {
-        closeKoin()
+        stopKoin()
     }
 
     @Test

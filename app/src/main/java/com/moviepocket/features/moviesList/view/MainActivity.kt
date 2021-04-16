@@ -5,9 +5,9 @@ import com.google.android.material.tabs.TabLayout
 import androidx.appcompat.app.AppCompatActivity
 import android.view.View.INVISIBLE
 import android.view.View.VISIBLE
-import com.eightbitlab.supportrenderscriptblur.SupportRenderScriptBlur
 import com.moviepocket.R
 import com.moviepocket.features.moviesList.view.adapter.TabsPagerAdapter
+import eightbitlab.com.blurview.RenderScriptBlur
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -21,13 +21,13 @@ class MainActivity : AppCompatActivity() {
                 this@MainActivity)
 
         slidingTabs.setupWithViewPager(contentViewpager)
-        slidingTabs.setTabMode (TabLayout.MODE_SCROLLABLE);
+        slidingTabs.tabMode = TabLayout.MODE_SCROLLABLE
 
         val windowBackground = window.decorView.background
         blurView.setupWith(root)
-                .windowBackground(windowBackground)
-                .blurAlgorithm(SupportRenderScriptBlur(this))
-                .blurRadius(5f)
+                .setFrameClearDrawable(windowBackground)
+                .setBlurAlgorithm(RenderScriptBlur(this))
+                .setBlurRadius(5f)
     }
 
     fun showBlurView() {

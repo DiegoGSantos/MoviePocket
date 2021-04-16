@@ -2,6 +2,7 @@ package com.moviepocket
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Observer
+import com.moviepocket.di.mainModule
 import com.moviepocket.features.movieDetail.model.data.MovieDetailRemoteDataSource
 import com.moviepocket.features.movieDetail.model.data.MovieDetailRepository
 import com.moviepocket.features.movieDetail.viewmodel.MovieDetailScreenState
@@ -9,15 +10,18 @@ import com.moviepocket.features.movieDetail.viewmodel.MovieDetailViewModel
 import com.moviepocket.util.Constants
 import io.reactivex.Observable
 import io.reactivex.internal.schedulers.TrampolineScheduler
-import junit.framework.Assert.assertTrue
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.*
+import org.junit.Assert.assertFalse
+import org.junit.Assert.assertTrue
 import org.junit.rules.TestRule
-import org.koin.dsl.module.applicationContext
-import org.koin.standalone.StandAloneContext
-import org.koin.standalone.inject
+import org.koin.core.context.loadKoinModules
+import org.koin.core.context.startKoin
+import org.koin.core.context.stopKoin
+import org.koin.dsl.module
 import org.koin.test.KoinTest
+import org.koin.test.inject
 import org.mockito.ArgumentMatchers.anyString
 import org.mockito.Mockito
 import org.mockito.MockitoAnnotations
@@ -35,28 +39,29 @@ class MovieDetailViewModelUnitTest : KoinTest {
 
     private lateinit var viewModel: MovieDetailViewModel
 
-    private lateinit var screenStatetLiveData: TestObserver<MovieDetailScreenState>
+    private lateinit var screenStateLiveData: TestObserver<MovieDetailScreenState>
 
     @Before
     fun setUpTest() {
         MockitoAnnotations.initMocks(this)
 
-        StandAloneContext.loadKoinModules(listOf(applicationContext {
-            bean { movieDetailRemoteDataSource }
-            bean { MovieDetailRepository(get()) }
-        }))
+        startKoin { modules(mainModule) }
+        loadKoinModules(module {
+            factory(override = true) { movieDetailRemoteDataSource }
+            factory(override = true) { MovieDetailRepository(get()) }
+        })
 
         configureMockServer()
 
         viewModel = MovieDetailViewModel(movieDetailRepository, TrampolineScheduler.instance(), TrampolineScheduler.instance())
         viewModel.movieDetailLiveData.observeForever(mockObserver)
 
-        screenStatetLiveData = viewModel.movieDetailLiveData.testObserver()
+        screenStateLiveData = viewModel.movieDetailLiveData.testObserver()
     }
 
     @After
     fun after() {
-        StandAloneContext.closeKoin()
+        stopKoin()
     }
 
     @Test
@@ -80,14 +85,14 @@ class MovieDetailViewModelUnitTest : KoinTest {
     }
 
     private fun `assert that starts loading`() {
-        screenStatetLiveData.observedValues[0]?.apply {
-            Assert.assertTrue("Should be loading", isLoading())
+        screenStateLiveData.observedValues[0]?.apply {
+            assertTrue("Should be loading", isLoading())
         }
     }
 
     private fun `assert that stops loading`() {
-        screenStatetLiveData.observedValues[1]?.apply {
-            Assert.assertFalse("Should not be loading", isLoading())
+        screenStateLiveData.observedValues[1]?.apply {
+            assertFalse("Should not be loading", isLoading())
         }
     }
 
@@ -97,13 +102,13 @@ class MovieDetailViewModelUnitTest : KoinTest {
     }
 
     private fun `assert that status OK is returned`() {
-        screenStatetLiveData.observedValues[1]?.apply {
+        screenStateLiveData.observedValues[1]?.apply {
             assertTrue("OK status expected", isStatusOk())
         }
     }
 
     private fun `assert that error status is returned`() {
-        screenStatetLiveData.observedValues[1]?.apply {
+        screenStateLiveData.observedValues[1]?.apply {
             assertTrue("OK status expected", isThereError())
         }
     }
