@@ -18,7 +18,7 @@ val mainModule = module {
     viewModel { MoviesViewModel(get()) }
     viewModel { MovieDetailViewModel(get()) }
 
-    single { MovieRepository(get(), get(), get()) }
+    single { MovieRepository(get(), get()) }
     single { NetManager() }
     single { MovieRemoteDataSource() }
     single { MovieLocalDataSource() }

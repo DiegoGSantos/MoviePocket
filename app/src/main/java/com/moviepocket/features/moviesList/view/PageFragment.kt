@@ -204,6 +204,6 @@ class PageFragment : Fragment(), MoviesCLickListener, OnReleaseScreenListener {
         moviesList.visibility = GONE
         loadingView.visibility = GONE
         errorView.visibility = VISIBLE
-        errorView.setErrorMessage(getString(R.string.movie_list_error))
+        errorView.setErrorMessage(getString(R.string.movie_list_empty_list))
     }
 }

@@ -1,6 +1,5 @@
 package com.moviepocket.restclient
 
-import com.moviepocket.restclient.response.GenreListResponse
 import com.moviepocket.restclient.response.MovieListResponse
 import com.moviepocket.util.Constants
 import okhttp3.OkHttpClient
@@ -16,7 +15,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 interface Service {
 
     @retrofit2.http.GET("movie/{listType}?api_key=${Constants.API_KEY}&language=pt-BR&&region=br")
-    fun listMovies(@retrofit2.http.Path("listType") listType: String, @retrofit2.http.Query("page") page: String) : io.reactivex.Observable<MovieListResponse>
+    suspend fun listMovies(@retrofit2.http.Path("listType") listType: String, @retrofit2.http.Query("page") page: String) : MovieListResponse
 
     @retrofit2.http.GET("movie/{movieId}?api_key=${Constants.API_KEY}&language=pt-BR&append_to_response=release_dates,videos")
     fun getMovieDetail(@retrofit2.http.Path("movieId") movieId: String): io.reactivex.Observable<MovieDetailResponse>

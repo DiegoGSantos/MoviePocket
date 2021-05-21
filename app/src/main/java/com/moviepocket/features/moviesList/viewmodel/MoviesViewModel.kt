@@ -2,6 +2,7 @@ package com.moviepocket.features.moviesList.viewmodel
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.moviepocket.features.Event
 import com.moviepocket.features.moviesList.model.data.MovieRepository
 import com.moviepocket.features.moviesList.model.domain.Movie
@@ -10,22 +11,18 @@ import io.reactivex.Scheduler
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import kotlinx.coroutines.launch
 
 /**
  * Created by diego.santos on 01/02/18.
  */
 class MoviesViewModel(private val movieRepository: MovieRepository,
-                      private val processScheduler: Scheduler = Schedulers.io(),
-                      private val androidScheduler: Scheduler = AndroidSchedulers.mainThread(),
                       private val netManager: NetManager = NetManager()): ViewModel() {
 
     val moviesScreenState: MutableLiveData<MovieListScreenState> = MutableLiveData()
     val movieScreenEvent: MutableLiveData<Event<MovieListScreenEvent>> = MutableLiveData()
-
     val moviesList = ArrayList<Movie>()
-
     private var totalOfPages: Int = 0
-    private var compositeDisposable = CompositeDisposable()
 
     fun onViewCreated(listType: String) {
         listMovies(listType, true)
@@ -54,33 +51,48 @@ class MoviesViewModel(private val movieRepository: MovieRepository,
     private fun listMovies(listType: String, isStartingView: Boolean) {
         val pageToBeLoaded = getPageToLoad(isStartingView)
 
-        if (isStartingView && isRestartingPage(pageToBeLoaded)) {
-            onMoviesLoaded((moviesScreenState.value?.currentPage ?: 1), moviesList, totalOfPages)
+        if (isStartingView && isRestartingPage(pageToBeLoaded) && stateIsNotOnError()) {
+            if (moviesList.size > 0) {
+                onMoviesLoaded(
+                    (moviesScreenState.value?.currentPage ?: 1),
+                    moviesList,
+                    totalOfPages
+                )
+            } else {
+                onDataNoAvailable(pageToBeLoaded)
+            }
         } else if (isThereMoreItemsToLoad(pageToBeLoaded)) {
 
             if (pageToBeLoaded == 1) onLoading()
 
-            val disposable = movieRepository.getMovies(pageToBeLoaded.toString(), listType)
-                    .observeOn(androidScheduler)
-                    .subscribeOn(processScheduler)
-                    .subscribe ({
-                        result ->
-                        if (result.results.size > 0) {
-                            onMoviesLoaded(pageToBeLoaded, result.results, result.totalPages)
-                        } else {
-                            onDataNoAvailable(pageToBeLoaded)
-                        }
-
-                        moviesList.addAll(result.results)
-                        movieRepository.saveMovies(result.results, listType, pageToBeLoaded.toString())
-                    }, { error ->
-                        onRequestError(pageToBeLoaded)
-                        error.printStackTrace()
-                    })
-
-            compositeDisposable.add(disposable)
+            getFreshListOfMovies(pageToBeLoaded, listType)
         }
     }
+
+    private fun getFreshListOfMovies(pageToBeLoaded: Int, listType: String) {
+        viewModelScope.launch {
+            movieRepository.getMovies(pageToBeLoaded.toString(), listType)
+                .onSuccess { result ->
+                    if (result.results.size > 0) {
+                        onMoviesLoaded(pageToBeLoaded, result.results, result.totalPages)
+                        moviesList.addAll(result.results)
+                        movieRepository.saveMovies(
+                            result.results,
+                            listType,
+                            pageToBeLoaded.toString()
+                        )
+                    } else {
+                        onDataNoAvailable(pageToBeLoaded)
+                    }
+                }
+                .onFailure {
+                    onRequestError(pageToBeLoaded)
+                    it.printStackTrace()
+                }
+        }
+    }
+
+    private fun stateIsNotOnError() = !(moviesScreenState.value?.isThereError() ?: false)
 
     private fun getPageToLoad(isStartingView: Boolean): Int {
         var pageToBeLoaded = 1
@@ -119,17 +131,5 @@ class MoviesViewModel(private val movieRepository: MovieRepository,
 
     private fun onLoading() {
         moviesScreenState.value = MovieListScreenState(1, true, ScreenStatus.LOADING.status,  "", emptyList())
-    }
-
-    private fun unSubscribeFromObservable() {
-        if (!compositeDisposable.isDisposed) {
-            compositeDisposable.dispose()
-        }
-        compositeDisposable.clear()
-    }
-
-    override fun onCleared() {
-        unSubscribeFromObservable()
-        super.onCleared()
     }
 }

@@ -12,10 +12,8 @@ import io.reactivex.Observable
  */
 class MovieLocalDataSource {
 
-    fun getMovies(page: String, listType: String): Observable<MovieListResponse> {
-        return Observable.create {
-            emitter -> emitter.onNext(Movie.getAllFromType(listType, page))
-        }
+    fun getMovies(page: String, listType: String): MovieListResponse {
+        return Movie.getAllFromType(listType, page)
     }
 
     fun saveMovies(movies: List<Movie>, listType: String, page: String) {

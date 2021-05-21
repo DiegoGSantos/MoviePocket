@@ -16,6 +16,7 @@
     <string name="movie_transition">movie_transition</string>
     <string name="default_plot">Sinopse indisponível no momento</string>
     <string name="movie_list_error">Não foi possível carregar a lista. Tente novamente.</string>
+    <string name="movie_list_empty_list">Não foram encontrados filmes nessa categoria.</string>
     <string name="connectivity_error">Verifique sua conexão com a internet</string>
     <string name="movie_cover_thumb_content_description">Movie cover Thumb</string>
     <string name="movie_cover_preview_content_description">Movie cover preview</string>

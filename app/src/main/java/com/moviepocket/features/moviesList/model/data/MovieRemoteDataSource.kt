@@ -9,7 +9,7 @@ import io.reactivex.Observable
  */
 class MovieRemoteDataSource(){
 
-    fun getMovies(page: String, listType: String): Observable<MovieListResponse> {
-        return Service.Factory.create().listMovies(listType, page)
+    suspend fun getMovies(page: String, listType: String): MovieListResponse {
+        return Service.create().listMovies(listType, page)
     }
 }
